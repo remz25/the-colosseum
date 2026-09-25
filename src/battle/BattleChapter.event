@@ -73,7 +73,9 @@ UNIT
 ALIGN 4
 
 ColBattle_Beginning:
-ASMC Col_BattleStartFlow|1               // new run / recruitment / deployment menus
+FADU 16                                  // fade in first: the chapter starts faded to black and
+                                         // FE8 only fades in after this event (menus were invisible)
+ASMC Col_BattleStartFlow|1               // new run / recruitment / Prepare menus
 ASMC Col_PrepareBattle|1
 ENDA
 

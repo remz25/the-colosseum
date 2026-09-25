@@ -13,6 +13,7 @@ mGBA, not only compiled.
 | Save: WriteGameSave/ReadGameSave carry the run state | PASS | run_tests.py integration | 2026-09-25 |
 | Save: suspend (WriteSuspendSave/ReadSuspendSave keep the run state) | PASS | run_tests.py integration | 2026-09-25 |
 | RAM block unused by the game | PARTIAL | all zero after boot; only the 64-byte run state used after battle load + combat tests; a whole played battle not yet automated | 2026-09-25 |
+| Team screen visible (screen faded in) after New Game | PASS | run_tests.py brightness check (fails without the fix) | 2026-09-25 |
 | Battle chapter: New Game -> arena, 3v3 placement | PASS (in game + runner) | mGBA driver screenshots; run_tests.py battle stage | 2026-09-25 |
 | Win -> run state (1 win, HP kept) -> save menu -> next fight | PASS (in game) | enemies removed by memory poke, unit waits, next fight loads with new enemies | 2026-09-25 |
 | 20-turn limit: popups 15/18/19, game over after 20 | PASS (in game) | turn counter poked, turns ended, screenshots ("FINAL TURN.", "Time is up.", GAME OVER) | 2026-09-25 |

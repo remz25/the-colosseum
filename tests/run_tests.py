@@ -93,6 +93,17 @@ def high_stat_saves(g) -> list[str]:
     return problems
 
 
+LCD_BUFFER = 0x03003080         # FE8 gLCDControlBuffer (display registers, copied each frame)
+
+
+def screen_black(g) -> bool:
+    """FE8 fades with the brightness effect: effect 3 (darken) at full strength = black screen.
+    (Screenshots from VRAM don't show fades, so menus under a black screen went unnoticed.)"""
+    bldcnt = int.from_bytes(g.read(LCD_BUFFER + 0x3C, 2), "little")
+    blend_y = g.read(LCD_BUFFER + 0x46, 1)[0]
+    return (bldcnt >> 6) & 3 == 3 and blend_y >= 16
+
+
 def any_unit_placed(g) -> bool:
     """A blue unit exists and is on the map (not hidden / undeployed): the battle has begun."""
     for i in range(5):
@@ -111,6 +122,9 @@ def enter_battle(g, syms) -> str | None:
         g.frames(85)
         ram = g.read(COL_RAM, 0x40)
         if ram[0:4] == b"COLR" and ram[6] == 1 and ram[0x0D] == 3:   # active, 3 in the roster
+            g.frames(90)                                         # the team screen is up
+            if screen_black(g):
+                return "the team screen is shown on a black screen (not faded in)"
             # "Your team" (cursor on Begin), then Prepare (cursor on Fight!): A until units are placed
             for _ in range(10):
                 g.frames(5, "A")

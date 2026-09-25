@@ -81,6 +81,9 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 - **RAM block layout**: 0x000-0x0FF run state (saved, v4, 256-byte save chunks), 0x100-0x1FF
   reserved (Legacy), 0x200-0x27F UI scratch (menus only: stat choice +0x00, roster +0x10,
   skill +0x20, Prepare/Shop +0x30).
+- **Fades**: a chapter starts faded to black and FE8 fades in after the beginning event, so any
+  menu in that event needs `FADU` first. The scripted screenshots (VRAM) ignore fades; check
+  gLCDControlBuffer (0x03003080: bldcnt effect 3 + blendY 16 = black) instead.
 - `--test` builds are debug builds (debug startup menu at boot); the player ROM has no debug menu.
 
 ## GBA constraints

@@ -1,5 +1,12 @@
 # COLISEUM: Changelog
 
+## 2026-09-25 (fix)
+- Fixed: after New Game the screen stayed black. The battle's beginning event opened the
+  team/Prepare menus before FE8 faded the chapter in (FE8 fades in after that event), so the menus
+  were invisible. The event now fades in first (`FADU 16`).
+- The test runner now checks the real screen brightness when the team screen is up (the VRAM
+  screenshots used by the scripted checks ignore fades, which is how this was missed).
+
 ## 2026-09-25 (Phase 8)
 - Gold from every victory; party gold mirrors the run's gold.
 - Shop (`src/shop/shop.c`, menus in `src/weapons/prepare_ui.c`): 8-entry stock per battle, all

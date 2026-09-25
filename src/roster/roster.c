@@ -46,6 +46,8 @@ void Col_StartRun(void)
         picked++;
     }
     gColRun.rosterCount = 3;
+    Col_ShopGenerate();                                  /* the first battle's shop */
+    Col_SyncPartyGold();
 }
 
 /* ---- recruitment ---- */

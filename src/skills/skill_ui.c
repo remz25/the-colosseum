@@ -135,6 +135,20 @@ void Col_StartSkillOffer(struct Proc *eventProc)
     menu->itemCurrent = (u8)(free >= 0 ? free + 1 : 1);   /* the free slot, or the first to replace */
 }
 
+/* The same menu inside another flow (shop): blocks `parent`; Col_SkillMenuLearned() after. */
+void Col_OpenSkillMenu(struct Proc *parent, struct Unit *unit, int skill)
+{
+    gColSkillUi.unit = unit;
+    gColSkillUi.skill = (u8)skill;
+    gColSkillUi.learned = 0;
+    Col_StartSkillOffer(parent);
+}
+
+int Col_SkillMenuLearned(void)
+{
+    return gColSkillUi.learned;
+}
+
 /* Offer `skill` to `unit`: returns 0 at once if it can't be learned (prerequisites, duplicate). */
 int Col_OfferSkill(struct Unit *unit, int skill)
 {

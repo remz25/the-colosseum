@@ -154,11 +154,11 @@ def main() -> int:
             return 1
         print("  [PASS] New Game starts a run and loads the battle chapter")
         block = g.read(COL_RAM, 0x800)
-        if any(block[0x40:0x100]) or any(block[0x140:]):
+        if any(block[0x100:0x200]) or any(block[0x280:]):
             failures += 1
             print("  [FAIL] RAM block outside the run state and UI scratch was written during the battle")
         else:
-            print("  [PASS] RAM block outside the run state (0x00-0x3F) and UI scratch (0x100-0x13F) untouched in battle")
+            print("  [PASS] RAM block outside the run state (0x000-0x0FF) and UI scratch (0x200-0x27F) untouched in battle")
 
         count = g.call(syms["ColTest_MapCount"])
         print(f"Running {count} map test(s) (combat, units) on the battle map")
@@ -169,7 +169,7 @@ def main() -> int:
             else:
                 failures += 1
                 where = {0xFFFFFFFF: "invalid test index", 0xFFFFFFFE: "no units on the map"}.get(
-                    r, f"check at src/tests/test_combat.c / test_units.c / test_roster.c / test_skills.c / test_weapons.c line {r}")
+                    r, f"check at src/tests/test_combat.c / test_units.c / test_roster.c / test_skills.c / test_weapons.c / test_shop.c line {r}")
                 print(f"  [FAIL] map test {i}: {where}")
 
         problems = high_stat_saves(g)

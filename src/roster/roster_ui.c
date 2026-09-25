@@ -106,7 +106,8 @@ static const struct MenuDef kTeamMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 },
 static void RewardTaken(void)
 {
     gColRosterUi.state = RECRUIT_DONE;
-    Col_TakeReward();
+    if (gColRun.rewardDue)
+        Col_TakeReward();
 }
 
 static int Recruit_Title(struct MenuProc *m, struct MenuItemProc *i)
@@ -285,6 +286,20 @@ static void Flow_RecruitAgain(struct Proc *proc)
 {
     if (gColRosterUi.state == RECRUIT_BACK)
         Proc_Goto(proc, 1);
+}
+
+/* "Replace whom?" for recruiting `pool` into a full roster from another flow (shop).
+ * Col_ReplaceMenuRecruited() tells afterwards whether someone was replaced. */
+void Col_OpenReplaceMenu(struct Proc *parent, int pool)
+{
+    gColRosterUi.chosen = (u8)pool;
+    gColRosterUi.state = RECRUIT_REPLACE;
+    Open(&kReplaceMenu, parent, 1);
+}
+
+int Col_ReplaceMenuRecruited(void)
+{
+    return gColRosterUi.state == RECRUIT_DONE;
 }
 
 /* The deployment menu (from the Prepare menu's Deploy, prepare_ui.c). */

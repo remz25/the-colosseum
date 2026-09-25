@@ -7,7 +7,7 @@ mGBA, not only compiled.
 |---|---|---|---|
 | ROM builds | PASS | `py -3 scripts/build.py`: tables, text, maps, assemble, header/size checks | 2026-09-25 |
 | Base boots | PASS (in game) | Unmodified Skill System test map reached in mGBA via the automated driver | 2026-09-25 |
-| On-target unit tests | PASS (8 run-state + 33 map) | `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (boots New Game into the arena first) | 2026-09-25 |
+| On-target unit tests | PASS (8 run-state + 38 map) | `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (boots New Game into the arena first) | 2026-09-25 |
 | Run state: new run, floor sequence (B1-3, E, B4-6, E, B7-9, Boss, next floor), 3-win rewards, Recover charges and reset, gold limits | PASS | unit tests 0-4 | 2026-09-25 |
 | Save: run state through SRAM (chunk functions) | PASS | unit test 5 | 2026-09-25 |
 | Save: WriteGameSave/ReadGameSave carry the run state | PASS | run_tests.py integration | 2026-09-25 |
@@ -53,5 +53,11 @@ mGBA, not only compiled.
 | Elite variants, unique fusion, boss weapons: weapons, unbreakable, named, boss ones unsellable and strongest | PASS | map test 32 | 2026-09-25 |
 | `%` / modulo correct (signed and unsigned) | PASS | run-state test 7 | 2026-09-25 |
 | Prepare / Transfer / Fuse menus in game | PASS (in game) | scripted: Prepare, Transfer (Vulnerary to unit 2), Fuse (2x Iron Sword -> Steel Sword); fixed text-tile exhaustion across chained menus (ResetTextFont before each menu) | 2026-09-25 |
-| Relics, Shop, Legacy | NOT STARTED | | |
+| Shop prices: +10% compounding per purchase, 5x and 9999 caps | PASS | map test 33 | 2026-09-25 |
+| Shop stock: 8 entries, every relevant category, no duplicate weapon/skill, floor 1 no B+ weapons, floor 4 better weapons, no Recruit when nobody is left | PASS | map test 34 (20 rolls) | 2026-09-25 |
+| Buying: only when affordable, once per entry, prices rise after, party gold mirrored | PASS | map test 35 | 2026-09-25 |
+| Team healing +50% (max HP cap), kept in the run state | PASS | map test 36 | 2026-09-25 |
+| Battle gold ranges by floor and encounter | PASS | map test 37 | 2026-09-25 |
+| Shop in game: skill bought (learn menu), heal bought, prices +10%/+21%, Sold rows, bow grayed for a team without bow users | PASS (in game) | scripted, screenshots | 2026-09-25 |
+| Relics, Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

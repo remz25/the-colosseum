@@ -12,9 +12,9 @@
  * game never writes here (TEST_STATUS.md). */
 #define COL_RAM_BASE        0x0203F600
 #define COL_RAM_SIZE        0x800
-/* Layout: 0x000-0x03F run state (saved), 0x040-0x0FF reserved for run data,
- *         0x100-0x13F UI scratch (not saved; only valid while a COLISEUM menu is open). */
-#define COL_UI_SCRATCH      (COL_RAM_BASE + 0x100)
+/* Layout: 0x000-0x0FF run state (saved), 0x100-0x1FF reserved (Legacy, Phase 13),
+ *         0x200-0x27F UI scratch (not saved; only valid while a COLISEUM menu is open). */
+#define COL_UI_SCRATCH      (COL_RAM_BASE + 0x200)
 
 /* ---- Rules fixed by the spec (docs/COLISEUM_SPEC.md; changing them needs developer approval) ---- */
 #define COL_MAX_ROSTER          5    /* spec 8  */
@@ -39,12 +39,24 @@ enum ColEncounter {
     COL_ENC_BOSS   = 2,
 };
 
+/* One shop stock entry (shop.c). */
+#define COL_SHOP_SIZE    8
+struct ColShopEntry {
+    u8  category;                   /* enum ColShopCategory */
+    u8  value;                      /* pool index / skill ID / item ID */
+    u16 basePrice;                  /* before the per-purchase increase */
+};
+enum ColShopCategory {
+    COL_SHOP_RECRUIT = 1, COL_SHOP_SKILL, COL_SHOP_WEAPON, COL_SHOP_RELIC,
+    COL_SHOP_HEAL, COL_SHOP_PROMOTION, COL_SHOP_CONSUMABLE,
+};
+
 /* The run state (spec 76). Saved in the game save and the suspend save (save chunks in
  * EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event). Fixed size: new fields go
  * into `reserved` and bump COL_RUN_VERSION. */
 #define COL_RUN_MAGIC    0x524C4F43   /* "COLR" */
-#define COL_RUN_VERSION  3
-#define COL_RUN_SIZE     64
+#define COL_RUN_VERSION  4
+#define COL_RUN_SIZE     0x100
 
 struct ColRunState {
     /* 00 */ u32 magic;
@@ -68,7 +80,10 @@ struct ColRunState {
     /* 28 */ u8  hp[COL_MAX_ROSTER];/* HP after the last battle per roster slot; 0 = full (spec 20) */
     /* 2D */ u8  choiceLevel[COL_MAX_ROSTER]; /* level up to which the unit's stat choices were
                                                   made (spec 23); below its level = choice owed */
-    /* 32 */ u8  reserved[COL_RUN_SIZE - 0x32];
+    /* 32 */ u8  shopCount;         /* entries in this battle's shop stock (spec 38) */
+    /* 33 */ u8  shopSold;          /* bit = stock entry already bought */
+    /* 34 */ struct ColShopEntry shop[COL_SHOP_SIZE];   /* rolled once per battle: no reroll */
+    /* 54 */ u8  reserved[COL_RUN_SIZE - 0x54];
 };
 
 /* The playable pool (pool.c). */
@@ -159,6 +174,16 @@ int  Col_Fuse(struct Unit *unit, int s1, int s2);       /* 1 if fused (result in
 int  Col_FindFusion(struct Unit *unit, int from, int *s1, int *s2);
 int  Col_CanReceiveItem(struct Unit *to, int item);
 int  Col_TransferItem(struct Unit *from, int slot, struct Unit *to);
+
+/* shop/shop.c */
+int  Col_BattleGold(int encounter);
+void Col_SyncPartyGold(void);                           /* run gold -> FE8's party gold */
+int  Col_ShopPrice(int basePrice);                      /* +10% per purchase this run, capped */
+void Col_ShopGenerate(void);
+int  Col_ShopEntryPrice(int index);
+int  Col_ShopCanAfford(int index);
+int  Col_ShopPay(int index);                            /* 1 if paid (after delivering) */
+void Col_HealTeam(int percent);
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

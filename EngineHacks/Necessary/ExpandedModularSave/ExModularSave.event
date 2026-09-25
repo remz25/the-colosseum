@@ -148,7 +148,7 @@ gGameSaveChunks:
 	// $11F0
 
 	// COLISEUM run state (src/core/run_state.c, 64 bytes)
-	DeclSaveChunk($11F0, $0040, Col_SaveRunChunk, Col_LoadRunChunk)
+	DeclSaveChunk($11F0, $0100, Col_SaveRunChunk, Col_LoadRunChunk)
 
 	// $1230
 	// free up to $1344
@@ -210,7 +210,7 @@ gSuspendSaveChunks:
 	// ends at $290E
 
 	// COLISEUM run state (src/core/run_state.c, 64 bytes)
-	DeclSaveChunk($290E, $0040, Col_SaveRunChunk, Col_LoadRunChunk)
+	DeclSaveChunk($290E, $0100, Col_SaveRunChunk, Col_LoadRunChunk)
 
 	// ends at $294E
 	// free up to $2E78 ($52A free bytes)

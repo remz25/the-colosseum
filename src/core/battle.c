@@ -185,7 +185,13 @@ void Col_OnBattleWon(void)
         }
         gColRun.hp[slot] = (u8)unit->curHP;
     }
-    Col_OnVictory(Col_NextEncounter());
+    {
+        int encounter = Col_NextEncounter();
+        Col_AddGold(Col_BattleGold(encounter));          /* spec 37: battles award gold */
+        Col_SyncPartyGold();
+        Col_OnVictory(encounter);
+    }
+    Col_ShopGenerate();                                  /* spec 38: new stock, no reroll */
 }
 
 /* Replaces the intro monologue and world map in the game control proc (SkipWorldMap.event). */

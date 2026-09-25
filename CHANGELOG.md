@@ -1,5 +1,13 @@
 # COLISEUM: Changelog
 
+## 2026-09-25 (Phase 8)
+- Gold from every victory; party gold mirrors the run's gold.
+- Shop (`src/shop/shop.c`, menus in `src/weapons/prepare_ui.c`): 8-entry stock per battle, all
+  relevant categories, +10% compounding prices with caps, buy flows for recruit / skill / weapon /
+  heal / promotion / consumable.
+- Run state v4: 256 bytes (shop stock), save chunks 0x100; UI scratch at 0x200.
+- Tests: 5 shop map tests.
+
 ## 2026-09-25 (Phase 7)
 - Weapons (`src/weapons/`): fusion recipes and Fuse; Transfer to compatible units; weapon EXP x3.
 - 10 new items (0xC0-0xC9): 4 Elite variants, Lethal Edge, 5 boss weapons (names in coliseum.txt).

@@ -28,6 +28,8 @@ without the developer's approval.
 | 2026-09-25 | Proficiency: weapon EXP x3 (FE8 rank thresholds unchanged). | Claude (implementation) | Spec §41; balance lever. |
 | 2026-09-25 | Transfer: to units using that weapon type at any rank (they can grow into it); non-weapons to anyone. Fusion: two weapons in one unit's inventory, result in the first slot. | Claude (implementation) | Spec §40, §42. |
 | 2026-09-25 | A "Prepare" menu (Fight!/Deploy/Transfer/Fuse) opens before each battle until the post-battle menu (Phase 10). Deployment is optional from there. | Claude (implementation) | Interim placement. |
+| 2026-09-25 | Gold per victory 200 + 75 per floor above 1 + 0-100 (Elite x2, Boss x4). Shop base prices: recruit 1500, skills 400/700/1100/1700/2800 by rarity, weapons 400-2400 by rank, promotion 2500, heal 500, consumables 150-1800. | Claude (implementation) | Balance levers (Phase 16). |
+| 2026-09-25 | Price scaling: every purchase raises all later prices 10% (compounding, rounded each step), capped at 5x base and 9999. The shop opens from the Prepare menu until the post-battle menu (Phase 10). | Claude (implementation) | Spec §39. |
 | 2026-09-25 | Debug mode: the Skill System's `__DEBUG__` build flag; debug builds are separate ROMs and never the player build (spec §81). | Claude (implementation) | See `ARCHITECTURE.md`. |
 
 ## Open questions (not decided yet)

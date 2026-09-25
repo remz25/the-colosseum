@@ -104,10 +104,10 @@ static int Test_SramRoundTrip(void)
     Col_AddGold(4321);
     gColRun.floor = 3;
     gColRun.roster[0] = 7;
-    Col_SaveRunChunk(sram, 0x40);
+    Col_SaveRunChunk(sram, COL_RUN_SIZE);
     Col_RunClear();
     CHECK(gColRun.gold == 0 && gColRun.floor == 0);
-    Col_LoadRunChunk(sram, 0x40);
+    Col_LoadRunChunk(sram, COL_RUN_SIZE);
     CHECK(Col_RunIsValid());
     CHECK(gColRun.active == 1 && gColRun.gold == 4321 && gColRun.floor == 3);
     CHECK(gColRun.roster[0] == 7 && gColRun.seed == 0xABCD1234);

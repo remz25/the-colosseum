@@ -304,6 +304,12 @@ int Test_Fuse(struct Unit *, struct Unit *);
 int Test_Transfer(struct Unit *, struct Unit *);
 int Test_FastProficiency(struct Unit *, struct Unit *);
 int Test_SpecialWeapons(struct Unit *, struct Unit *);
+/* test_shop.c */
+int Test_ShopPrices(struct Unit *, struct Unit *);
+int Test_ShopStock(struct Unit *, struct Unit *);
+int Test_ShopBuy(struct Unit *, struct Unit *);
+int Test_HealTeam(struct Unit *, struct Unit *);
+int Test_BattleGold(struct Unit *, struct Unit *);
 /* test_roster.c */
 int Test_RollRecruits(struct Unit *, struct Unit *);
 int Test_RecruitEmptySlot(struct Unit *, struct Unit *);
@@ -323,6 +329,7 @@ static const ColMapTestFn kMapTests[] = {
     Test_ClassSkillInSlot, Test_ThreeSlots, Test_NoDuplicateSkills, Test_SkillPrerequisites,
     Test_SkillCatalog, Test_SkillOffers, Test_RunClearsSkills, Test_EnemySkills,
     Test_FusionRecipes, Test_Fuse, Test_Transfer, Test_FastProficiency, Test_SpecialWeapons,
+    Test_ShopPrices, Test_ShopStock, Test_ShopBuy, Test_HealTeam, Test_BattleGold,
 };
 
 int ColTest_MapCount(void)

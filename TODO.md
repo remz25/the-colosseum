@@ -102,5 +102,20 @@ built, working in game, tested, documented.
       with another convention) - src/core/divmod.c + stripped reference; lyn -nohook
 - Later: Legacy weapons (Phase 13); weapon drops from Elites/Bosses (Phases 11/12); shop (Phase 8).
 
-## Phase 8-17
+## Phase 8: Shop & Economy — DONE (2026-09-25)
+- [x] Gold (spec 37): every victory pays 200 + 75/floor + 0-100 (Elite x2, Boss x4); shown in the
+      Prepare and Shop menus and mirrored into FE8's party gold
+- [x] Shop (spec 38) from the Prepare menu: 8 entries rolled once per battle (no reroll); at least
+      one of each relevant category: Recruit (while anyone is left), Skill, Weapon (by floor),
+      Healing (team +50% HP), Promotion (crests, Master Seal), Consumable (Vulnerary, Elixir,
+      Pure Water, stat boosters)
+- [x] Buying: skill -> who learns it -> learn/replace menu; weapons/items -> who receives it
+      (weapons: units using that type); recruit joins (or replaces when full); heal applies.
+      Gold is only taken when the purchase went through; entries nobody can take are grayed
+- [x] Price scaling (spec 39): +10% per purchase, compounding over the run, rounded each step;
+      at most 5x base and 9999 gold
+- [x] Run state grown to 256 bytes (v4; save chunks 0x100); UI scratch moved to 0x200
+- Later: Relic category (Phase 9), Recover (Phase 10, post-battle menu), gold/price balance (Phase 16).
+
+## Phase 9-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

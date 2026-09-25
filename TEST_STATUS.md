@@ -11,7 +11,7 @@ mGBA, not only compiled.
 | Run state: new run, floor sequence (B1-3, E, B4-6, E, B7-9, Boss, next floor), 3-win rewards, Recover charges and reset, gold limits | PASS | unit tests 0-4 | 2026-09-25 |
 | Save: run state through SRAM (chunk functions) | PASS | unit test 5 | 2026-09-25 |
 | Save: WriteGameSave/ReadGameSave carry the run state | PASS | run_tests.py integration | 2026-09-25 |
-| Save: suspend | NOT TESTED | chunk declared only | |
+| Save: suspend (WriteSuspendSave/ReadSuspendSave keep the run state) | PASS | run_tests.py integration | 2026-09-25 |
 | RAM block unused by the game | PARTIAL | all zero after boot; not yet checked through a battle | 2026-09-25 |
 | Test runner detects failures | PASS | deliberate failure reported with its line, exit code 1 | 2026-09-25 |
 | Combat, Units, Skills, Relics, Weapons, Shop, Legacy | NOT STARTED | | |

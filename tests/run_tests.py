@@ -24,6 +24,10 @@ WRITE_GAME_SAVE = 0x080A5011     # vanilla WriteGameSave(slot), hooked by the Ex
 READ_GAME_SAVE = 0x080A5129      # vanilla ReadGameSave(slot)
 COL_RAM = 0x0203F600             # gColRun (src/include/coliseum.h)
 SLOT3_RUN_CHUNK = 0x0E000000 + 0x55D4 + 0x11F0   # SRAM: save slot 3 + COLISEUM game-save chunk
+WRITE_SUSPEND = 0x080A5A49       # vanilla WriteSuspendSave(id), hooked by the Expanded Modular Save
+READ_SUSPEND = 0x080A5C15        # vanilla ReadSuspendSave(id)
+SAVE_ID_SUSPEND = 3
+SUSPEND_RUN_CHUNK = 0x0E000000 + 0x00D4 + 0x290E  # SRAM: suspend block + COLISEUM suspend chunk
 
 
 def save_integration(g, syms) -> list[str]:
@@ -42,6 +46,19 @@ def save_integration(g, syms) -> list[str]:
     ram = g.read(COL_RAM, 0x40)
     if ram[0:4] != b"COLR" or ram[6] != 1 or int.from_bytes(ram[0x1C:0x20], "little") != 1234             or int.from_bytes(ram[0x20:0x24], "little") != 0xC0FFEE:
         problems.append(f"run state not restored by ReadGameSave: {ram[:0x24].hex()}")
+
+    # suspend: a different gold value so the two paths can't be confused
+    g.call(syms["Col_RunNew"], 0x5EED)
+    g.call(syms["Col_AddGold"], 777)
+    g.call(WRITE_SUSPEND, SAVE_ID_SUSPEND)
+    chunk = g.read(SUSPEND_RUN_CHUNK, 0x40)
+    if chunk[0:4] != b"COLR" or int.from_bytes(chunk[0x1C:0x20], "little") != 777:
+        problems.append(f"suspend has no/wrong run state: {chunk[:0x20].hex()}")
+    g.call(syms["Col_RunClear"])
+    g.call(READ_SUSPEND, SAVE_ID_SUSPEND)
+    ram = g.read(COL_RAM, 0x40)
+    if ram[0:4] != b"COLR" or int.from_bytes(ram[0x1C:0x20], "little") != 777             or int.from_bytes(ram[0x20:0x24], "little") != 0x5EED:
+        problems.append(f"run state not restored by ReadSuspendSave: {ram[:0x24].hex()}")
     return problems
 
 
@@ -84,7 +101,7 @@ def main() -> int:
             failures += 1
             print("  [FAIL] save integration: " + "; ".join(problems))
         else:
-            print("  [PASS] save integration: WriteGameSave/ReadGameSave keep the run state")
+            print("  [PASS] save integration: game save and suspend both keep the run state")
     finally:
         proc.terminate()
         time.sleep(0.5)

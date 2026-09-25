@@ -7,7 +7,7 @@ built, working in game, tested, documented.
 - [x] Inspect the Skill System buildfile, systems, tools, limits -> `ARCHITECTURE.md`
 - [x] Plan presented and approved (decisions in `GAME_DESIGN.md`)
 
-## Phase 2: Technical foundation — IN PROGRESS
+## Phase 2: Technical foundation — DONE (2026-09-25)
 - [x] Own repository in `Downloads\Coliseum`, upstream remote kept as `upstream`
 - [x] Checked build script `scripts/build.py`; unmodified base boots to its test map in mGBA
 - [x] Documentation set (this file, GAME_DESIGN, ARCHITECTURE, CHANGELOG, TEST_STATUS, BALANCE_NOTES)
@@ -20,10 +20,18 @@ built, working in game, tested, documented.
       gold, Recover charges, roster/deployed/dead/recruited, seed, history
 - [x] Run state saved in the game save (and suspend chunk declared): SRAM round trip and
       WriteGameSave/ReadGameSave integration pass
-- [ ] Suspend round trip test (chunk is declared; not yet exercised by a test)
-- [ ] RAM block untouched during a full battle (only checked after boot so far)
-- [ ] Legacy save module that survives a new run, with tests
-- [ ] Debug menu: first COLISEUM commands (give gold, set floor/fight, reset run)
+- [x] Suspend round trip (WriteSuspendSave/ReadSuspendSave keep the run state)
+- Moved on: RAM-block check through a full battle -> Phase 3 (needs a battle); Legacy save block ->
+  Phase 13; debug commands are added with each system they control (spec 81).
 
-## Phase 3-17
+## Phase 3: Tactical combat — IN PROGRESS
+- [ ] Battle chapter: one reusable chapter; player units from the run's deployed roster, enemies from
+      the run state (3v3); objective: defeat all enemies (no retreat)
+- [ ] 20-turn limit: warnings on turns 15, 18, 19; defeat after turn 20
+- [ ] Victory -> run state (Col_OnVictory) -> next battle (post-battle menu comes in Phase 10)
+- [ ] FE combat verified by tests: damage, hit, crit, doubling (AS 4), weapon triangle, terrain, death
+- [ ] Enemy AI foundation
+- [ ] RAM block untouched through a full battle
+
+## Phase 4-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

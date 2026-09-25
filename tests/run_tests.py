@@ -102,8 +102,14 @@ def enter_battle(g, syms) -> str | None:
         g.frames(85)
         ram = g.read(COL_RAM, 0x40)
         if ram[0:4] == b"COLR" and ram[6] == 1 and ram[0x0D] == 3:   # active, 3 in the roster
-            g.frames(120)                                        # beginning event finishes
-            return None
+            # "Your team" (cursor on Begin): A until the units are on the map
+            for _ in range(10):
+                g.frames(5, "A")
+                g.frames(60)
+                if g.read(BLUE_UNIT_1, 4) != bytes(4):
+                    g.frames(120)                                # beginning event finishes
+                    return None
+            return "the units never appeared after the team screen"
         g.frames(5, "A")
     return f"the battle chapter did not start a run (run state {g.read(COL_RAM, 0x10).hex()})"
 
@@ -139,11 +145,11 @@ def main() -> int:
             return 1
         print("  [PASS] New Game starts a run and loads the battle chapter")
         block = g.read(COL_RAM, 0x800)
-        if any(block[0x40:]):
+        if any(block[0x40:0x100]) or any(block[0x140:]):
             failures += 1
-            print("  [FAIL] RAM block beyond the run state was written during the battle")
+            print("  [FAIL] RAM block outside the run state and UI scratch was written during the battle")
         else:
-            print("  [PASS] RAM block beyond the 64-byte run state untouched in battle")
+            print("  [PASS] RAM block outside the run state (0x00-0x3F) and UI scratch (0x100-0x13F) untouched in battle")
 
         count = g.call(syms["ColTest_MapCount"])
         print(f"Running {count} map test(s) (combat, units) on the battle map")
@@ -154,7 +160,7 @@ def main() -> int:
             else:
                 failures += 1
                 where = {0xFFFFFFFF: "invalid test index", 0xFFFFFFFE: "no units on the map"}.get(
-                    r, f"check at src/tests/test_combat.c (or test_units.c) line {r}")
+                    r, f"check at src/tests/test_combat.c / test_units.c / test_roster.c line {r}")
                 print(f"  [FAIL] map test {i}: {where}")
 
         problems = high_stat_saves(g)

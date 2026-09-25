@@ -73,6 +73,7 @@ UNIT
 ALIGN 4
 
 ColBattle_Beginning:
+ASMC Col_BattleStartFlow|1               // new run / recruitment / deployment menus
 ASMC Col_PrepareBattle|1
 ENDA
 
@@ -100,5 +101,6 @@ ENDA
 
 ColBattle_TimeUp:
 NOTIFY ColText_TimeUp 0x5A 0
+ASMC Col_RunLost|1                       // the run ends (saves invalidated)
 GameOver                                 // spec 14: DEFEAT (misc events only check flag 0x65
 ENDA                                     // after a unit acts, so call FE8's game over directly)

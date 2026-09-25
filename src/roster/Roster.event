@@ -1,0 +1,8 @@
+// COLISEUM roster (Phase 5). See src/roster/roster.c.
+
+PUSH
+ORG 0x030CF4                    // InitPlayConfig: New Game starts a fresh run
+jumpToHack(Col_InitPlayConfig)
+ORG 0x00D390                    // CallGameOverEvent: a lost battle ends the run
+jumpToHack(Col_OnGameOver)
+POP

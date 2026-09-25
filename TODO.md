@@ -53,5 +53,26 @@ built, working in game, tested, documented.
       phase checked; the enemy-phase path uses the same function but was not played through)
 - Moved on: EXP amounts -> Phase 16 balance; names/dialogue -> Phase 14; skill pass -> Phase 6.
 
-## Phase 5-17
+## Phase 5: Roster — DONE (2026-09-25)
+- [x] New run (spec 7): "Your team" screen shows the 3 random characters; Begin accepts (no reroll)
+- [x] Roster 5 / deploy 3 / 2 reserves (spec 8): "Choose 3 fighters" before a battle when more than
+      3 are alive; reserves stay off the map
+- [x] Recruitment (spec 9): 3 random never-recruited characters or Decline; full roster -> "Replace
+      whom?" (Back returns); the replaced unit leaves the run for good; never recruited twice
+- [x] Recruits join at the roster's average level with a fixed build: level-5 bases + average growth
+      (spec 45)
+- [x] Permanent death (spec 12): dead units leave the roster, never recruitable again
+- [x] 2v3 / 1v3 continuation (fewer than 3 alive: all deploy)
+- [x] Run termination: a lost battle (all deployed dead, or the turn limit) ends the run: run cleared,
+      its game save and the suspend invalidated; New Game always starts a fresh run
+- Interim until Phase 10 (reward menu): the 3-win reward is always a recruitment offer, shown at
+  the start of the next battle.
+- Later: promoted recruits (rare, spec 9) -> Phase 10 (promotion); recruit skills/equipment by
+  floor -> Phases 6-7; deployment from the post-battle menu -> Phase 10.
+
+## Phase 7 (early, on request 2026-09-25)
+- [x] No weapon durability (spec 40): every non-staff weapon is Indestructible (ItemTable.csv);
+      staves and consumables keep their uses (open question below)
+
+## Phase 6-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

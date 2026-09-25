@@ -18,4 +18,7 @@ ALIGN 4
 // Units: no stat caps, level-up stat choice
 #include "units/Units.event"
 
+// Roster: new run, recruitment, deployment, end of a run
+#include "roster/Roster.event"
+
 #endif // COLISEUM_INSTALLER

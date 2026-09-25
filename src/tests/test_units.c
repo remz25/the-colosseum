@@ -174,3 +174,29 @@ int Test_PendingChoices(struct Unit *a, struct Unit *t)
     CHECK(Col_FindPendingChoice() == -1);
     return 0;
 }
+
+/* spec 40: no weapon durability. Every weapon (not staves) is indestructible; using one leaves
+ * it unchanged, including a real battle; staves and consumables still have uses. */
+int Test_NoDurability(struct Unit *a, struct Unit *t)
+{
+    int id, item;
+
+    for (id = 1; id < 0xC0; id++) {
+        int attr = GetItemAttributes(id);
+        if ((attr & IA_WEAPON) && !(attr & IA_STAFF))
+            CHECK(attr & IA_UNBREAKABLE);
+    }
+    item = MakeNewItem(0x01);                              /* Iron Sword */
+    CHECK(GetItemAfterUse(item) == item);
+    item = MakeNewItem(0x6C);                              /* Vulnerary: still consumed */
+    CHECK(GetItemAfterUse(item) != item);
+
+    a->items[0] = MakeNewItem(0x01);
+    t->items[0] = MakeNewItem(0x01);
+    a->xPos = 6; a->yPos = 4; t->xPos = 7; t->yPos = 4;
+    a->ranks[0] = t->ranks[0] = 1;
+    BattleGenerateReal(a, t);
+    BattleApplyUnitUpdates();
+    CHECK(a->items[0] == MakeNewItem(0x01));
+    return 0;
+}

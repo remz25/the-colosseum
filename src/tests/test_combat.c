@@ -288,12 +288,23 @@ int Test_LevelCap(struct Unit *, struct Unit *);
 int Test_NoStatCaps(struct Unit *, struct Unit *);
 int Test_StatChoices(struct Unit *, struct Unit *);
 int Test_PendingChoices(struct Unit *, struct Unit *);
+int Test_NoDurability(struct Unit *, struct Unit *);
+/* test_roster.c */
+int Test_RollRecruits(struct Unit *, struct Unit *);
+int Test_RecruitEmptySlot(struct Unit *, struct Unit *);
+int Test_RecruitReplace(struct Unit *, struct Unit *);
+int Test_RecruitBuild(struct Unit *, struct Unit *);
+int Test_Deployment(struct Unit *, struct Unit *);
+int Test_RunLost(struct Unit *, struct Unit *);
+int Test_NewGameClearsRun(struct Unit *, struct Unit *);
 
 typedef int (*ColMapTestFn)(struct Unit *actor, struct Unit *target);
 static const ColMapTestFn kMapTests[] = {
     Test_Formulas, Test_Triangle, Test_Terrain, Test_Doubling, Test_Magic, Test_DamageAndDeath,
     Test_Pool, Test_LoadPoolUnits, Test_LevelCap, Test_NoStatCaps, Test_StatChoices,
     Test_PendingChoices,
+    Test_RollRecruits, Test_RecruitEmptySlot, Test_RecruitReplace, Test_RecruitBuild,
+    Test_Deployment, Test_RunLost, Test_NewGameClearsRun, Test_NoDurability,
 };
 
 int ColTest_MapCount(void)

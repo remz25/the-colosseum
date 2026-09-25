@@ -47,26 +47,6 @@ struct Unit *Col_RosterUnit(int slot)
     return GetUnitFromCharIdAndFaction(gColPool[pool].charId, FACTION_BLUE);
 }
 
-/* spec 7: three random characters from the pool start the run, all deployed. */
-static void StartRun(void)
-{
-    int picked = 0;
-
-    Col_RunNew((u32)NextRN());
-    while (picked < 3) {
-        int pool = NextRN_N(COL_POOL_SIZE);
-        if (gColRun.recruitedMask & (1 << pool))
-            continue;
-        gColRun.recruitedMask |= (u16)(1 << pool);
-        gColRun.roster[picked] = (u8)pool;
-        gColRun.deployed[picked] = (u8)picked;
-        gColRun.hp[picked] = 0;                  /* 0 = full (not yet in a battle) */
-        gColRun.choiceLevel[picked] = 0;         /* set when the unit is created */
-        picked++;
-    }
-    gColRun.rosterCount = 3;
-}
-
 /* A pool character as a new blue unit: level 5 with the character's level-5 bases (spec 21;
  * CharacterTable.csv holds them at base level 5, so no autolevel), EXP 0, starting items. */
 struct Unit *Col_LoadPoolUnit(int pool)
@@ -142,7 +122,7 @@ void Col_PrepareBattle(void)
     int slot, placed = 0;
 
     if (!Col_RunIsValid() || !gColRun.active)
-        StartRun();
+        Col_StartRun();
 
     for (slot = 0; slot < COL_MAX_ROSTER; slot++) {
         struct Unit *unit;

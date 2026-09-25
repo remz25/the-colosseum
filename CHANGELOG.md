@@ -1,5 +1,15 @@
 # COLISEUM: Changelog
 
+## 2026-09-25 (Phase 5)
+- Roster (`src/roster/`): "Your team" screen at a new run; recruitment (3 candidates or decline,
+  replace when full); "Choose 3 fighters" deployment with more than 3 alive; 2v3 continuation.
+- Recruits: roster-average level, fixed build (bases + average growth).
+- End of a run: New Game clears the run (InitPlayConfig hook); a game over ends the run and
+  invalidates its save and the suspend (CallGameOverEvent hook; time limit too).
+- Interim: the 3-win reward is a recruitment offer until Phase 10.
+- Tests: 7 roster map tests; the runner now clicks through the team screen.
+- No weapon durability (spec 40, requested now): all 110 non-staff weapons are Indestructible.
+
 ## 2026-09-25 (Phase 4)
 - 15-character pool finalized (Marisa replaces Ross); all start at level 5 with level-5 bases and
   personal growths (tables); casters use the Str/Mag split; distinct personal skills.

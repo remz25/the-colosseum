@@ -7,7 +7,7 @@ mGBA, not only compiled.
 |---|---|---|---|
 | ROM builds | PASS | `py -3 scripts/build.py`: tables, text, maps, assemble, header/size checks | 2026-09-25 |
 | Base boots | PASS (in game) | Unmodified Skill System test map reached in mGBA via the automated driver | 2026-09-25 |
-| On-target unit tests | PASS (7 run-state + 12 map) | `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (boots New Game into the arena first) | 2026-09-25 |
+| On-target unit tests | PASS (7 run-state + 20 map) | `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (boots New Game into the arena first) | 2026-09-25 |
 | Run state: new run, floor sequence (B1-3, E, B4-6, E, B7-9, Boss, next floor), 3-win rewards, Recover charges and reset, gold limits | PASS | unit tests 0-4 | 2026-09-25 |
 | Save: run state through SRAM (chunk functions) | PASS | unit test 5 | 2026-09-25 |
 | Save: WriteGameSave/ReadGameSave carry the run state | PASS | run_tests.py integration | 2026-09-25 |
@@ -27,5 +27,15 @@ mGBA, not only compiled.
 | Level-up choices: 3 options, all stats possible, duplicates, +1 applied, one per level, dead excluded | PASS | map tests 10-11 | 2026-09-25 |
 | Level-up choice menu in game (player phase) | PASS (in game) | Lute Lv5->6: growth screen, menu "+1 Res / +1 Mag / +1 Skl", Res 7->8 | 2026-09-25 |
 | Level-up choice after an enemy-phase level-up | NOT VERIFIED | same function via the turn event; not played through | |
-| Skills, Relics, Weapons, Shop, Legacy | NOT STARTED | | |
+| Recruitment: 3 distinct never-recruited candidates, fewer when few are left, none when all used | PASS | map test 12 | 2026-09-25 |
+| Recruit into an empty slot: hidden reserve at roster level, never twice | PASS | map test 13 | 2026-09-25 |
+| Full roster: replace; the replaced unit leaves (not dead, never again); deployment refilled | PASS | map test 14 | 2026-09-25 |
+| Recruit build: level-5 bases + average growth; level 30 cap | PASS | map test 15 | 2026-09-25 |
+| Deployment: exactly 3 of 5, refusals keep the old deployment, empty slots refused, 2v3 | PASS | map test 16 | 2026-09-25 |
+| Run lost: run cleared, game save invalidated | PASS | map test 17 | 2026-09-25 |
+| New Game clears the run (InitPlayConfig hook), play state reset as vanilla | PASS | map test 18 (fails without the hook) | 2026-09-25 |
+| Team screen, recruit menu, deployment menu in game | PASS (in game) | scripted playthrough with screenshots: team shown, reward -> recruit -> 4 in roster -> deploy toggles -> battle with the chosen 3 | 2026-09-25 |
+| Game over from real deaths ends the run and invalidates the save | PASS (in game) | enemies kill all 3 deployed units (real battles): FE8 GAME OVER, run inactive, save slot 2 invalid | 2026-09-25 |
+| No weapon durability: all weapons indestructible, uses unchanged after a real battle; Vulnerary still consumed | PASS | map test 19 | 2026-09-25 |
+| Skills, Relics, Weapons (rest), Shop, Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

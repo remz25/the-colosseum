@@ -29,6 +29,7 @@
 #define COL_MAX_LEVEL           30   /* spec 21 (Class_Level_Cap_Table: 30 for every class) */
 #define COL_STAT_CEILING        127  /* spec 21: no stat caps; 127 is the s8 limit (GAME_DESIGN.md) */
 #define COL_STAT_CHOICES        3    /* spec 23: level-up choices offered */
+#define COL_RECRUIT_CHOICES     3    /* spec 9: recruits offered */
 
 enum ColEncounter {
     COL_ENC_NORMAL = 0,
@@ -111,6 +112,19 @@ void Col_RollStatChoices(u8 out[COL_STAT_CHOICES]);     /* random stats, duplica
 const char *Col_StatName(int stat);
 int  Col_FindPendingChoice(void);                       /* roster slot owed a choice, or -1 */
 void Col_TakeStatChoice(int slot, int stat);            /* applies +1 and records the level */
+
+/* roster/roster.c */
+void Col_StartRun(void);                        /* spec 7: 3 random characters, all deployed */
+int  Col_FreeRosterSlot(void);                  /* -1 if the roster is full */
+int  Col_RollRecruits(u8 out[COL_RECRUIT_CHOICES]);   /* returns the number offered */
+int  Col_RecruitLevel(void);
+void Col_ScaleUnitToLevel(struct Unit *unit, int level);
+void Col_RemoveFromRoster(int slot);            /* replaced: leaves the run (not dead) */
+struct Unit *Col_Recruit(int pool, int replaceSlot);  /* replaceSlot -1: into an empty slot */
+int  Col_DeployTarget(void);                    /* units to deploy: min(3, living roster) */
+u8   Col_DeploymentMask(void);                  /* bit = roster slot */
+int  Col_SetDeployment(u8 mask);                /* 1 if valid and applied */
+void Col_RunLost(void);                         /* ends the run; invalidates its saves */
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

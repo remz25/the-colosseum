@@ -7,7 +7,7 @@ mGBA, not only compiled.
 |---|---|---|---|
 | ROM builds | PASS | `py -3 scripts/build.py`: tables, text, maps, assemble, header/size checks | 2026-09-25 |
 | Base boots | PASS (in game) | Unmodified Skill System test map reached in mGBA via the automated driver | 2026-09-25 |
-| On-target unit tests | PASS (7 run-state + 20 map) | `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (boots New Game into the arena first) | 2026-09-25 |
+| On-target unit tests | PASS (7 run-state + 28 map) | `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (boots New Game into the arena first) | 2026-09-25 |
 | Run state: new run, floor sequence (B1-3, E, B4-6, E, B7-9, Boss, next floor), 3-win rewards, Recover charges and reset, gold limits | PASS | unit tests 0-4 | 2026-09-25 |
 | Save: run state through SRAM (chunk functions) | PASS | unit test 5 | 2026-09-25 |
 | Save: WriteGameSave/ReadGameSave carry the run state | PASS | run_tests.py integration | 2026-09-25 |
@@ -37,5 +37,14 @@ mGBA, not only compiled.
 | Team screen, recruit menu, deployment menu in game | PASS (in game) | scripted playthrough with screenshots: team shown, reward -> recruit -> 4 in roster -> deploy toggles -> battle with the chosen 3 | 2026-09-25 |
 | Game over from real deaths ends the run and invalidates the save | PASS (in game) | enemies kill all 3 deployed units (real battles): FE8 GAME OVER, run inactive, save slot 2 invalid | 2026-09-25 |
 | No durability: all weapons and staves indestructible, uses unchanged after a real battle; Vulnerary still consumed | PASS | map test 19 | 2026-09-25 |
-| Skills, Relics, Weapons (rest), Shop, Legacy | NOT STARTED | | |
+| Class skill learned into slot 1, not implicit (gone when the slot is replaced) | PASS | map test 20 | 2026-09-25 |
+| 3 slots: 4th needs replacement; Skill System adder stops at 3 (fails with the patch reverted); personal untouched | PASS | map test 21 | 2026-09-25 |
+| No duplicate skills (slot or personal) | PASS | map test 22 | 2026-09-25 |
+| Prerequisites: bow, mounted, promoted, stat minimum, enemy-only | PASS | map test 23 | 2026-09-25 |
+| Catalog: valid IDs, 5 rarities present, no duplicates, names | PASS | map test 24 | 2026-09-25 |
+| Offers: 3 distinct learnable, rarity-weighted (C > R > L > 0 over 400 rolls) | PASS | map test 25 | 2026-09-25 |
+| New run clears skills | PASS | map test 26 | 2026-09-25 |
+| Enemy skills: floor-gated by level, class skill via class list | PASS | map test 27 | 2026-09-25 |
+| "Learn a skill" menu in game: 3 slots with icons, replace slot 2 (Vantage -> Luna) | PASS (in game) | scripted, screenshots; side windows closed first (icon VRAM) | 2026-09-25 |
+| Relics, Weapons (rest), Shop, Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

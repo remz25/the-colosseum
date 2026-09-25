@@ -21,4 +21,7 @@ ALIGN 4
 // Roster: new run, recruitment, deployment, end of a run
 #include "roster/Roster.event"
 
+// Skills: 1 personal + 3 slots, catalog (rarity, prerequisites)
+#include "skills/Skills.event"
+
 #endif // COLISEUM_INSTALLER

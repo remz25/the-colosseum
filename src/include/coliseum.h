@@ -30,6 +30,8 @@
 #define COL_STAT_CEILING        127  /* spec 21: no stat caps; 127 is the s8 limit (GAME_DESIGN.md) */
 #define COL_STAT_CHOICES        3    /* spec 23: level-up choices offered */
 #define COL_RECRUIT_CHOICES     3    /* spec 9: recruits offered */
+#define COL_SKILL_SLOTS         3    /* spec 27: + 1 personal skill = 4 */
+#define COL_RARITY_COUNT        5    /* spec 28: Common, Uncommon, Rare, Epic, Legendary */
 
 enum ColEncounter {
     COL_ENC_NORMAL = 0,
@@ -125,6 +127,30 @@ int  Col_DeployTarget(void);                    /* units to deploy: min(3, livin
 u8   Col_DeploymentMask(void);                  /* bit = roster slot */
 int  Col_SetDeployment(u8 mask);                /* 1 if valid and applied */
 void Col_RunLost(void);                         /* ends the run; invalidates its saves */
+
+/* skills/skills.c (catalog in skills/Skills.event) */
+struct ColSkillInfo {
+    u8 skill;
+    u8 rarity;                      /* 1 Common .. 5 Legendary */
+    u8 weapons;                     /* weapon types (bit = FE8 type), 0 = any */
+    u8 flags;                       /* COL_SKF_* */
+    u8 stat;                        /* enum ColStat + 1, 0 = none */
+    u8 statMin;
+};
+#define COL_SKF_PROMOTED    1
+#define COL_SKF_MOUNTED     2
+#define COL_SKF_ENEMY_ONLY  4
+int  Col_PersonalSkill(struct Unit *unit);
+int  Col_SlotSkill(struct Unit *unit, int slot);        /* 0 if empty */
+int  Col_UnitHasSkill(struct Unit *unit, int skill);     /* personal or a slot */
+int  Col_FreeSkillSlot(struct Unit *unit);               /* -1 if all 3 are used */
+const struct ColSkillInfo *Col_SkillInfo(int skill);     /* NULL if not in the catalog */
+int  Col_CanLearnSkill(struct Unit *unit, int skill);
+int  Col_LearnSkill(struct Unit *unit, int skill, int slot);   /* slot < 0: first free */
+void Col_ClearRunSkills(void);
+int  Col_RollSkillOffers(struct Unit *unit, u8 *out, int n);
+int  Col_OfferSkill(struct Unit *unit, int skill);      /* skill_ui.c: learn / replace menu */
+const char *Col_SkillName(int skill);
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

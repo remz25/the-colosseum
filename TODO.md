@@ -74,5 +74,20 @@ built, working in game, tested, documented.
 - [x] No weapon durability (spec 40): every weapon and staff is Indestructible (ItemTable.csv);
       consumables keep their uses
 
-## Phase 6-17
+## Phase 6: Skills — DONE (2026-09-25)
+- [x] 1 personal (fixed) + 3 slots; the Skill System's adder limited to 3 (Skills.event)
+- [x] Class skills count toward the 4: no longer implicit; learned into a slot at level 1 from the
+      class list (26 lists), replaceable like any slot skill
+- [x] Rarity (Common..Legendary) and prerequisites (weapon type, mounted, promoted, stat minimum)
+      in a catalog of 48 player skills + 3 enemy-only skills (Skills.event)
+- [x] No duplicates (personal or slot); rarity-weighted offers (C 40 / U 30 / R 18 / E 9 / L 3)
+- [x] Replacement: "learn a skill" menu (3 slots with icons; pick a slot to replace, or Don't learn);
+      the personal skill is never listed
+- [x] Skills are per run (cleared at a new run)
+- [x] Enemy skills: class skills + floor-gated skills for normal enemies (levels 10/16/22);
+      enemy-only skills in the catalog for Elites/Bosses
+- Later: skill sources wired in their phases: 3-win reward and promotion (Phase 10), shop (Phase 8),
+  relics (Phase 9), Elite skill sets (Phase 11), boss skills and Phase 2 (Phase 12).
+
+## Phase 7-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

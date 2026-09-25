@@ -36,5 +36,8 @@ MagCharEditor.csv. Personal values below; the class bases are added in game.
 | Artur (2) | 3 | 0 | 7 | 7 | 7 | 1 | 3 | 3 | 55/10/50/50/40/15/55/25 |
 | L'Arachel (3) | 4 | 0 | 6 | 6 | 8 | 3 | 4 | 13 | 45/10/50/45/45/15/50/65 |
 
+Skill catalog (src/skills/Skills.event, Phase 6): rarities and prerequisites are first guesses;
+offer weights C 40 / U 30 / R 18 / E 9 / L 3; enemy floor skills at levels 10/16/22.
+
 To check in Phase 16: Gilliam's low personal Def (the Knight class base carries it), Knoll's
 0 Lck/Def, the casters' Str 0.

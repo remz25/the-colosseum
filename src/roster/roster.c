@@ -33,6 +33,7 @@ void Col_StartRun(void)
             ClearUnit(u);
     }
     Col_RunNew((u32)NextRN());
+    Col_ClearRunSkills();                                        /* skills are per run */
     while (picked < 3) {
         int pool = NextRN_N(COL_POOL_SIZE);
         if (gColRun.recruitedMask & (1 << pool))

@@ -22,6 +22,9 @@ without the developer's approval.
 | 2026-09-25 | Recruits join at the living roster's average level (min 5, max 30) with level-5 bases + average growth for the extra levels (spec §9 "appropriate to progression", §45 fixed build). | Claude (implementation) | Balance lever for Phase 16. |
 | 2026-09-25 | Until the 3-win reward menu (Phase 10), every 3-win reward is a recruitment offer at the start of the next battle. | Claude (implementation) | Interim. |
 | 2026-09-25 | **Staves have unlimited uses too** (like weapons, spec §40). Consumables are still used up. | Developer | |
+| 2026-09-25 | Class skills are real, replaceable slot skills (learned at level 1); e.g. Franz, Vanessa, Cormag, L'Arachel start with Canto and Colm with Cunning in slot 1. | Claude (implementation) | Follows "class skills count toward the 4". |
+| 2026-09-25 | Skill catalog: 48 player skills over 5 rarities with prerequisites; Killing Machine, Nihil, Great Shield enemy-only. Offer weights C 40 / U 30 / R 18 / E 9 / L 3. | Claude (implementation) | Balance levers (Phase 16). |
+| 2026-09-25 | Normal enemies: class skills, plus Duelist's Blow from level 10, Vantage from 16, Luna from 22 (floors 2-4). | Claude (implementation) | Balance lever. |
 | 2026-09-25 | Debug mode: the Skill System's `__DEBUG__` build flag; debug builds are separate ROMs and never the player build (spec §81). | Claude (implementation) | See `ARCHITECTURE.md`. |
 
 ## Open questions (not decided yet)

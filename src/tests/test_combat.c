@@ -289,6 +289,15 @@ int Test_NoStatCaps(struct Unit *, struct Unit *);
 int Test_StatChoices(struct Unit *, struct Unit *);
 int Test_PendingChoices(struct Unit *, struct Unit *);
 int Test_NoDurability(struct Unit *, struct Unit *);
+/* test_skills.c */
+int Test_ClassSkillInSlot(struct Unit *, struct Unit *);
+int Test_ThreeSlots(struct Unit *, struct Unit *);
+int Test_NoDuplicateSkills(struct Unit *, struct Unit *);
+int Test_SkillPrerequisites(struct Unit *, struct Unit *);
+int Test_SkillCatalog(struct Unit *, struct Unit *);
+int Test_SkillOffers(struct Unit *, struct Unit *);
+int Test_RunClearsSkills(struct Unit *, struct Unit *);
+int Test_EnemySkills(struct Unit *, struct Unit *);
 /* test_roster.c */
 int Test_RollRecruits(struct Unit *, struct Unit *);
 int Test_RecruitEmptySlot(struct Unit *, struct Unit *);
@@ -305,6 +314,8 @@ static const ColMapTestFn kMapTests[] = {
     Test_PendingChoices,
     Test_RollRecruits, Test_RecruitEmptySlot, Test_RecruitReplace, Test_RecruitBuild,
     Test_Deployment, Test_RunLost, Test_NewGameClearsRun, Test_NoDurability,
+    Test_ClassSkillInSlot, Test_ThreeSlots, Test_NoDuplicateSkills, Test_SkillPrerequisites,
+    Test_SkillCatalog, Test_SkillOffers, Test_RunClearsSkills, Test_EnemySkills,
 };
 
 int ColTest_MapCount(void)

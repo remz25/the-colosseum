@@ -127,7 +127,7 @@ Orson (Ch 16),0
 -,0
 -,0
 Grado Soldier (Special),0
-Grado Soldier 1 (Normal),0
+Grado Soldier 1 (Normal),ColEnemySkillList|IsPointer
 Grado Soldier 2,0
 Grado Soldier 3,0
 Grado Soldier 4,0

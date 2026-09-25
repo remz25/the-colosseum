@@ -70,8 +70,12 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 - **Roster hooks** (`src/roster/Roster.event`): InitPlayConfig (0x08030CF4, New Game) and
   CallGameOverEvent (0x0800D390) jump to `src/roster/roster.c`. The battle chapter's beginning
   event runs `Col_BattleStartFlow` (team / recruit / deploy menus) before `Col_PrepareBattle`.
+- **Skills**: slot skills are the character's BWL learned-skill bytes (0x0203E884 + pid*16 + 1);
+  `src/skills/Skills.event` patches the Skill System's SkillAdder to 3 slots. The Skill System
+  caches skill lists per unit: call `InitSkillBuffers()` after changing skills. SkillAdder is an
+  asm label without the Thumb bit (call it with `|1` from C).
 - **RAM block layout**: 0x000-0x03F run state (saved), 0x040-0x0FF reserved, 0x100-0x13F UI
-  scratch (menus only: stat choice 0x100, roster menus 0x110).
+  scratch (menus only: stat choice 0x100, roster menus 0x110, skill menu 0x120).
 - `--test` builds are debug builds (debug startup menu at boot); the player ROM has no debug menu.
 
 ## GBA constraints

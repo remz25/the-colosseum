@@ -160,7 +160,7 @@ def main() -> int:
             else:
                 failures += 1
                 where = {0xFFFFFFFF: "invalid test index", 0xFFFFFFFE: "no units on the map"}.get(
-                    r, f"check at src/tests/test_combat.c / test_units.c / test_roster.c line {r}")
+                    r, f"check at src/tests/test_combat.c / test_units.c / test_roster.c / test_skills.c line {r}")
                 print(f"  [FAIL] map test {i}: {where}")
 
         problems = high_stat_saves(g)

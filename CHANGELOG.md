@@ -1,5 +1,12 @@
 # COLISEUM: Changelog
 
+## 2026-09-25 (Phase 6)
+- Skills (`src/skills/`): 1 personal + 3 slots; class skills moved into slots (level-1 class list
+  entries, ClassSkillEditor.csv cleared); catalog with rarity and prerequisites; offers; the
+  "learn a skill" menu with replacement; skills cleared per run.
+- Normal enemies: floor-gated skills (generic character list); enemy-only skills marked.
+- Tests: 8 skill map tests.
+
 ## 2026-09-25 (Phase 5)
 - Roster (`src/roster/`): "Your team" screen at a new run; recruitment (3 candidates or decline,
   replace when full); "Choose 3 fighters" deployment with more than 3 alive; 2v3 continuation.

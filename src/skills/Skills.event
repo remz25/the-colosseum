@@ -1,0 +1,105 @@
+// COLISEUM skills (Phase 6). See src/skills/skills.c.
+
+// ---- 1 personal + 3 slots (spec 27) ----
+// Learned skills live in the BWL entry of each character (4 bytes; the Skill System's SkillAdder
+// fills them). COLISEUM uses 3: the adder's "last slot" check goes from index 3 to 2, so a 4th
+// skill goes through the replace-a-skill path instead. Class skills are no longer implicit
+// (ClassSkillEditor.csv is all 0): each class skill is learned at level 1 from its class list
+// (skill_lists.event), so it occupies one of the 3 slots and can be replaced.
+PUSH
+ORG (SkillAdder & 0x1FFFFFF) + 0x24
+SHORT 0x2A02                    // cmp r2, #2 (was #3)
+POP
+
+// ---- skill catalog: rarity and prerequisites (spec 28, 30, 32) ----
+// ColSkill(skill, rarity, weapons, flags, stat, statMin)
+//   rarity 1 Common .. 5 Legendary
+//   weapons: the unit must be able to use one of these weapon types (0 = any):
+//     1 sword, 2 lance, 4 axe, 8 bow, 16 staff, 32 anima, 64 light, 128 dark
+//   flags: 1 promoted only, 2 mounted only, 4 enemies only (Elites/Bosses, never offered to players)
+//   stat (COLISEUM stat + 1: 1 HP 2 Str 3 Mag 4 Skl 5 Spd 6 Lck 7 Def 8 Res; 0 = none) >= statMin
+#define ColSkill(id, rarity, weapons, flags, stat, statMin) "BYTE id rarity weapons flags stat statMin"
+#define W_PHYS 15
+#define W_MAGIC 224
+
+ALIGN 4
+gColSkillCatalog:
+// Common
+ColSkill(DuelistsBlowID, 1, 0, 0, 0, 0)
+ColSkill(DeathBlowID,    1, 0, 0, 0, 0)
+ColSkill(DartingBlowID,  1, 0, 0, 0, 0)
+ColSkill(WardingBlowID,  1, 0, 0, 0, 0)
+ColSkill(ArmoredBlowID,  1, 0, 0, 0, 0)
+ColSkill(CertainBlowID,  1, 0, 0, 0, 0)
+ColSkill(LuckySevenID,   1, 0, 0, 0, 0)
+ColSkill(CantoID,        1, 0, 0, 0, 0)
+ColSkill(FortuneID,      1, 0, 0, 0, 0)
+// Uncommon
+ColSkill(VantageID,      2, 0, 0, 0, 0)
+ColSkill(WrathID,        2, 0, 0, 0, 0)
+ColSkill(PursuitID,      2, 0, 0, 0, 0)
+ColSkill(QuickRiposteID, 2, 0, 0, 0, 0)
+ColSkill(LifetakerID,    2, 0, 0, 0, 0)
+ColSkill(SavageBlowID,   2, 0, 0, 0, 0)
+ColSkill(SwordbreakerID, 2, 0, 0, 0, 0)
+ColSkill(LancebreakerID, 2, 0, 0, 0, 0)
+ColSkill(AxebreakerID,   2, 0, 0, 0, 0)
+ColSkill(BowbreakerID,   2, 0, 0, 0, 0)
+ColSkill(TomebreakerID,  2, 0, 0, 0, 0)
+ColSkill(TrampleID,      2, 0, 2, 0, 0)
+ColSkill(HeavyStrikesID, 2, W_PHYS, 0, 0, 0)
+ColSkill(ResolveID,      2, 0, 0, 0, 0)
+ColSkill(RenewalID,      2, 0, 0, 0, 0)
+ColSkill(CunningID,      2, 0, 0, 0, 0)
+// Rare
+ColSkill(LunaID,         3, 0, 0, 4, 10)
+ColSkill(SolID,          3, 0, 0, 4, 10)
+ColSkill(VengeanceID,    3, 0, 0, 0, 0)
+ColSkill(PaviseID,       3, 0, 0, 7, 8)
+ColSkill(AegisID,        3, 0, 0, 8, 8)
+ColSkill(CounterID,      3, 0, 0, 0, 0)
+ColSkill(MiracleID,      3, 0, 0, 6, 8)
+ColSkill(AdeptID,        3, 0, 0, 5, 10)
+ColSkill(DesperationID,  3, 0, 0, 0, 0)
+ColSkill(SureShotID,     3, 8, 0, 0, 0)
+ColSkill(BowRangeUpID,   3, 8, 0, 0, 0)
+ColSkill(TomeRangeUpID,  3, W_MAGIC, 0, 0, 0)
+ColSkill(StaffSavantID,  3, 16, 0, 0, 0)
+ColSkill(CritUpID,       3, 0, 0, 0, 0)
+// Epic
+ColSkill(AstraID,        4, 1, 0, 5, 12)
+ColSkill(ColossusID,     4, 4, 0, 2, 12)
+ColSkill(GaleforceID,    4, 0, 1, 5, 15)
+ColSkill(BaneID,         4, 0, 0, 0, 0)
+ColSkill(IgnisID,        4, 0, 0, 0, 0)
+ColSkill(LethalityID,    4, 0, 0, 4, 15)
+ColSkill(FrenzyID,       4, 0, 0, 0, 0)
+// Legendary
+ColSkill(AetherID,       5, 3, 1, 4, 15)
+ColSkill(FlareID,        5, W_MAGIC, 0, 3, 12)
+ColSkill(CoronaID,       5, W_MAGIC, 0, 3, 12)
+// Enemies only (Elites/Bosses, spec 32)
+ColSkill(KillingMachineID, 5, 0, 4, 0, 0)
+ColSkill(NihilID,          4, 0, 4, 0, 0)
+ColSkill(GreatShieldID,    4, 0, 4, 0, 0)
+BYTE 0 0 0 0 0 0                // terminator
+ALIGN 4
+
+// The "learn a skill" menu (src/skills/skill_ui.c), run by Col_OfferSkill.
+ALIGN 4
+ColEvt_SkillOffer:
+ASMC Col_StartSkillOffer|1
+NoFade
+ENDA
+
+// Normal enemies (spec 32): every normal enemy is generic character 0x80, whose level-up skill
+// list (CharacterLevelUpSkillEditor.csv) is this one; generics read it by level, together with
+// their class list (class skills at level 1). Enemy levels rise ~5 per floor (battle.c), so
+// floor 2 enemies get the first skill, floor 3 the second, floor 4 the third. Phase 16 lever.
+ALIGN 4
+ColEnemySkillList:
+BYTE 10 DuelistsBlowID
+BYTE 16 VantageID
+BYTE 22 LunaID
+BYTE 0 0
+ALIGN 4

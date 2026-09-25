@@ -36,6 +36,6 @@ mGBA, not only compiled.
 | New Game clears the run (InitPlayConfig hook), play state reset as vanilla | PASS | map test 18 (fails without the hook) | 2026-09-25 |
 | Team screen, recruit menu, deployment menu in game | PASS (in game) | scripted playthrough with screenshots: team shown, reward -> recruit -> 4 in roster -> deploy toggles -> battle with the chosen 3 | 2026-09-25 |
 | Game over from real deaths ends the run and invalidates the save | PASS (in game) | enemies kill all 3 deployed units (real battles): FE8 GAME OVER, run inactive, save slot 2 invalid | 2026-09-25 |
-| No weapon durability: all weapons indestructible, uses unchanged after a real battle; Vulnerary still consumed | PASS | map test 19 | 2026-09-25 |
+| No durability: all weapons and staves indestructible, uses unchanged after a real battle; Vulnerary still consumed | PASS | map test 19 | 2026-09-25 |
 | Skills, Relics, Weapons (rest), Shop, Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

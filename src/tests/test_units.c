@@ -175,18 +175,21 @@ int Test_PendingChoices(struct Unit *a, struct Unit *t)
     return 0;
 }
 
-/* spec 40: no weapon durability. Every weapon (not staves) is indestructible; using one leaves
- * it unchanged, including a real battle; staves and consumables still have uses. */
+/* spec 40: no weapon durability; staves are unlimited too (developer, 2026-09-25). Every weapon
+ * and staff is indestructible; using one leaves it unchanged, including a real battle;
+ * consumables still get used up. */
 int Test_NoDurability(struct Unit *a, struct Unit *t)
 {
     int id, item;
 
     for (id = 1; id < 0xC0; id++) {
         int attr = GetItemAttributes(id);
-        if ((attr & IA_WEAPON) && !(attr & IA_STAFF))
+        if (attr & (IA_WEAPON | IA_STAFF))
             CHECK(attr & IA_UNBREAKABLE);
     }
     item = MakeNewItem(0x01);                              /* Iron Sword */
+    CHECK(GetItemAfterUse(item) == item);
+    item = MakeNewItem(0x4B);                              /* Heal staff */
     CHECK(GetItemAfterUse(item) == item);
     item = MakeNewItem(0x6C);                              /* Vulnerary: still consumed */
     CHECK(GetItemAfterUse(item) != item);

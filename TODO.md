@@ -71,8 +71,8 @@ built, working in game, tested, documented.
   floor -> Phases 6-7; deployment from the post-battle menu -> Phase 10.
 
 ## Phase 7 (early, on request 2026-09-25)
-- [x] No weapon durability (spec 40): every non-staff weapon is Indestructible (ItemTable.csv);
-      staves and consumables keep their uses (open question below)
+- [x] No weapon durability (spec 40): every weapon and staff is Indestructible (ItemTable.csv);
+      consumables keep their uses
 
 ## Phase 6-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

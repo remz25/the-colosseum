@@ -9,6 +9,7 @@
 - Interim: the 3-win reward is a recruitment offer until Phase 10.
 - Tests: 7 roster map tests; the runner now clicks through the team screen.
 - No weapon durability (spec 40, requested now): all 110 non-staff weapons are Indestructible.
+- Staves unlimited too (developer decision).
 
 ## 2026-09-25 (Phase 4)
 - 15-character pool finalized (Marisa replaces Ross); all start at level 5 with level-5 bases and

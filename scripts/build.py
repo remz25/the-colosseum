@@ -4,6 +4,9 @@ right folders with every tool named explicitly and every step checked.
 
     py -3 scripts/build.py           full build (tables, text, maps, assemble)
     py -3 scripts/build.py --quick   assemble only (no tables/text/maps)
+    py -3 scripts/build.py --debug   debug build (defines __DEBUG__: Skill System debug menu and
+                                     COLISEUM debug commands) -> Coliseum_debug.gba. The player ROM
+                                     Coliseum.gba never contains debug tools (spec 81).
 
 Why not MAKE_HACK_full.cmd: the repo ships extensionless Linux builds next to the Windows
 .exe files (EventAssembler/ColorzCore, ParseFile, Png2Dmp), and cmd.exe can pick the
@@ -29,6 +32,7 @@ CLEAN_CRC = 0xA47246AE                      # FE8U (USA), 16 MiB
 OUT = ROOT / "Coliseum.gba"
 TMP = ROOT / "Coliseum.tmp.gba"
 SYM = ROOT / "Coliseum.sym"
+DEBUG_OUT = ROOT / "Coliseum_debug.gba"
 EA = ROOT / "EventAssembler"
 TOOLS = ROOT / "Tools"
 
@@ -89,12 +93,12 @@ def build_maps() -> None:
     ok("Maps")
 
 
-def assemble(clean: bytes) -> bytes:
-    info("Assembling ROMBuildfile.event (ColorzCore)")
+def assemble(clean: bytes, debug: bool = False) -> bytes:
+    info("Assembling ROMBuildfile.event (ColorzCore)" + (" [DEBUG build]" if debug else ""))
     TMP.unlink(missing_ok=True)
     TMP.write_bytes(clean)
     out = run([EA / "ColorzCore.exe", "A", "FE8", f"-output:{TMP}", f"-input:{ROOT / 'ROMBuildfile.event'}",
-               "--nocash-sym"], EA, "ColorzCore")
+               "--nocash-sym", *(["-D:__DEBUG__=1"] if debug else [])], EA, "ColorzCore")
     for line in out.splitlines():
         if line.startswith("message:"):
             print("        " + line.split(": ", 2)[-1], flush=True)
@@ -117,20 +121,21 @@ def assemble(clean: bytes) -> bytes:
     return data
 
 
-def finish(data: bytes) -> None:
+def finish(data: bytes, out: Path) -> None:
     try:
-        os.replace(TMP, OUT)
+        os.replace(TMP, out)
     except PermissionError:
-        raise BuildError(f"Could not replace {OUT.name}; it is probably open in mGBA. Close it and build again.")
+        raise BuildError(f"Could not replace {out.name}; it is probably open in mGBA. Close it and build again.")
     sym_src = TMP.with_suffix(".sym")
     if sym_src.is_file():
-        shutil.move(sym_src, SYM)
-    ok(f"Built {OUT.name} ({len(data):,} bytes, CRC32 {zlib.crc32(data) & 0xFFFFFFFF:08X})")
+        shutil.move(sym_src, out.with_suffix(".sym"))
+    ok(f"Built {out.name} ({len(data):,} bytes, CRC32 {zlib.crc32(data) & 0xFFFFFFFF:08X})")
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--quick", action="store_true", help="assemble only (skip tables, text, maps)")
+    ap.add_argument("--debug", action="store_true", help="debug build -> Coliseum_debug.gba")
     args = ap.parse_args()
     try:
         clean = check_clean_rom()
@@ -138,7 +143,7 @@ def main() -> int:
             build_tables()
             build_text()
             build_maps()
-        finish(assemble(clean))
+        finish(assemble(clean, args.debug), DEBUG_OUT if args.debug else OUT)
     except BuildError as e:
         print(f"[FAIL ] {e}", file=sys.stderr)
         return 1

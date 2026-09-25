@@ -140,10 +140,25 @@ static int Test_Deaths(void)
     return 0;
 }
 
+/* `%` works (divmod.c): FE-CLib mapped GCC's modulo helpers onto FE8 routines with another
+ * calling convention. volatile keeps the compiler from folding the constants. */
+static int Test_Modulo(void)
+{
+    volatile int a = 7, b = 3, c = -7, big = 1000000007, p = 97;
+    volatile unsigned u = 10, v = 4;
+    CHECK(a % b == 1);
+    CHECK(c % b == -1);
+    CHECK(a / b == 2);
+    CHECK(u % v == 2u);
+    CHECK(big % p == 1000000007 - (1000000007 / 97) * 97);
+    CHECK(3 % b == 0);
+    return 0;
+}
+
 typedef int (*ColTestFn)(void);
 static const ColTestFn kTests[] = {
     Test_NewRun, Test_FloorSequence, Test_Recover, Test_Gold, Test_InvalidLoadClears,
-    Test_SramRoundTrip, Test_Deaths,
+    Test_SramRoundTrip, Test_Deaths, Test_Modulo,
 };
 
 int ColTest_Count(void)

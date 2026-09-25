@@ -129,6 +129,7 @@ void Col_StartSkillOffer(struct Proc *eventProc)
     if (!gColSkillUi.unit || !Col_CanLearnSkill(gColSkillUi.unit, gColSkillUi.skill))
         return;
     EndPlayerPhaseSideWindows();                /* the unit window's portrait shares VRAM with icons */
+    ResetTextFont();
     menu = StartMenu(&kSkillMenu, eventProc);
     free = Col_FreeSkillSlot(gColSkillUi.unit);
     menu->itemCurrent = (u8)(free >= 0 ? free + 1 : 1);   /* the free slot, or the first to replace */

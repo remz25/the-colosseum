@@ -1,5 +1,14 @@
 # COLISEUM: Changelog
 
+## 2026-09-25 (Phase 7)
+- Weapons (`src/weapons/`): fusion recipes and Fuse; Transfer to compatible units; weapon EXP x3.
+- 10 new items (0xC0-0xC9): 4 Elite variants, Lethal Edge, 5 boss weapons (names in coliseum.txt).
+- "Prepare" menu before each battle: Fight! / Deploy / Transfer / Fuse; roster units now exist
+  (hidden) before it opens.
+- Fixed `%` (modulo) for all COLISEUM C: correct __aeabi_idivmod/uidivmod (src/core/divmod.c),
+  linked against a reference copy without FE8's mismatched ones; lyn runs with -nohook.
+- Tests: 5 weapon map tests + modulo test; runner waits for placed units.
+
 ## 2026-09-25 (Phase 6)
 - Skills (`src/skills/`): 1 personal + 3 slots; class skills moved into slots (level-1 class list
   entries, ClassSkillEditor.csv cleared); catalog with rarity and prerequisites; offers; the

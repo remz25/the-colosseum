@@ -117,6 +117,20 @@ static void CreateEnemies(int encounter)
     }
 }
 
+/* Every living roster member exists as a (hidden) unit: menus before the battle need them. */
+void Col_EnsureRosterUnits(void)
+{
+    int slot;
+    for (slot = 0; slot < COL_MAX_ROSTER; slot++) {
+        struct Unit *unit;
+        if (gColRun.roster[slot] >= COL_POOL_SIZE || Col_RosterUnit(slot))
+            continue;
+        unit = EnsureRosterUnit(slot);
+        if (unit)
+            unit->state |= US_HIDDEN | US_NOT_DEPLOYED;    /* placed by Col_PrepareBattle */
+    }
+}
+
 void Col_PrepareBattle(void)
 {
     int slot, placed = 0;

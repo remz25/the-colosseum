@@ -93,6 +93,15 @@ def high_stat_saves(g) -> list[str]:
     return problems
 
 
+def any_unit_placed(g) -> bool:
+    """A blue unit exists and is on the map (not hidden / undeployed): the battle has begun."""
+    for i in range(5):
+        u = g.read(BLUE_UNIT_1 + 0x48 * i, 0x10)
+        if u[0:4] != bytes(4) and not (int.from_bytes(u[0x0C:0x10], "little") & 0x9):
+            return True
+    return False
+
+
 def enter_battle(g, syms) -> str | None:
     """New Game into the battle chapter; returns a problem description or None."""
     for wait, key, hold in TITLE_KEYS:
@@ -102,11 +111,11 @@ def enter_battle(g, syms) -> str | None:
         g.frames(85)
         ram = g.read(COL_RAM, 0x40)
         if ram[0:4] == b"COLR" and ram[6] == 1 and ram[0x0D] == 3:   # active, 3 in the roster
-            # "Your team" (cursor on Begin): A until the units are on the map
+            # "Your team" (cursor on Begin), then Prepare (cursor on Fight!): A until units are placed
             for _ in range(10):
                 g.frames(5, "A")
                 g.frames(60)
-                if g.read(BLUE_UNIT_1, 4) != bytes(4):
+                if any_unit_placed(g):
                     g.frames(120)                                # beginning event finishes
                     return None
             return "the units never appeared after the team screen"
@@ -160,7 +169,7 @@ def main() -> int:
             else:
                 failures += 1
                 where = {0xFFFFFFFF: "invalid test index", 0xFFFFFFFE: "no units on the map"}.get(
-                    r, f"check at src/tests/test_combat.c / test_units.c / test_roster.c / test_skills.c line {r}")
+                    r, f"check at src/tests/test_combat.c / test_units.c / test_roster.c / test_skills.c / test_weapons.c line {r}")
                 print(f"  [FAIL] map test {i}: {where}")
 
         problems = high_stat_saves(g)

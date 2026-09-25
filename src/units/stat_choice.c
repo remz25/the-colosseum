@@ -103,6 +103,7 @@ static void Choices_Next(struct Proc *proc)
     gColChoiceUi.slot = (s8)slot;
     gColChoiceUi.unit = Col_RosterUnit(slot);
     Col_RollStatChoices(gColChoiceUi.options);
+    ResetTextFont();                            /* one menu per owed level: free the last one's text */
     menu = StartMenu(&kChoiceMenu, proc);
     menu->itemCurrent = 1;                          /* cursor on the first option */
 }

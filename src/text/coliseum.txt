@@ -9,3 +9,63 @@ FINAL TURN.[X]
 
 ## ColText_TimeUp
 Time is up.[X]
+
+## ColItem_KeenEdge
+Keen Edge[X]
+
+## ColItemDesc_KeenEdge
+An Elite's killing blade.[N]Critical hits come often.[X]
+
+## ColItem_TitanAxe
+Titan Axe[X]
+
+## ColItemDesc_TitanAxe
+An Elite's axe. Heavy[N]and devastating.[X]
+
+## ColItem_GaleLance
+Gale Lance[X]
+
+## ColItemDesc_GaleLance
+An Elite's lance. Light[N]and accurate.[X]
+
+## ColItem_HawkBow
+Hawk Bow[X]
+
+## ColItemDesc_HawkBow
+An Elite's bow. Rarely[N]misses. Effective vs fliers.[X]
+
+## ColItem_LethalEdge
+Lethal Edge[X]
+
+## ColItemDesc_LethalEdge
+Killing Edge fused with an[N]Elite's blade. Deadly crits.[X]
+
+## ColItem_TyrantBlade
+Tyrant Blade[X]
+
+## ColItemDesc_TyrantBlade
+A Coliseum champion's[N]sword.[X]
+
+## ColItem_WarlordPike
+Warlord Pike[X]
+
+## ColItemDesc_WarlordPike
+A Coliseum champion's[N]lance. Can be thrown.[X]
+
+## ColItem_RuinCleaver
+Ruin Cleaver[X]
+
+## ColItemDesc_RuinCleaver
+A Coliseum champion's[N]axe.[X]
+
+## ColItem_StormLongbow
+Storm Longbow[X]
+
+## ColItemDesc_StormLongbow
+A Coliseum champion's bow.[N]Range 2-3. Effective vs fliers.[X]
+
+## ColItem_AbyssTome
+Abyss Tome[X]
+
+## ColItemDesc_AbyssTome
+A Coliseum champion's[N]dark tome. Range 1-2.[X]

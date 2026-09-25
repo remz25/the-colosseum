@@ -5,7 +5,8 @@
  *   2. Recruitment (spec 9), when a 3-win reward is due. Until the reward menu exists (Phase 10)
  *      the 3-win reward is always a recruitment offer: up to 3 candidates or Decline; with a full
  *      roster, "Replace whom?" picks who leaves (Back returns to the candidates).
- *   3. Deployment (spec 8), when more than 3 are alive: toggle units, Fight with exactly 3.
+ *   3. Prepare (prepare_ui.c): Fight! / Deploy / Transfer / Fuse. Deployment (spec 8), when
+ *      more than 3 are alive: toggle units, Fight with exactly 3.
  *
  * Rows: "Name     Class        Lv 12" (a '*' marks deployed units in the deployment menu). */
 #include "coliseum.h"
@@ -243,7 +244,10 @@ static const struct MenuDef kDeployMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 
 
 static void Open(const struct MenuDef *def, struct Proc *proc, int cursor)
 {
-    struct MenuProc *menu = StartMenu(def, proc);
+    struct MenuProc *menu;
+
+    ResetTextFont();                            /* free the previous menu's text tiles (vanilla does) */
+    menu = StartMenu(def, proc);
     menu->itemCurrent = (u8)cursor;             /* 1: the first row after the title */
 }
 
@@ -283,12 +287,20 @@ static void Flow_RecruitAgain(struct Proc *proc)
         Proc_Goto(proc, 1);
 }
 
-static void Flow_Deploy(struct Proc *proc)
+/* The deployment menu (from the Prepare menu's Deploy, prepare_ui.c). */
+void Col_OpenDeployMenu(struct Proc *parent)
 {
     if (gColRun.rosterCount <= COL_MAX_DEPLOY)
         return;                                 /* 3 or fewer alive: everyone fights */
     gColRosterUi.pick = Col_DeploymentMask();
-    Open(&kDeployMenu, proc, 1);
+    Open(&kDeployMenu, parent, 1);
+}
+
+void Col_StartPrepare(struct Proc *parent);     /* prepare_ui.c */
+
+static void Flow_Prepare(struct Proc *proc)
+{
+    Col_StartPrepare(proc);
 }
 
 static const struct ProcCmd kProcScr_BattleStart[] = {
@@ -301,7 +313,7 @@ static const struct ProcCmd kProcScr_BattleStart[] = {
     PROC_CALL(Flow_Replace),
     PROC_YIELD,
     PROC_CALL(Flow_RecruitAgain),
-    PROC_CALL(Flow_Deploy),
+    PROC_CALL(Flow_Prepare),
     PROC_YIELD,
     PROC_END,
 };

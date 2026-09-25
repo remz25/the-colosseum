@@ -74,8 +74,12 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
   `src/skills/Skills.event` patches the Skill System's SkillAdder to 3 slots. The Skill System
   caches skill lists per unit: call `InitSkillBuffers()` after changing skills. SkillAdder is an
   asm label without the Thumb bit (call it with `|1` from C).
+- **Division helpers**: FE-CLib's reference maps __aeabi_idivmod/uidivmod onto FE8's __modsi3/
+  __umodsi3 (remainder in r0, EABI wants quotient r0 / remainder r1). scripts/build.py links
+  against `build/fireemblem8.ref.o` without those two; `src/core/divmod.c` defines them.
+  lyn runs with `-nohook` so a C function named like a vanilla one never patches the ROM.
 - **RAM block layout**: 0x000-0x03F run state (saved), 0x040-0x0FF reserved, 0x100-0x13F UI
-  scratch (menus only: stat choice 0x100, roster menus 0x110, skill menu 0x120).
+  scratch (menus only: stat choice 0x100, roster menus 0x110, skill menu 0x120, Prepare menus 0x130).
 - `--test` builds are debug builds (debug startup menu at boot); the player ROM has no debug menu.
 
 ## GBA constraints

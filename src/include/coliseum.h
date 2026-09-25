@@ -101,6 +101,7 @@ void Col_OnBattleWon(void);
 struct Unit;
 struct Unit *Col_RosterUnit(int slot);         /* the map unit of roster slot `slot`, or NULL */
 struct Unit *Col_LoadPoolUnit(int pool);       /* creates pool character `pool` at level 5 (blue) */
+void Col_EnsureRosterUnits(void);              /* every roster member exists (hidden until placed) */
 
 /* units/stats.c: stats without caps (spec 21) and level-up stat choices (spec 23) */
 enum ColStat {
@@ -151,6 +152,13 @@ void Col_ClearRunSkills(void);
 int  Col_RollSkillOffers(struct Unit *unit, u8 *out, int n);
 int  Col_OfferSkill(struct Unit *unit, int skill);      /* skill_ui.c: learn / replace menu */
 const char *Col_SkillName(int skill);
+
+/* weapons/weapons.c */
+int  Col_FusionResult(int itemA, int itemB);            /* 0 if the pair doesn't fuse */
+int  Col_Fuse(struct Unit *unit, int s1, int s2);       /* 1 if fused (result in s1) */
+int  Col_FindFusion(struct Unit *unit, int from, int *s1, int *s2);
+int  Col_CanReceiveItem(struct Unit *to, int item);
+int  Col_TransferItem(struct Unit *from, int slot, struct Unit *to);
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

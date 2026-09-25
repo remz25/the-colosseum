@@ -70,10 +70,6 @@ built, working in game, tested, documented.
 - Later: promoted recruits (rare, spec 9) -> Phase 10 (promotion); recruit skills/equipment by
   floor -> Phases 6-7; deployment from the post-battle menu -> Phase 10.
 
-## Phase 7 (early, on request 2026-09-25)
-- [x] No weapon durability (spec 40): every weapon and staff is Indestructible (ItemTable.csv);
-      consumables keep their uses
-
 ## Phase 6: Skills — DONE (2026-09-25)
 - [x] 1 personal (fixed) + 3 slots; the Skill System's adder limited to 3 (Skills.event)
 - [x] Class skills count toward the 4: no longer implicit; learned into a slot at level 1 from the
@@ -89,5 +85,22 @@ built, working in game, tested, documented.
 - Later: skill sources wired in their phases: 3-win reward and promotion (Phase 10), shop (Phase 8),
   relics (Phase 9), Elite skill sets (Phase 11), boss skills and Phase 2 (Phase 12).
 
-## Phase 7-17
+## Phase 7: Weapons — DONE (2026-09-25)
+- [x] No durability (spec 40): every weapon and staff is Indestructible; consumables keep uses
+- [x] Weapon types and FE8 ranks kept; proficiency 3x faster (weapon EXP x3, spec 41)
+- [x] Inventory: 5 items per unit (FE8); items persist between battles
+- [x] Transfer (spec 40): Prepare > Transfer: giver, item, receiver; receivers must use that
+      weapon type (any rank), other items go to anyone; room needed
+- [x] Fusion (spec 42): Prepare > Fuse, only when chosen; both consumed; lines Iron > Steel > Silver
+      (swords, blades, lances, axes, bows), Fire > ... > Fimbulvetr, Lightning > ... > Aura,
+      Flux > Nosferatu, and Killing Edge + Keen Edge > Lethal Edge
+- [x] Variants (spec 43): Elite weapons Keen Edge, Titan Axe, Gale Lance, Hawk Bow; unique Lethal
+      Edge; boss weapons (spec 44/55) Tyrant Blade, Warlord Pike, Ruin Cleaver, Storm Longbow,
+      Abyss Tome (unsellable) - handed out in Phases 11/12
+- [x] "Prepare" menu before each battle: Fight! / Deploy (more than 3 alive) / Transfer / Fuse
+- [x] Fixed: `%` in COLISEUM C was wrong (FE-CLib mapped GCC's modulo helpers onto FE8 routines
+      with another convention) - src/core/divmod.c + stripped reference; lyn -nohook
+- Later: Legacy weapons (Phase 13); weapon drops from Elites/Bosses (Phases 11/12); shop (Phase 8).
+
+## Phase 8-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

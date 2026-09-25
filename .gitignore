@@ -76,3 +76,6 @@ Coliseum.sym
 __pycache__/
 Coliseum_debug.gba
 Coliseum_debug.sym
+Coliseum_test.gba
+Coliseum_test.sym
+/build/

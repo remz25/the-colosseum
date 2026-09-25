@@ -11,12 +11,17 @@ built, working in game, tested, documented.
 - [x] Own repository in `Downloads\Coliseum`, upstream remote kept as `upstream`
 - [x] Checked build script `scripts/build.py`; unmodified base boots to its test map in mGBA
 - [x] Documentation set (this file, GAME_DESIGN, ARCHITECTURE, CHANGELOG, TEST_STATUS, BALANCE_NOTES)
-- [ ] Config: Str/Mag split on; debug build variant (`__DEBUG__`) as a separate ROM
-- [ ] C build for `src/` (Arm GNU Toolchain + lyn) and a native C unit-test runner
-- [ ] Emulator test driver in the repo (`tests/emu/`: scripted input, screenshots, RAM checks)
-- [ ] Free RAM map (EWRAM/IWRAM areas safe for COLISEUM data)
-- [ ] Run-state data structure + IDs (floor, fight, wins, gold, Recover charges, roster, dead list)
-- [ ] Save module for the run state (save, load, suspend) with tests
+- [x] Config: Str/Mag split on; debug build variant (`--debug` -> `Coliseum_debug.gba`)
+- [x] C build for `src/` (Arm GNU Toolchain + lyn, FE-CLib headers); objects may not use RAM variables
+- [x] Test framework: **on-target unit tests** (`--test` build + `tests/run_tests.py` calls each test
+      through mGBA's debugger; no host compiler needed). Proven to report failures with line numbers.
+- [x] COLISEUM RAM block `0x0203F600-0x0203FDFF` (untouched after boot: checked by run_tests.py)
+- [x] Run-state structure (`src/include/coliseum.h`): floor, encounter schedule, wins, 3-win reward,
+      gold, Recover charges, roster/deployed/dead/recruited, seed, history
+- [x] Run state saved in the game save (and suspend chunk declared): SRAM round trip and
+      WriteGameSave/ReadGameSave integration pass
+- [ ] Suspend round trip test (chunk is declared; not yet exercised by a test)
+- [ ] RAM block untouched during a full battle (only checked after boot so far)
 - [ ] Legacy save module that survives a new run, with tests
 - [ ] Debug menu: first COLISEUM commands (give gold, set floor/fight, reset run)
 

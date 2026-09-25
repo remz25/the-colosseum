@@ -146,7 +146,11 @@ gGameSaveChunks:
 	DeclSaveChunk($1128, $00C8, MSa_WriteSupplyItems, MSa_ReadSupplyItems, EMS_CHUNK_CONVOYITEMS)
 	
 	// $11F0
-	
+
+	// COLISEUM run state (src/core/run_state.c, 64 bytes)
+	DeclSaveChunk($11F0, $0040, Col_SaveRunChunk, Col_LoadRunChunk)
+
+	// $1230
 	// free up to $1344
 
 	DeclSaveChunkEnd
@@ -204,7 +208,12 @@ gSuspendSaveChunks:
 	DeclSaveChunk($2846, $00C8, MSa_WriteSupplyItems, MSa_ReadSupplyItems)  // Convoy Items
 	
 	// ends at $290E
-	// free up to $2E78 ($56A free bytes)
+
+	// COLISEUM run state (src/core/run_state.c, 64 bytes)
+	DeclSaveChunk($290E, $0040, Col_SaveRunChunk, Col_LoadRunChunk)
+
+	// ends at $294E
+	// free up to $2E78 ($52A free bytes)
 
 	DeclSaveChunk(0, 0, 0, MSu_LoadClaimFlagsFromParentSave) // Load Bonus Claim flags from parent save
 

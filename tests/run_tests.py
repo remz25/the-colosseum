@@ -67,6 +67,32 @@ def save_integration(g, syms) -> list[str]:
     return problems
 
 
+BLUE_UNIT_1 = 0x0202BE4C        # first blue unit (struct Unit, 0x48 bytes)
+
+
+def high_stat_saves(g) -> list[str]:
+    """Spec 21 (no stat caps): stats far above vanilla's 5-bit save fields (max 31) survive the
+    suspend and the game save. Needs a unit on the map; restores it afterwards."""
+    problems = []
+    saved = g.read(BLUE_UNIT_1, 0x48)
+    stats = bytes([80, 80, 60, 45, 50, 40, 35, 45])        # maxHP curHP Str Skl Spd Def Res Lck
+    g.write(BLUE_UNIT_1 + 8, bytes([25]))
+    g.write(BLUE_UNIT_1 + 0x12, stats)
+    g.write(BLUE_UNIT_1 + 0x3A, bytes([70]))                # Mag (Str/Mag split)
+    for name, write, read, arg in [("suspend", WRITE_SUSPEND, READ_SUSPEND, SAVE_ID_SUSPEND),
+                                   ("game save", WRITE_GAME_SAVE, READ_GAME_SAVE, 2)]:
+        g.call(write, arg)
+        g.write(BLUE_UNIT_1 + 8, bytes([1]))
+        g.write(BLUE_UNIT_1 + 0x12, bytes(8))
+        g.write(BLUE_UNIT_1 + 0x3A, bytes([0]))
+        g.call(read, arg)
+        u = g.read(BLUE_UNIT_1, 0x48)
+        if u[8] != 25 or u[0x12:0x1A] != stats or u[0x3A] != 70:
+            problems.append(f"{name}: level {u[8]}, stats {list(u[0x12:0x1A])}, mag {u[0x3A]}")
+    g.write(BLUE_UNIT_1, saved)
+    return problems
+
+
 def enter_battle(g, syms) -> str | None:
     """New Game into the battle chapter; returns a problem description or None."""
     for wait, key, hold in TITLE_KEYS:
@@ -120,16 +146,23 @@ def main() -> int:
             print("  [PASS] RAM block beyond the 64-byte run state untouched in battle")
 
         count = g.call(syms["ColTest_MapCount"])
-        print(f"Running {count} combat test(s) on the battle map")
+        print(f"Running {count} map test(s) (combat, units) on the battle map")
         for i in range(count):
             r = g.call(syms["ColTest_MapRun"], i)
             if r == 0:
-                print(f"  [PASS] combat test {i}")
+                print(f"  [PASS] map test {i}")
             else:
                 failures += 1
                 where = {0xFFFFFFFF: "invalid test index", 0xFFFFFFFE: "no units on the map"}.get(
-                    r, f"check at src/tests/test_combat.c line {r}")
-                print(f"  [FAIL] combat test {i}: {where}")
+                    r, f"check at src/tests/test_combat.c (or test_units.c) line {r}")
+                print(f"  [FAIL] map test {i}: {where}")
+
+        problems = high_stat_saves(g)
+        if problems:
+            failures += 1
+            print("  [FAIL] high stats through saves: " + "; ".join(problems))
+        else:
+            print("  [PASS] level 25 / stats up to 80 survive suspend and game save")
 
         count = g.call(syms["ColTest_Count"])
         print(f"Running {count} run-state test(s)")

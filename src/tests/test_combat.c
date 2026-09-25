@@ -281,9 +281,19 @@ static int Test_DamageAndDeath(struct Unit *sA, struct Unit *sT)
     return 0;
 }
 
+/* test_units.c */
+int Test_Pool(struct Unit *, struct Unit *);
+int Test_LoadPoolUnits(struct Unit *, struct Unit *);
+int Test_LevelCap(struct Unit *, struct Unit *);
+int Test_NoStatCaps(struct Unit *, struct Unit *);
+int Test_StatChoices(struct Unit *, struct Unit *);
+int Test_PendingChoices(struct Unit *, struct Unit *);
+
 typedef int (*ColMapTestFn)(struct Unit *actor, struct Unit *target);
 static const ColMapTestFn kMapTests[] = {
     Test_Formulas, Test_Triangle, Test_Terrain, Test_Doubling, Test_Magic, Test_DamageAndDeath,
+    Test_Pool, Test_LoadPoolUnits, Test_LevelCap, Test_NoStatCaps, Test_StatChoices,
+    Test_PendingChoices,
 };
 
 int ColTest_MapCount(void)
@@ -304,6 +314,7 @@ static void CopyBytes(void *dst, const void *src, unsigned n)
 int ColTest_MapRun(int i)
 {
     struct Unit *sA, *sT, savedA, savedT;
+    struct ColRunState savedRun;
     u8 terrainA, terrainT;
     int result;
 
@@ -315,6 +326,7 @@ int ColTest_MapRun(int i)
         return -2;
     CopyBytes(&savedA, sA, sizeof(savedA));
     CopyBytes(&savedT, sT, sizeof(savedT));
+    CopyBytes(&savedRun, &gColRun, sizeof(savedRun));
     terrainA = gBmMapTerrain[AY][AX];
     terrainT = gBmMapTerrain[TY][TX];
 
@@ -324,5 +336,6 @@ int ColTest_MapRun(int i)
     gBmMapTerrain[TY][TX] = terrainT;
     CopyBytes(sA, &savedA, sizeof(savedA));
     CopyBytes(sT, &savedT, sizeof(savedT));
+    CopyBytes(&gColRun, &savedRun, sizeof(savedRun));
     return result;
 }

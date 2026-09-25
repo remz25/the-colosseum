@@ -51,6 +51,7 @@ TURN 0 ColBattle_Turn15 [15,0] 0
 TURN 0 ColBattle_Turn18 [18,0] 0
 TURN 0 ColBattle_Turn19 [19,0] 0
 TURN 0 ColBattle_TimeUp [21,0] 0          // turn 20 has ended: defeat
+TURN 0 ColBattle_StatChoice [1,255] 0     // every player phase: stat choices owed from the enemy phase
 END_MAIN
 
 ALIGN 4
@@ -76,8 +77,13 @@ ASMC Col_PrepareBattle|1
 ENDA
 
 ColBattle_Ending:
+ASMC Col_StartStatChoices|1              // level-ups on the last enemy phase (spec 23)
 ASMC Col_OnBattleWon|1
 MNC2 ColBattleChapter                    // next fight
+ENDA
+
+ColBattle_StatChoice:
+ASMC Col_StartStatChoices|1
 ENDA
 
 ColBattle_Turn15:

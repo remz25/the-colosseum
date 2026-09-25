@@ -1,8 +1,11 @@
 /* The playable character pool (spec 10: 15 characters, all eligible from the start).
  *
- * PLACEHOLDER (Phase 3): 15 vanilla FE8 characters, one per class the spec lists, so the roster,
- * battles and tests can be built now. Phase 4 replaces this table with COLISEUM's own 15
- * characters (names, growths, personal skills, starting equipment); nothing else changes. */
+ * 15 FE8 characters (their portraits and animations exist), one per class the spec lists plus a
+ * second Myrmidon (spec 10: characters sharing a class differ by skill, growths, equipment).
+ * Their level-5 bases, growths (incl. magic) and personal skills live in the tables:
+ * Tables/NightmareModules/CharactersClasses/CharacterTable.csv, MagCharEditor.csv and
+ * Skills/PersonalSkillEditor.csv (values and how they were derived: BALANCE_NOTES.md).
+ * Names and identities may still change with the story (Phase 14). */
 #include "coliseum.h"
 
 /* charId: FE8 character; class 0 = the character's default class; items: starting inventory. */
@@ -20,6 +23,6 @@ const struct ColPoolEntry gColPool[COL_POOL_SIZE] = {
     { 0x1F, 0, { 0x45, 0x6C } },  /* Knoll      Shaman      Flux */
     { 0x0D, 0, { 0x4B, 0x6C } },  /* Natasha    Cleric      Heal */
     { 0x13, 0, { 0x3F, 0x6C } },  /* Artur      Monk        Lightning */
-    { 0x07, 0, { 0x1F, 0x6C } },  /* Ross       Journeyman  Iron Axe */
+    { 0x16, 0, { 0x01, 0x6C } },  /* Marisa     Myrmidon    Iron Sword */
     { 0x19, 0, { 0x4B, 0x6C } },  /* L'Arachel  Troubadour  Heal */
 };

@@ -125,6 +125,7 @@ void Col_RosterRemoveDead(int slot)
     gColRun.deadMask |= (u16)(1 << pool);
     gColRun.roster[slot] = 0xFF;
     gColRun.hp[slot] = 0;
+    gColRun.choiceLevel[slot] = 0;
     if (gColRun.rosterCount)
         gColRun.rosterCount--;
     for (d = 0; d < COL_MAX_DEPLOY; d++)

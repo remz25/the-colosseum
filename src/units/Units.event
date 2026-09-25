@@ -1,0 +1,17 @@
+// COLISEUM units (Phase 4): no stat caps, level-up stat choice. See src/units/stats.c.
+
+// No stat caps (spec 21): the two vanilla cap functions jump to COLISEUM's versions.
+PUSH
+ORG 0x02BF24                    // CheckBattleUnitStatCaps(unit, battleUnit)
+jumpToHack(Col_CheckBattleUnitStatCaps)
+ORG 0x0181C8                    // UnitCheckStatCaps(unit)
+jumpToHack(Col_UnitCheckStatCaps)
+POP
+
+// Level-up stat choice (spec 23), run from the Skill System's post-combat loop
+// (Col_PostCombatStatChoice, listed in PostBattleCalcLoop.event).
+ALIGN 4
+ColEvt_StatChoice:
+ASMC Col_StartStatChoices|1
+NoFade
+ENDA

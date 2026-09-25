@@ -36,9 +36,12 @@ static void ClearDef(struct UnitDefinition *d)
         p[i] = 0;
 }
 
-static struct Unit *RosterUnit(int slot)
+struct Unit *Col_RosterUnit(int slot)
 {
-    int pool = gColRun.roster[slot];
+    int pool;
+    if (slot < 0 || slot >= COL_MAX_ROSTER)
+        return NULL;
+    pool = gColRun.roster[slot];
     if (pool >= COL_POOL_SIZE)
         return NULL;
     return GetUnitFromCharIdAndFaction(gColPool[pool].charId, FACTION_BLUE);
@@ -58,31 +61,49 @@ static void StartRun(void)
         gColRun.roster[picked] = (u8)pool;
         gColRun.deployed[picked] = (u8)picked;
         gColRun.hp[picked] = 0;                  /* 0 = full (not yet in a battle) */
+        gColRun.choiceLevel[picked] = 0;         /* set when the unit is created */
         picked++;
     }
     gColRun.rosterCount = 3;
 }
 
-/* Create the unit for roster slot `slot` if it doesn't exist yet (level 5, spec 21). */
-static struct Unit *EnsureRosterUnit(int slot)
+/* A pool character as a new blue unit: level 5 with the character's level-5 bases (spec 21;
+ * CharacterTable.csv holds them at base level 5, so no autolevel), EXP 0, starting items. */
+struct Unit *Col_LoadPoolUnit(int pool)
 {
-    struct Unit *unit = RosterUnit(slot);
     const struct ColPoolEntry *e;
     struct UnitDefinition def;
+    struct Unit *unit;
     int i;
 
-    if (unit)
-        return unit;
-    e = &gColPool[gColRun.roster[slot]];
+    if (pool < 0 || pool >= COL_POOL_SIZE)
+        return NULL;
+    e = &gColPool[pool];
     ClearDef(&def);
     def.charIndex = e->charId;
     def.classIndex = e->classId;
-    def.autolevel = 1;
+    def.autolevel = 0;
     def.allegiance = FACTION_BLUE_ALLEGIANCE;
     def.level = COL_START_LEVEL;
     for (i = 0; i < 4; i++)
         def.items[i] = e->items[i];
-    return LoadUnit(&def);
+    unit = LoadUnit(&def);
+    if (unit)
+        unit->exp = 0;              /* vanilla disables EXP only at level 20; our cap is 30 */
+    return unit;
+}
+
+/* Create the unit for roster slot `slot` if it doesn't exist yet. */
+static struct Unit *EnsureRosterUnit(int slot)
+{
+    struct Unit *unit = Col_RosterUnit(slot);
+
+    if (unit)
+        return unit;
+    unit = Col_LoadPoolUnit(gColRun.roster[slot]);
+    if (unit)
+        gColRun.choiceLevel[slot] = (u8)unit->level;    /* no stat choice owed for level 5 */
+    return unit;
 }
 
 static int EnemyLevel(int encounter)
@@ -163,7 +184,7 @@ void Col_OnBattleWon(void)
 
         if (pool >= COL_POOL_SIZE)
             continue;
-        unit = RosterUnit(slot);
+        unit = Col_RosterUnit(slot);
         if (!unit || (unit->state & US_DEAD) || unit->curHP <= 0) {
             Col_RosterRemoveDead(slot);
             continue;

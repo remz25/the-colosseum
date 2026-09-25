@@ -12,6 +12,9 @@
  * game never writes here (TEST_STATUS.md). */
 #define COL_RAM_BASE        0x0203F600
 #define COL_RAM_SIZE        0x800
+/* Layout: 0x000-0x03F run state (saved), 0x040-0x0FF reserved for run data,
+ *         0x100-0x13F UI scratch (not saved; only valid while a COLISEUM menu is open). */
+#define COL_UI_SCRATCH      (COL_RAM_BASE + 0x100)
 
 /* ---- Rules fixed by the spec (docs/COLISEUM_SPEC.md; changing them needs developer approval) ---- */
 #define COL_MAX_ROSTER          5    /* spec 8  */
@@ -23,7 +26,9 @@
 #define COL_TURN_LIMIT          20   /* spec 14 */
 #define COL_GOLD_MAX            999999
 #define COL_START_LEVEL         5    /* spec 21 */
-#define COL_MAX_LEVEL           30   /* spec 21 */
+#define COL_MAX_LEVEL           30   /* spec 21 (Class_Level_Cap_Table: 30 for every class) */
+#define COL_STAT_CEILING        127  /* spec 21: no stat caps; 127 is the s8 limit (GAME_DESIGN.md) */
+#define COL_STAT_CHOICES        3    /* spec 23: level-up choices offered */
 
 enum ColEncounter {
     COL_ENC_NORMAL = 0,
@@ -35,7 +40,7 @@ enum ColEncounter {
  * EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event). Fixed size: new fields go
  * into `reserved` and bump COL_RUN_VERSION. */
 #define COL_RUN_MAGIC    0x524C4F43   /* "COLR" */
-#define COL_RUN_VERSION  2
+#define COL_RUN_VERSION  3
 #define COL_RUN_SIZE     64
 
 struct ColRunState {
@@ -58,7 +63,9 @@ struct ColRunState {
     /* 20 */ u32 seed;              /* run seed */
     /* 24 */ u32 battlesWon;        /* total victories this run (history) */
     /* 28 */ u8  hp[COL_MAX_ROSTER];/* HP after the last battle per roster slot; 0 = full (spec 20) */
-    /* 2D */ u8  reserved[COL_RUN_SIZE - 0x2D];
+    /* 2D */ u8  choiceLevel[COL_MAX_ROSTER]; /* level up to which the unit's stat choices were
+                                                  made (spec 23); below its level = choice owed */
+    /* 32 */ u8  reserved[COL_RUN_SIZE - 0x32];
 };
 
 /* The playable pool (pool.c). */
@@ -88,6 +95,22 @@ void Col_AutoDeploy(void);             /* fill empty deployment slots from livin
 /* battle.c (ASMC from the battle chapter's events) */
 void Col_PrepareBattle(void);
 void Col_OnBattleWon(void);
+struct Unit;
+struct Unit *Col_RosterUnit(int slot);         /* the map unit of roster slot `slot`, or NULL */
+struct Unit *Col_LoadPoolUnit(int pool);       /* creates pool character `pool` at level 5 (blue) */
+
+/* units/stats.c: stats without caps (spec 21) and level-up stat choices (spec 23) */
+enum ColStat {
+    COL_STAT_HP, COL_STAT_STR, COL_STAT_MAG, COL_STAT_SKL,
+    COL_STAT_SPD, COL_STAT_LCK, COL_STAT_DEF, COL_STAT_RES,
+    COL_STAT_COUNT
+};
+int  Col_GetStat(struct Unit *unit, int stat);          /* the unit's own stat (no bonuses) */
+int  Col_AddStat(struct Unit *unit, int stat, int n);   /* returns the amount actually added */
+void Col_RollStatChoices(u8 out[COL_STAT_CHOICES]);     /* random stats, duplicates allowed */
+const char *Col_StatName(int stat);
+int  Col_FindPendingChoice(void);                       /* roster slot owed a choice, or -1 */
+void Col_TakeStatChoice(int slot, int stat);            /* applies +1 and records the level */
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

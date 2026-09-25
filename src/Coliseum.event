@@ -15,4 +15,7 @@ ALIGN 4
 #include "battle/BattleChapter.event"
 #include "battle/SkipWorldMap.event"
 
+// Units: no stat caps, level-up stat choice
+#include "units/Units.event"
+
 #endif // COLISEUM_INSTALLER

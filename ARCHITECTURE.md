@@ -61,6 +61,14 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 - **Skill System clobbers r11**: `BattleGenerate` (the battle calc loop) returns with r11 = 0
   instead of preserving it. All COLISEUM C is compiled with `-ffixed-r11` (scripts/build.py), so
   our code never keeps a value in r11. Found by the combat tests (a held pointer became garbage).
+- **No stat caps**: `src/units/Units.event` redirects CheckBattleUnitStatCaps (0x0802BF24) and
+  UnitCheckStatCaps (0x080181C8) to `src/units/stats.c`; class caps are 127 in the tables.
+  The Skill System's saves already store full stat bytes (checked by the runner).
+- **Level-up choice hook**: one line added to upstream
+  `EngineHacks/Necessary/CalcLoops/PostBattleCalcLoop/PostBattleCalcLoop.event`
+  (`POIN Col_PostCombatStatChoice`); plus a turn event and the battle ending (ASMC).
+- **RAM block layout**: 0x000-0x03F run state (saved), 0x040-0x0FF reserved, 0x100-0x13F UI
+  scratch (menus only).
 - `--test` builds are debug builds (debug startup menu at boot); the player ROM has no debug menu.
 
 ## GBA constraints

@@ -36,8 +36,22 @@ built, working in game, tested, documented.
       comes with Elites/Bosses (spec: Phase 11/12)
 - [x] RAM block: nothing beyond the 64-byte run state written after boot, battle load and combat
       tests (automated). A whole played battle is not yet checked automatically.
-- Moved on: all-deployed-dead with living reserves (currently FE8 game over) -> ask before Phase 5;
+- Moved on: all-deployed-dead with living reserves -> answered: the run ends (GAME_DESIGN.md);
   post-battle menu instead of the save menu -> Phase 10; enemy factions per floor -> Phase 11.
 
-## Phase 4-17
+## Phase 4: Units — DONE (2026-09-25)
+- [x] 15 characters (spec 10): FE8 characters, one per listed class + a second Myrmidon (Marisa
+      replaces Ross: Journeyman trainees promote at 10); distinct personal skills
+- [x] Level-5 bases and personal growths incl. Magic (CharacterTable.csv, MagCharEditor.csv);
+      casters' Str/Mag split; derivation in BALANCE_NOTES.md
+- [x] Level 5 start (no autolevel), level cap 30 for every class (ClassLevelCapTable.csv)
+- [x] No stat caps: class caps 127, vanilla cap functions replaced (Luck no longer capped at 30);
+      stats above 31 survive suspend and game save (runner check)
+- [x] EXP: FE8's formula (level, enemy level/class power, kills, bosses) kept; EXP continues past 20
+- [x] Level-up = growth rolls + choose 1 of 3 random +1 stats (duplicates allowed); menu after
+      player-phase battles, at the start of each player phase and at battle end (in game: player
+      phase checked; the enemy-phase path uses the same function but was not played through)
+- Moved on: EXP amounts -> Phase 16 balance; names/dialogue -> Phase 14; skill pass -> Phase 6.
+
+## Phase 5-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

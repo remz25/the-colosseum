@@ -1,5 +1,14 @@
 # COLISEUM: Changelog
 
+## 2026-09-25 (Phase 4)
+- 15-character pool finalized (Marisa replaces Ross); all start at level 5 with level-5 bases and
+  personal growths (tables); casters use the Str/Mag split; distinct personal skills.
+- Level cap 30 for every class; no stat caps (class caps 127; `src/units/stats.c` replaces
+  FE8's two cap functions).
+- Level-up stat choice (`src/units/stat_choice.c`): pick 1 of 3 random +1 stats after the growth
+  rolls; run state v3 tracks choices per roster slot.
+- Tests: 6 unit map tests; the runner checks stats above 31 through suspend and game save.
+
 ## 2026-09-25 (Phase 3)
 - Battle chapter (`src/battle/BattleChapter.event`, `src/core/battle.c`): chapter slot 0 as the
   arena; New Game starts a run with 3 random pool characters (placeholder pool of 15 vanilla

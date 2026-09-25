@@ -114,10 +114,36 @@ static int Test_SramRoundTrip(void)
     return 0;
 }
 
+/* spec 12: deaths are permanent; a reserve steps in; 2v3 when only two remain */
+static int Test_Deaths(void)
+{
+    int d, deployedCount;
+
+    Col_RunNew(1);
+    gColRun.roster[0] = 3; gColRun.roster[1] = 7; gColRun.roster[2] = 11; gColRun.roster[3] = 14;
+    gColRun.rosterCount = 4;
+    gColRun.deployed[0] = 0; gColRun.deployed[1] = 1; gColRun.deployed[2] = 2;
+
+    Col_RosterRemoveDead(1);                         /* pool 7 dies; reserve (slot 3) deploys */
+    CHECK(gColRun.deadMask == (1 << 7));
+    CHECK(gColRun.roster[1] == 0xFF && gColRun.rosterCount == 3);
+    CHECK(gColRun.deployed[1] == 3);
+
+    Col_RosterRemoveDead(0);
+    Col_RosterRemoveDead(0);                         /* already gone: no change */
+    CHECK(gColRun.rosterCount == 2);
+    for (deployedCount = 0, d = 0; d < COL_MAX_DEPLOY; d++)
+        if (gColRun.deployed[d] != 0xFF)
+            deployedCount++;
+    CHECK(deployedCount == 2);                       /* 2v3 */
+    CHECK(gColRun.deadMask == ((1 << 7) | (1 << 3)));
+    return 0;
+}
+
 typedef int (*ColTestFn)(void);
 static const ColTestFn kTests[] = {
     Test_NewRun, Test_FloorSequence, Test_Recover, Test_Gold, Test_InvalidLoadClears,
-    Test_SramRoundTrip,
+    Test_SramRoundTrip, Test_Deaths,
 };
 
 int ColTest_Count(void)

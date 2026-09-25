@@ -1,0 +1,98 @@
+// COLISEUM battle chapter (Phase 3): one reusable chapter for every fight, in chapter slot 0
+// (the Prologue's slot, which "New Game" starts; event ID 7). Replaces the Skill System test
+// map (USE_TEST_MAP is off in EngineHacks/Config.event).
+//
+// Beginning: Col_PrepareBattle (src/core/battle.c) starts a run if none is active, places the
+//   deployed roster (3), keeps reserves off the map, and creates the enemies (3v3, spec 46).
+// Objective: defeat all enemies (spec 13): goal type 1 (rout); vanilla's DefeatAll misc event
+//   (AFEV 3 Ending 6: flag 6 = no enemies left) runs the ending.
+// Turn limit (spec 14): warnings on turns 15, 18, 19; defeat after turn 20.
+// Ending: Col_OnBattleWon records the victory, deaths and HP, then the chapter restarts for the
+//   next fight (the post-battle menu comes in Phase 10).
+
+#define ColBattleChapter 0
+#define ColBattleEventID 7
+
+// ---- Chapter data: vanilla chapter 67's hall as the arena ----
+// bytes 0x04-0x0B: object tileset (u16), palette, tile config, map, tile animation x2, map changes
+PUSH
+ORG ChapterDataTable + ColBattleChapter * ChapterDataTableEntSize + 0x04
+BYTE 0x18 0x00 0x48 0x1A 0xDB 0x1C 0x00 0x00      // chapter 67's (map changes: none)
+ORG ChapterDataTable + ColBattleChapter * ChapterDataTableEntSize + 0x88
+SHORT 0x1A4                                       // objective: vanilla "Rout the enemy"
+SHORT 0x19E                                       // goal window: vanilla "Defeat enemy"
+BYTE 1                                            // goal type: rout
+POP
+
+setText(0x160, ColChapterName)                    // chapter title card
+ALIGN 4
+ColChapterName:
+String("The Coliseum")
+BYTE 0
+
+EventPointerTable(ColBattleEventID, ColBattle_Block)
+
+ALIGN 4
+ColBattle_Block:
+POIN ColBattle_Turn
+POIN ColBattle_Empty            // character (talk) events
+POIN ColBattle_Empty            // location events
+POIN ColBattle_Misc
+POIN ColBattle_Empty ColBattle_Empty ColBattle_Empty ColBattle_Empty
+POIN ColBattle_Traps ColBattle_Traps
+POIN ColBattle_NoUnits ColBattle_NoUnits   // units are created by Col_PrepareBattle
+WORD 0 0 0 0 0 0
+POIN ColBattle_Beginning ColBattle_Ending
+
+// TURN flag event [turn, 0 = that turn only] phase (0 = player)
+ALIGN 4
+ColBattle_Turn:
+TURN 0 ColBattle_Turn15 [15,0] 0
+TURN 0 ColBattle_Turn18 [18,0] 0
+TURN 0 ColBattle_Turn19 [19,0] 0
+TURN 0 ColBattle_TimeUp [21,0] 0          // turn 20 has ended: defeat
+END_MAIN
+
+ALIGN 4
+ColBattle_Misc:
+AFEV 3 ColBattle_Ending 6                 // flag 6 = no enemies left: the ending (vanilla DefeatAll)
+CauseGameOverIfLordDies                   // runs FE8's game over when flag 0x65 is set
+END_MAIN
+
+ALIGN 4
+ColBattle_Empty:
+END_MAIN
+
+ColBattle_Traps:
+ENDTRAP
+ALIGN 4
+
+ColBattle_NoUnits:
+UNIT
+ALIGN 4
+
+ColBattle_Beginning:
+ASMC Col_PrepareBattle|1
+ENDA
+
+ColBattle_Ending:
+ASMC Col_OnBattleWon|1
+MNC2 ColBattleChapter                    // next fight
+ENDA
+
+ColBattle_Turn15:
+NOTIFY ColText_Turn15 0x5A 0
+ENDA
+
+ColBattle_Turn18:
+NOTIFY ColText_Turn18 0x5A 0
+ENDA
+
+ColBattle_Turn19:
+NOTIFY ColText_Turn19 0x5A 0
+ENDA
+
+ColBattle_TimeUp:
+NOTIFY ColText_TimeUp 0x5A 0
+GameOver                                 // spec 14: DEFEAT (misc events only check flag 0x65
+ENDA                                     // after a unit acts, so call FE8's game over directly)

@@ -45,6 +45,24 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 | 20-turn limit | Turn events (warnings at 15, 18, 19; defeat after 20). |
 | Boss phase 2 | Battle hook when HP crosses 50%. |
 
+## Engine notes (verified in mGBA / by tests)
+
+- **Battle chapter**: chapter slot 0 (the one New Game starts), event ID 7, vanilla chapter 67's
+  hall as the arena (`src/battle/BattleChapter.event`). Win: vanilla DefeatAll (`AFEV 3 Ending 6`).
+  The ending records the result (`Col_OnBattleWon`) and restarts the same chapter (`MNC2 0`).
+- **No intro or world map**: `src/battle/SkipWorldMap.event` replaces the intro monologue and world
+  map calls in `gProcScr_GameControl` (0x085918AC, 0x085918BC) with a no-op; New Game and every
+  chapter switch go straight to the battle map. The vanilla post-chapter save menu still runs until
+  Phase 10.
+- **Turn events** fire at the start of the player phase. A flag-0x65 misc event (`CauseGameOverIfLordDies`)
+  is only checked after a unit acts, so the turn limit calls FE8's game over directly (`GameOver`).
+- **Skill System battle hits**: the hit buffer is at `0x0203AAC0`, 8 bytes per hit, 31 max
+  (`EngineHacks/SkillSystem/Internals/repointbuffer.event`), not vanilla's `gBattleHitArray`.
+- **Skill System clobbers r11**: `BattleGenerate` (the battle calc loop) returns with r11 = 0
+  instead of preserving it. All COLISEUM C is compiled with `-ffixed-r11` (scripts/build.py), so
+  our code never keeps a value in r11. Found by the combat tests (a held pointer became garbage).
+- `--test` builds are debug builds (debug startup menu at boot); the player ROM has no debug menu.
+
 ## GBA constraints
 
 - CPU 16.78 MHz: AI search must be budgeted (heuristic scoring + limited look-ahead).

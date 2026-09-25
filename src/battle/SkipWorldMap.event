@@ -1,0 +1,13 @@
+// COLISEUM has no story: New Game and every chapter switch go straight to the battle map.
+// Vanilla gProcScr_GameControl runs, before each chapter:
+//   0x085918AC  PROC_CALL(GameCtrlStartIntroMonologue)          // the "continent of Magvel" intro
+//   0x085918BC  PROC_START_CHILD_BLOCKING(ProcScr_WorldMapWrapper)
+// Both become PROC_CALL(Col_NoStory) (src/core/battle.c). EndWM, which runs next, is safe without a world
+// map (it ends procs that don't exist and resets the backgrounds).
+
+PUSH
+ORG 0x5918AC
+SHORT 2 0; POIN Col_NoStory|1
+ORG 0x5918BC
+SHORT 2 0; POIN Col_NoStory|1
+POP

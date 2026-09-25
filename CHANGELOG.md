@@ -1,5 +1,17 @@
 # COLISEUM: Changelog
 
+## 2026-09-25 (Phase 3)
+- Battle chapter (`src/battle/BattleChapter.event`, `src/core/battle.c`): chapter slot 0 as the
+  arena; New Game starts a run with 3 random pool characters (placeholder pool of 15 vanilla
+  characters, `src/core/pool.c`); 3 enemies scaled by floor/wins/encounter; rout objective.
+- New Game skips the Magvel intro and world map (`src/battle/SkipWorldMap.event`).
+- 20-turn limit: warnings on turns 15/18/19, game over after turn 20.
+- Victory records the win, deaths and HP, then the next fight starts (after FE8's save menu).
+- Combat tests (`src/tests/test_combat.c`) run on the battle map; `tests/run_tests.py` now boots
+  New Game into the arena first.
+- Found and worked around: the Skill System's battle calc loop zeroes r11 -> `-ffixed-r11` for all
+  COLISEUM C. The Skill System's battle hit buffer lives at `0x0203AAC0` (8 bytes per hit).
+
 ## 2026-09-25 (later)
 - Str/Mag split on. `build.py --debug` (debug menu, separate ROM) and `--test` (on-target tests).
 - C pipeline: `src/**/*.c` -> arm-none-eabi-gcc -> lyn -> `build/Coliseum.lyn.event`, installed by

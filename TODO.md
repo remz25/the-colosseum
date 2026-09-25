@@ -24,14 +24,20 @@ built, working in game, tested, documented.
 - Moved on: RAM-block check through a full battle -> Phase 3 (needs a battle); Legacy save block ->
   Phase 13; debug commands are added with each system they control (spec 81).
 
-## Phase 3: Tactical combat — IN PROGRESS
-- [ ] Battle chapter: one reusable chapter; player units from the run's deployed roster, enemies from
-      the run state (3v3); objective: defeat all enemies (no retreat)
-- [ ] 20-turn limit: warnings on turns 15, 18, 19; defeat after turn 20
-- [ ] Victory -> run state (Col_OnVictory) -> next battle (post-battle menu comes in Phase 10)
-- [ ] FE combat verified by tests: damage, hit, crit, doubling (AS 4), weapon triangle, terrain, death
-- [ ] Enemy AI foundation
-- [ ] RAM block untouched through a full battle
+## Phase 3: Tactical combat — DONE (2026-09-25)
+- [x] Battle chapter: one reusable chapter (slot 0); deployed roster placed, reserves hidden, 3
+      enemies from the run state (level by floor/wins, +3 Elite, +6 Boss); objective: rout
+- [x] New Game skips the intro and world map straight into the arena
+- [x] 20-turn limit: popups on turns 15, 18, 19; "Time is up." + game over after turn 20 (in game)
+- [x] Victory -> Col_OnBattleWon (HP kept, deaths removed) -> save menu -> next fight (in game)
+- [x] FE combat verified by tests: damage, hit, avoid, crit (x3), doubling (AS 4 vs 3), weapon
+      triangle, terrain, weight, Str/Mag, zero damage, death (6 combat tests on the battle map)
+- [x] Enemy AI foundation: vanilla AI (ai bytes 0 = charge and attack), seen in game; the scoring AI
+      comes with Elites/Bosses (spec: Phase 11/12)
+- [x] RAM block: nothing beyond the 64-byte run state written after boot, battle load and combat
+      tests (automated). A whole played battle is not yet checked automatically.
+- Moved on: all-deployed-dead with living reserves (currently FE8 game over) -> ask before Phase 5;
+  post-battle menu instead of the save menu -> Phase 10; enemy factions per floor -> Phase 11.
 
 ## Phase 4-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

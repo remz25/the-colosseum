@@ -3,10 +3,11 @@
 
     py -3 scripts/build.py --test && py -3 tests/run_tests.py
 
-Starts a separate mGBA with its debugger on a temporary copy of Coliseum_test.gba, boots
-the game into its main loop, then calls ColTest_Count() and ColTest_Run(i) for every test
-through the debugger. A test returns 0 on success or the source line of its failed check.
-Exit code 0 only if every test passed."""
+Starts a separate mGBA with its debugger on a temporary copy of Coliseum_test.gba (fresh save
+file), boots the game, starts a New Game into the COLISEUM battle chapter, then calls the
+on-target tests through the debugger: ColTest_Run(i) (run state) and ColTest_MapRun(i)
+(combat, needs the battle map). A test returns 0 on success or the source line of its failed
+check. Exit code 0 only if every test passed."""
 import shutil
 import sys
 import tempfile
@@ -20,6 +21,10 @@ ROOT = Path(__file__).resolve().parent.parent
 ROM = ROOT / "Coliseum_test.gba"
 SYM = ROOT / "Coliseum_test.sym"
 BOOT_FRAMES = 120
+# Title -> New Game -> the battle chapter on a fresh save: START past the intro and title, then
+# A through the menus (the boot menu, New Game, ...) until the beginning event starts the run.
+TITLE_KEYS = [(180, "START", 5), (120, "START", 5)]
+MENU_A_PRESSES = 20
 WRITE_GAME_SAVE = 0x080A5011     # vanilla WriteGameSave(slot), hooked by the Expanded Modular Save
 READ_GAME_SAVE = 0x080A5129      # vanilla ReadGameSave(slot)
 COL_RAM = 0x0203F600             # gColRun (src/include/coliseum.h)
@@ -62,12 +67,27 @@ def save_integration(g, syms) -> list[str]:
     return problems
 
 
+def enter_battle(g, syms) -> str | None:
+    """New Game into the battle chapter; returns a problem description or None."""
+    for wait, key, hold in TITLE_KEYS:
+        g.frames(wait)
+        g.frames(hold, key)
+    for _ in range(MENU_A_PRESSES):
+        g.frames(85)
+        ram = g.read(COL_RAM, 0x40)
+        if ram[0:4] == b"COLR" and ram[6] == 1 and ram[0x0D] == 3:   # active, 3 in the roster
+            g.frames(120)                                        # beginning event finishes
+            return None
+        g.frames(5, "A")
+    return f"the battle chapter did not start a run (run state {g.read(COL_RAM, 0x10).hex()})"
+
+
 def main() -> int:
     if not ROM.is_file() or not SYM.is_file():
         print("Build the test ROM first: py -3 scripts/build.py --test")
         return 2
     syms = read_sym(SYM)
-    for name in ("ColTest_Count", "ColTest_Run"):
+    for name in ("ColTest_Count", "ColTest_Run", "ColTest_MapCount", "ColTest_MapRun"):
         if name not in syms:
             print(f"{name} not in {SYM.name}: was the test build made with --test?")
             return 2
@@ -86,15 +106,40 @@ def main() -> int:
             print("  [FAIL] RAM block 0x0203F600-0x0203FDFF was written by the game before COLISEUM code ran")
         else:
             print("  [PASS] RAM block untouched after boot (0x0203F600-0x0203FDFF all zero)")
+
+        problem = enter_battle(g, syms)
+        if problem:
+            print(f"  [FAIL] {problem}")
+            return 1
+        print("  [PASS] New Game starts a run and loads the battle chapter")
+        block = g.read(COL_RAM, 0x800)
+        if any(block[0x40:]):
+            failures += 1
+            print("  [FAIL] RAM block beyond the run state was written during the battle")
+        else:
+            print("  [PASS] RAM block beyond the 64-byte run state untouched in battle")
+
+        count = g.call(syms["ColTest_MapCount"])
+        print(f"Running {count} combat test(s) on the battle map")
+        for i in range(count):
+            r = g.call(syms["ColTest_MapRun"], i)
+            if r == 0:
+                print(f"  [PASS] combat test {i}")
+            else:
+                failures += 1
+                where = {0xFFFFFFFF: "invalid test index", 0xFFFFFFFE: "no units on the map"}.get(
+                    r, f"check at src/tests/test_combat.c line {r}")
+                print(f"  [FAIL] combat test {i}: {where}")
+
         count = g.call(syms["ColTest_Count"])
-        print(f"Running {count} on-target test(s)")
+        print(f"Running {count} run-state test(s)")
         for i in range(count):
             r = g.call(syms["ColTest_Run"], i)
             if r == 0:
                 print(f"  [PASS] test {i}")
             else:
                 failures += 1
-                where = "invalid test index" if r == 0xFFFFFFFF else f"check at src/tests line {r}"
+                where = "invalid test index" if r == 0xFFFFFFFF else f"check at src/tests/test_run_state.c line {r}"
                 print(f"  [FAIL] test {i}: {where}")
         problems = save_integration(g, syms)
         if problems:

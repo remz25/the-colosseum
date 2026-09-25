@@ -11,4 +11,8 @@
 ALIGN 4
 #include "../build/Coliseum.lyn.event"
 
+// The reusable battle chapter (chapter slot 0)
+#include "battle/BattleChapter.event"
+#include "battle/SkipWorldMap.event"
+
 #endif // COLISEUM_INSTALLER

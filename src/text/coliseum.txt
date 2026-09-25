@@ -1,0 +1,11 @@
+## ColText_Turn15
+5 turns remaining.[X]
+
+## ColText_Turn18
+2 turns remaining.[X]
+
+## ColText_Turn19
+FINAL TURN.[X]
+
+## ColText_TimeUp
+Time is up.[X]

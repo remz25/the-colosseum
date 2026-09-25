@@ -22,6 +22,8 @@
 #define COL_NORMAL_FIGHTS_FLOOR 9    /* spec 5: battles 1-9, then the boss is fight 10 */
 #define COL_TURN_LIMIT          20   /* spec 14 */
 #define COL_GOLD_MAX            999999
+#define COL_START_LEVEL         5    /* spec 21 */
+#define COL_MAX_LEVEL           30   /* spec 21 */
 
 enum ColEncounter {
     COL_ENC_NORMAL = 0,
@@ -33,7 +35,7 @@ enum ColEncounter {
  * EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event). Fixed size: new fields go
  * into `reserved` and bump COL_RUN_VERSION. */
 #define COL_RUN_MAGIC    0x524C4F43   /* "COLR" */
-#define COL_RUN_VERSION  1
+#define COL_RUN_VERSION  2
 #define COL_RUN_SIZE     64
 
 struct ColRunState {
@@ -55,8 +57,17 @@ struct ColRunState {
     /* 1C */ u32 gold;
     /* 20 */ u32 seed;              /* run seed */
     /* 24 */ u32 battlesWon;        /* total victories this run (history) */
-    /* 28 */ u8  reserved[COL_RUN_SIZE - 0x28];
+    /* 28 */ u8  hp[COL_MAX_ROSTER];/* HP after the last battle per roster slot; 0 = full (spec 20) */
+    /* 2D */ u8  reserved[COL_RUN_SIZE - 0x2D];
 };
+
+/* The playable pool (pool.c). */
+struct ColPoolEntry {
+    u8 charId;
+    u8 classId;                     /* 0 = the character's default class */
+    u8 items[4];
+};
+extern const struct ColPoolEntry gColPool[COL_POOL_SIZE];
 
 #define gColRun (*(struct ColRunState *)COL_RAM_BASE)
 
@@ -71,6 +82,12 @@ int  Col_AddGold(int amount);          /* returns the gold actually added (0 if 
 int  Col_SpendGold(u32 amount);        /* 1 if paid */
 int  Col_CanRecover(u32 cost);
 int  Col_UseRecover(u32 cost);         /* 1 if used: pays, spends a charge (healing is done by the caller) */
+void Col_RosterRemoveDead(int slot);   /* spec 12: gone for this run; frees the slot and its deployment */
+void Col_AutoDeploy(void);             /* fill empty deployment slots from living reserves */
+
+/* battle.c (ASMC from the battle chapter's events) */
+void Col_PrepareBattle(void);
+void Col_OnBattleWon(void);
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

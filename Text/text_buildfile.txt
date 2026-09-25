@@ -14,6 +14,9 @@ Learned  [X]
 
 #include "statscreen_text.txt"
 
+// COLISEUM text
+#include "../src/text/coliseum.txt"
+
 
 
 #0xd4c LikesText

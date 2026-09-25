@@ -111,6 +111,54 @@ int Col_UseRecover(u32 cost)
     return 1;
 }
 
+/* ---- roster ---- */
+
+/* A roster member died (spec 12): marked dead for the run (never recruitable again), the slot
+ * and any deployment of it are freed, and a living reserve takes the deployment. */
+void Col_RosterRemoveDead(int slot)
+{
+    int d, pool;
+
+    if (slot < 0 || slot >= COL_MAX_ROSTER || gColRun.roster[slot] >= COL_POOL_SIZE)
+        return;
+    pool = gColRun.roster[slot];
+    gColRun.deadMask |= (u16)(1 << pool);
+    gColRun.roster[slot] = 0xFF;
+    gColRun.hp[slot] = 0;
+    if (gColRun.rosterCount)
+        gColRun.rosterCount--;
+    for (d = 0; d < COL_MAX_DEPLOY; d++)
+        if (gColRun.deployed[d] == slot)
+            gColRun.deployed[d] = 0xFF;
+    Col_AutoDeploy();
+}
+
+static int IsDeployed(int slot)
+{
+    int d;
+    for (d = 0; d < COL_MAX_DEPLOY; d++)
+        if (gColRun.deployed[d] == slot)
+            return 1;
+    return 0;
+}
+
+/* Until the deployment screen exists (Phase 5), empty deployment slots take living reserves in
+ * roster order. With fewer than 3 living units the battle is 2v3 or 1v3 (spec 12). */
+void Col_AutoDeploy(void)
+{
+    int d, slot;
+
+    for (d = 0; d < COL_MAX_DEPLOY; d++) {
+        if (gColRun.deployed[d] != 0xFF)
+            continue;
+        for (slot = 0; slot < COL_MAX_ROSTER; slot++)
+            if (gColRun.roster[slot] < COL_POOL_SIZE && !IsDeployed(slot)) {
+                gColRun.deployed[d] = (u8)slot;
+                break;
+            }
+    }
+}
+
 /* ---- save chunks ---- */
 
 void Col_SaveRunChunk(void *sram, unsigned size)

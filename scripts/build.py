@@ -46,7 +46,11 @@ ARM_TC = Path(os.environ.get("ARM_TOOLCHAIN",
               r"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 mpacbti-rel1\bin"))
 CFLAGS = ["-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork", "-mtune=arm7tdmi", "-mlong-calls", "-O2",
           "-ffreestanding", "-fno-builtin", "-fno-tree-loop-distribute-patterns", "-fno-common",
-          "-Wall", "-Wextra", "-Wno-unused-parameter", "-Werror", "-std=gnu11"]
+          "-Wall", "-Wextra", "-Wno-unused-parameter", "-Werror", "-std=gnu11",
+          # The Skill System's battle calc loop (BattleGenerate and everything calling it) returns
+          # with r11 zeroed instead of preserved (seen in tests/run_tests.py's combat tests), so
+          # our code must never keep a value in r11 across an engine call.
+          "-ffixed-r11"]
 
 
 class BuildError(Exception):

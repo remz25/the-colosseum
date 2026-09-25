@@ -1,6 +1,6 @@
 # CLAUDE.md: COLISEUM (FE8 roguelike on the FE8 Skill System)
 
-**Read first each session:** `TODO.md` (where we are), `GAME_DESIGN.md` (decisions),
+**Read first each session:** `docs/HANDOFF.md` (where we stopped, what is next), `TODO.md` (status), `GAME_DESIGN.md` (decisions),
 `docs/COLISEUM_SPEC.md` (the master spec, source of truth), `ARCHITECTURE.md`.
 
 ## Rules

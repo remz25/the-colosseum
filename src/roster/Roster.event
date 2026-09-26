@@ -5,4 +5,6 @@ ORG 0x030CF4                    // InitPlayConfig: New Game starts a fresh run
 jumpToHack(Col_InitPlayConfig)
 ORG 0x00D390                    // CallGameOverEvent: a lost battle ends the run
 jumpToHack(Col_OnGameOver)
+ORG 0x018FF0                    // CountAvailableBlueUnits: hidden reserves don't count
+jumpToHack(Col_CountAvailableBlueUnits)
 POP

@@ -90,6 +90,6 @@ mGBA, not only compiled.
 | Champion fight played through; Mender actually healing; Champion weapon drop in game; gold drop notice; drop claimed from an enemy-phase kill | NOT VERIFIED in game | covered by the on-target tests where possible | |
 | All deployed units dead -> run over: enemy-phase deaths (3 units, and 3 + a reserve), last unit killed by a counter on the player phase | PASS (in game) | test ROM, scripted; each reached FE8's GAME OVER and cleared the run | 2026-09-26 |
 | Turn-start safety net (no blue unit fighting on the map -> run lost + GAME OVER; no false trigger on turn 1) | PASS (in game) + map test 58 | event run directly with every deployed unit dead | 2026-09-26 |
-| Developer's report "battle went on to turn 20 after everyone died" | NOT REPRODUCED | the safety net covers it; cause unknown | |
+| Developer's report "battle went on to turn 20 after everyone died" (reserves in the roster) | FIXED (in game) | cause: FE8 clears the reserves' not-deployed flag after the beginning event, so its unit count included hidden reserves; CountAvailableBlueUnits replaced. Reproduced with a reserve recruited before the battle, then fixed: GAME OVER right after the enemy phase | 2026-09-26 |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

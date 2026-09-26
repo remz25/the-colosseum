@@ -211,6 +211,7 @@ int Test_DropKiller(struct Unit *sA, struct Unit *sT)
 /* The turn-start safety net counts only blue units fighting on the map (not reserves, not
  * the dead): 0 means the run is over. */
 void Col_CheckDeployedAlive(struct Proc *eventProc);
+int  Col_CountAvailableBlueUnits(void);
 
 int Test_DeployedAlive(struct Unit *sA, struct Unit *sT)
 {
@@ -233,7 +234,12 @@ int Test_DeployedAlive(struct Unit *sA, struct Unit *sT)
     sA->state &= ~US_DEAD;                                              /* a reserve doesn't count */
     sA->state |= US_HIDDEN | US_NOT_DEPLOYED;
     Col_CheckDeployedAlive(NULL);
-    if (gEventSlots[0xC] != 0) { result = __LINE__; goto out; }
+    if (gEventSlots[0xC] != 0 || Col_CountAvailableBlueUnits() != 0) { result = __LINE__; goto out; }
+    sA->state = US_HIDDEN;                  /* a reserve after the beginning event (FE8 clears */
+    Col_CheckDeployedAlive(NULL);           /* not-deployed): still doesn't count */
+    if (gEventSlots[0xC] != 0 || Col_CountAvailableBlueUnits() != 0) { result = __LINE__; goto out; }
+    sA->state = US_HIDDEN | US_RESCUED;     /* carried by an ally: fighting */
+    if (Col_CountAvailableBlueUnits() != 1) { result = __LINE__; goto out; }
 out:
     for (i = 1; i < 0x40; i++) {
         struct Unit *u = GetUnit(FACTION_BLUE + i);

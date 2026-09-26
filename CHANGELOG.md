@@ -1,8 +1,11 @@
 # COLISEUM: Changelog
 
-## 2026-09-26 (run-over safety net)
-- The developer saw a battle continue to the turn limit after every unit died. Not reproduced;
-  the player-phase turn event now also ends the run when no deployed unit is alive
+## 2026-09-26 (fix: the run didn't end when every deployed unit died)
+- Cause: FE8 clears every blue unit's not-deployed flag after the battle's beginning event, so
+  the hidden reserves counted as available units and FE8's game over (no units left) never came;
+  the battle went on to the turn limit. `CountAvailableBlueUnits` (0x08018FF0) is replaced by
+  `Col_CountAvailableBlueUnits` (hidden units don't count unless carried by an ally).
+- A second guard: the player-phase turn event ends the run when no deployed unit is alive
   (`Col_CheckDeployedAlive`, `BattleChapter.event`). Map test 58.
 
 ## 2026-09-26 (Elite battles, enemy drops, random shop)

@@ -81,6 +81,10 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 - **RAM block layout**: 0x000-0x0FF run state (saved, v5, 256-byte save chunks), 0x100-0x1FF
   reserved (Legacy), 0x200-0x27F UI scratch (menus only: stat choice +0x00, roster +0x10,
   skill +0x20, Prepare/Shop +0x30, relics +0x50, notices +0x80 (UI scratch is 0x200-0x2FF).
+- **Reserves and game over**: FE8 clears the not-deployed flag of every blue unit after the
+  battle's beginning event, so reserves are only `US_HIDDEN` during a battle. FE8's game-over
+  count (`CountAvailableBlueUnits`, checked at each phase start) is replaced so hidden units
+  don't count (`src/roster/Roster.event`).
 - **Enemies** (`src/core/encounters.c`): normal enemies are generic character 0x80; Elite roles
   are generic characters 0x81-0x88 (name + personal skill + level-1 skill list in the tables).
   Drops are keyed by enemy unit index; FE-CLib's `unit->index` is a *signed* byte, so compare

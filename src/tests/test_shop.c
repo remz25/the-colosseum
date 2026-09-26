@@ -57,6 +57,9 @@ int Test_ShopStock(struct Unit *a, struct Unit *t)
             case COL_SHOP_HEAL:
                 CHECK(e->value == 50);
                 break;
+            case COL_SHOP_RELIC:
+                CHECK(Col_RelicDef(e->value) != NULL);
+                break;
             case COL_SHOP_PROMOTION:
             case COL_SHOP_CONSUMABLE:
                 CHECK(GetItemName(e->value)[0]);
@@ -65,11 +68,12 @@ int Test_ShopStock(struct Unit *a, struct Unit *t)
                 return __LINE__;
             }
             for (j = 0; j < i; j++)
-                if (e->category == COL_SHOP_WEAPON || e->category == COL_SHOP_SKILL)
+                if (e->category == COL_SHOP_WEAPON || e->category == COL_SHOP_SKILL || e->category == COL_SHOP_RELIC)
                     CHECK(!(gColRun.shop[j].category == e->category && gColRun.shop[j].value == e->value));
         }
         CHECK(seen == ((1 << COL_SHOP_RECRUIT) | (1 << COL_SHOP_SKILL) | (1 << COL_SHOP_WEAPON)
-                       | (1 << COL_SHOP_HEAL) | (1 << COL_SHOP_PROMOTION) | (1 << COL_SHOP_CONSUMABLE)));
+                       | (1 << COL_SHOP_RELIC) | (1 << COL_SHOP_HEAL) | (1 << COL_SHOP_PROMOTION)
+                       | (1 << COL_SHOP_CONSUMABLE)));
     }
     /* nobody left to recruit: no Recruit entry, still a full stock */
     gColRun.recruitedMask = 0x7FFF;

@@ -60,5 +60,24 @@ mGBA, not only compiled.
 | Team healing +50% (max HP cap), kept in the run state | PASS | map test 36 | 2026-09-25 |
 | Battle gold ranges by floor and encounter | PASS | map test 37 | 2026-09-25 |
 | Shop in game: skill bought (learn menu), heal bought, prices +10%/+21%, Sold rows, bow grayed for a team without bow users | PASS (in game) | scripted, screenshots | 2026-09-25 |
-| Relics, Legacy | NOT STARTED | | |
+| Relic pool: 15 relics, rarity counts 6/5/3/1, every effect has a text, Mythic supported, rarity-weighted rolls (no Legendary/Mythic while none exist) | PASS | map test 38 (Test_RelicPool) | 2026-09-26 |
+| Relic effect texts ("+5 Def", "-15% Def", "Lose 2 HP per attack", good/drawback flag) | PASS | map test 39 | 2026-09-26 |
+| Equip from bag (old one back to the bag), transfer, swap, unequip, full bag refuses, duplicates stack, enemies never wear relics | PASS | map test 40 | 2026-09-26 |
+| Wearer dies / is replaced -> relics back to the bag; new run clears relics | PASS | map test 41 | 2026-09-26 |
+| Relics through the save chunk (SRAM); v4 save upgraded to v5 with its data kept | PASS | map test 42 | 2026-09-26 |
+| Flat relic stats through the game's getters (Str Mag Spd Def Res Lck Mov; 0 floor; own Guardian's Crest gives no Def) | PASS | map test 43 | 2026-09-26 |
+| Percent stats: additive, after flat, rounded to nearest (Wind Soul, Blood Pact, combinations) | PASS | map test 44 | 2026-09-26 |
+| Hit / Avoid / Crit / Str relics in battle calculations, attacking and defending | PASS | map test 45 | 2026-09-26 |
+| Bloodied Band: only below 50% HP (not at exactly 50%), switches off when healed | PASS | map test 46 | 2026-09-26 |
+| Guardian's Crest: +3 Def for an adjacent ally vs physical, not when apart, not for the wearer, not vs magic | PASS | map test 47 (real map-unit grid) | 2026-09-26 |
+| Mage's Ring / Arcane Blood only on magic attacks (+15%, +10%, stacked +25%); Fortress Heart -20% on received counters only | PASS | map test 48 | 2026-09-26 |
+| Blood Pact: -2 HP per attack (counters too), never below 1 HP | PASS | map test 49 | 2026-09-26 |
+| Golden Thread: +25% each (roster only), base battle gold unchanged | PASS | map test 50 | 2026-09-26 |
+| Shop stocks a valid relic every time, priced by rarity | PASS | map test 51 (+ Test_ShopStock covers the category) | 2026-09-26 |
+| Relic menus in game: Prepare > Relics, unit list, slots, bag list with pages ("More..."), info screen (rarity, green/gold effects, "Below 50% HP:" header), Equip, transfer from another unit, Unequip | PASS (in game) | player ROM, scripted with screenshots | 2026-09-26 |
+| Shop relic in game: Relic row, info screen with Buy, bought into the bag, gold paid, "Sold", prices +10% | PASS (in game) | player ROM, screenshots | 2026-09-26 |
+| Relic stats in game: stat screen shows "Spd 12 -3 / Def 4 +5" (Iron Heart); getters give Blood Pact +10% Spd (9 -> 10) | PASS (in game) | player ROM, screenshot + getter calls | 2026-09-26 |
+| Blood Pact in a real battle with animation: 19 HP -> 4 (2 attacks x 2 + an 11-damage counter), HP drain shown, kept on the map | PASS (in game) | player ROM, real attack, screenshots | 2026-09-26 |
+| Golden Thread at a real victory; Guardian's Crest / Fortress Heart / Mage's Ring in a played battle; Sturdy Boots on the movement range; relics after a real save + reload from the title | NOT VERIFIED in game | covered by the on-target tests above, not played through | |
+| Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

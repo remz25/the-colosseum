@@ -117,5 +117,24 @@ built, working in game, tested, documented.
 - [x] Run state grown to 256 bytes (v4; save chunks 0x100); UI scratch moved to 0x200
 - Later: Relic category (Phase 9), Recover (Phase 10, post-battle menu), gold/price balance (Phase 16).
 
-## Phase 9-17
+## Phase 9: Relics (prototype pool v1) — DONE (2026-09-26), see docs/RELICS.md
+- [x] 2 relics per character (spec 33); relics belong to the run: equip, unequip, transfer (swap)
+      outside battle; relic bag (16) for unequipped relics; duplicates allowed
+- [x] Rarities Common..Mythic supported (spec 34); prototype pool: 6 Common, 5 Uncommon, 3 Rare,
+      1 Epic, exactly as the developer's prompt (15 relics)
+- [x] Generic modifier engine: flat / percent stats (stat getters), Hit/Avoid/Crit and adjacent-ally
+      Def (pre-battle loop), damage dealt / magic / taken % and HP per attack (battle proc loop),
+      battle gold % (victory); conditions (below 50% HP)
+- [x] One percentage rule: additive per kind, after flat changes, rounded to nearest
+- [x] Info screen before equipping/buying: name, rarity, every effect (good green, drawback gold,
+      conditions as headers); Prepare > Relics menus; shop Relic category (rarity-weighted)
+- [x] Wearer leaves the run -> relics back to the bag; new run clears relics
+- [x] Saved in the run state (v5); v4 saves upgraded on load
+- [x] 14 on-target tests; in game: menus, equip/transfer/unequip, shop purchase, stat screen,
+      Blood Pact in a real battle (TEST_STATUS.md)
+- Future relic concepts: docs/RELICS_FUTURE.md (developer to paste the full concept list).
+- Later: relic rewards from Elites/Bosses and reward choices (Phases 10-12); relic list on the
+  stat screen (optional); relic weights/prices (Phase 16).
+
+## Phase 10-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

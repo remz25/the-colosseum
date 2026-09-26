@@ -7,6 +7,7 @@ pLuckModifiers: // Luck
 	POIN prAddUnitLuck prHalveIfCapturing 
 	POIN prDebuffLuk PlusAura MinusAura 
 	POIN prAddEquipLuck prItemPassiveLuck prRallyLuk prDefiantLck
+	POIN Col_RelicLckGetter // COLISEUM relics (src/relics/relics.c)
 	#ifdef DEBUFFS_MIN_ZERO
 	POIN prMinZero
 	#endif

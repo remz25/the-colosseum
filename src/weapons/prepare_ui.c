@@ -5,6 +5,7 @@
  *                    Deploy     choose the 3 fighters (only with more than 3 alive, spec 8)
  *                    Transfer   give an item to another unit that can use it (spec 40)
  *                    Fuse       combine two weapons in one unit's inventory (spec 42)
+ *                    Relics     equip, unequip and transfer relics (spec 33, relic_ui.c)
  *
  * Transfer: pick the giver, the item, then the receiver (units that can't take it are grayed).
  * Fuse: pick a unit (grayed without a possible fusion), then the fusion (result name, and the
@@ -12,7 +13,8 @@
  * Shop: the stock rows show category, name and price (gray: sold or too expensive). Buying a
  * skill picks the unit that learns it (then the learn/replace menu); weapons and items pick the
  * unit that receives them; a recruit joins at once (or "Replace whom?" when the roster is full);
- * healing applies at once. Gold is only paid once the purchase went through. */
+ * healing applies at once; a relic shows its info screen (effects, rarity) with Buy / Back and
+ * goes into the relic bag. Gold is only paid once the purchase went through. */
 #include "coliseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
@@ -23,7 +25,7 @@
 #include "hardware.h"
 #include "icon.h"
 
-enum { NEXT_NONE, NEXT_FIGHT, NEXT_DEPLOY, NEXT_TRANSFER, NEXT_FUSE, NEXT_BACK, NEXT_OK, NEXT_SHOP };
+enum { NEXT_NONE, NEXT_FIGHT, NEXT_DEPLOY, NEXT_TRANSFER, NEXT_FUSE, NEXT_BACK, NEXT_OK, NEXT_SHOP, NEXT_RELICS };
 enum { MODE_GIVER, MODE_RECEIVER, MODE_FUSER, MODE_SKILL_TARGET, MODE_ITEM_TARGET };
 
 #define MAX_FUSIONS 5
@@ -48,6 +50,9 @@ void Col_OpenReplaceMenu(struct Proc *parent, int pool);
 int  Col_ReplaceMenuRecruited(void);
 void Col_OpenSkillMenu(struct Proc *parent, struct Unit *unit, int skill);   /* skill_ui.c */
 int  Col_SkillMenuLearned(void);
+void Col_OpenRelicMenu(struct Proc *parent);    /* relic_ui.c */
+void Col_OpenRelicBuy(struct Proc *parent, int relic);
+int  Col_RelicBuyConfirmed(void);
 
 static u16 *Tile(struct MenuProc *menu, struct MenuItemProc *item, int dx)
 {
@@ -91,6 +96,8 @@ static int P_FightDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i,
 static int P_DeployDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Deploy"); return 0; }
 static int P_TransferDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Transfer"); return 0; }
 static int P_FuseDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Fuse"); return 0; }
+static int P_RelicsDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Relics"); return 0; }
+static u8 P_Relics(struct MenuProc *m, struct MenuItemProc *i) { gColPrepUi.next = NEXT_RELICS; return END_MENU; }
 static u8 P_DeployAvail(const struct MenuItemDef *d, int n)
 {
     return gColRun.rosterCount > COL_MAX_DEPLOY ? MENU_ENABLED : MENU_NOTSHOWN;
@@ -107,6 +114,7 @@ static const struct MenuItemDef kPrepItems[] = {
     ROW(P_DeployAvail, P_DeployDraw, P_Deploy),
     ROW(MenuAlwaysEnabled, P_TransferDraw, P_Transfer),
     ROW(MenuAlwaysEnabled, P_FuseDraw, P_Fuse),
+    ROW(MenuAlwaysEnabled, P_RelicsDraw, P_Relics),
     { 0 },
 };
 static const struct MenuDef kPrepMenu = { .rect = { 9, 3, 12, 0 }, .menuItems = kPrepItems };
@@ -277,6 +285,7 @@ static const char *EntryName(const struct ColShopEntry *e)
     case COL_SHOP_RECRUIT: return GetStringFromIndex(GetCharacterData(gColPool[e->value].charId)->nameTextId);
     case COL_SHOP_SKILL:   return Col_SkillName(e->value);
     case COL_SHOP_HEAL:    return "Heal team 50%";
+    case COL_SHOP_RELIC:   return Col_RelicDef(e->value) ? Col_RelicDef(e->value)->name : "";
     default:               return GetItemName(e->value);
     }
 }
@@ -289,6 +298,8 @@ static int EntryAvailable(int index)
         return 0;
     if (e->category == COL_SHOP_RECRUIT && (gColRun.recruitedMask & (1 << e->value)))
         return 0;                               /* recruited meanwhile (3-win reward) */
+    if (e->category == COL_SHOP_RELIC && Col_RelicBagCount() >= COL_RELIC_BAG)
+        return 0;                               /* no room in the relic bag */
     if (e->category == COL_SHOP_SKILL || e->category == COL_SHOP_WEAPON
         || e->category == COL_SHOP_PROMOTION || e->category == COL_SHOP_CONSUMABLE) {
         int slot;                               /* someone must be able to take it */
@@ -366,6 +377,7 @@ static const struct MenuDef kShopMenu = {
 #define L_SHOP     3
 #define L_SHOP_UNIT 4
 #define L_SHOP_REPLACE 5
+#define L_SHOP_RELIC 6
 #define L_END      9
 
 static void Open(const struct MenuDef *def, struct Proc *proc)
@@ -400,6 +412,9 @@ static void Prep_Dispatch(struct Proc *proc)
     case NEXT_SHOP:
         Proc_Goto(proc, L_SHOP);
         break;
+    case NEXT_RELICS:
+        Col_OpenRelicMenu(proc);                /* back to Prepare when it closes */
+        break;
     }
 }
 
@@ -428,6 +443,10 @@ static void Shop_Dispatch(struct Proc *proc)
             Proc_Goto(proc, L_SHOP_REPLACE);
         }
         break;
+    case COL_SHOP_RELIC:
+        Col_OpenRelicBuy(proc, e->value);       /* info screen: Buy / Back */
+        Proc_Goto(proc, L_SHOP_RELIC);
+        break;
     case COL_SHOP_SKILL:
         gColPrepUi.mode = MODE_SKILL_TARGET;
         Proc_Goto(proc, L_SHOP_UNIT);
@@ -443,6 +462,14 @@ static void Shop_AfterReplace(struct Proc *proc)
 {
     if (Col_ReplaceMenuRecruited())
         Col_ShopPay(gColPrepUi.shopIndex);
+}
+
+static void Shop_AfterRelic(struct Proc *proc)
+{
+    int index = gColPrepUi.shopIndex;
+
+    if (Col_RelicBuyConfirmed() && Col_ShopCanAfford(index) && Col_RelicBagAdd(gColRun.shop[index].value))
+        Col_ShopPay(index);
 }
 
 static void Shop_AfterUnit(struct Proc *proc)
@@ -551,6 +578,11 @@ static const struct ProcCmd kProcScr_Prepare[] = {
     PROC_LABEL(L_SHOP_REPLACE),
     PROC_YIELD,
     PROC_CALL(Shop_AfterReplace),
+    PROC_GOTO(L_SHOP),
+
+    PROC_LABEL(L_SHOP_RELIC),
+    PROC_YIELD,
+    PROC_CALL(Shop_AfterRelic),
     PROC_GOTO(L_SHOP),
 
     PROC_LABEL(L_END),

@@ -7,6 +7,7 @@ pResistanceModifiers: // Resistance
 	POIN prAddUnitResistance prHalveIfCapturing 
 	POIN prDebuffRes StrongCon PlusAura MinusAura
 	POIN prAddEquipResistance prItemPassiveResistance prRallyRes prAddPureWaterBarrierMod prLifeAndDeathMinus prSkillFury prFortressResistanceRes prDefiantRes prPushRes
+	POIN Col_RelicResGetter // COLISEUM relics (src/relics/relics.c)
 	#ifdef DEBUFFS_MIN_ZERO
 	POIN prMinZero
 	#endif

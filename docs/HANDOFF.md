@@ -1,12 +1,13 @@
 # COLISEUM: Handoff (where we stopped, what comes next)
 
-Last session: 2026-09-25/26. Last commit: see `git log -1`. Everything below is committed.
-The developer play-tested the latest build (New Game -> team -> Prepare -> battles -> level-up
-choice -> shop -> next battle) and confirmed it works.
+Last session: 2026-09-26 (Phase 9, relics). Last commit: see `git log -1`. Everything below is
+committed. The developer play-tested Phases 1-8 (New Game -> team -> Prepare -> battles ->
+level-up choice -> shop -> next battle). **Phase 9 (relics) was checked in game by Claude
+(scripted, screenshots) but not yet play-tested by the developer.**
 
 ## Where we are
 
-Phases 1-8 of 17 are done (spec §86). Details per phase: `TODO.md`; decisions: `GAME_DESIGN.md`;
+Phases 1-9 of 17 are done (spec §86). Details per phase: `TODO.md`; decisions: `GAME_DESIGN.md`;
 test evidence: `TEST_STATUS.md`; changes: `CHANGELOG.md`; engine notes: `ARCHITECTURE.md`.
 
 | Phase | State | In one line |
@@ -19,15 +20,16 @@ test evidence: `TEST_STATUS.md`; changes: `CHANGELOG.md`; engine notes: `ARCHITE
 | 6 Skills | done | 1 personal + 3 slots (class skills in slots), catalog with rarity/prerequisites |
 | 7 Weapons | done | No durability (weapons AND staves), fusion, transfer, 3x proficiency, variants |
 | 8 Shop | done | Battle gold, 8-entry shop (+10% compounding prices), Prepare menu |
-| 9-17 | not started | See "Next" |
+| 9 Relics | done | 15 prototype relics, generic modifier engine, Prepare > Relics, shop relics (`docs/RELICS.md`) |
+| 10-17 | not started | See "Next" |
 
-Tests: `py -3 scripts/build.py --test && py -3 tests/run_tests.py` -> 8 run-state + 38 map tests +
+Tests: `py -3 scripts/build.py --test && py -3 tests/run_tests.py` -> 8 run-state + 52 map tests +
 save/brightness checks, all passing.
 
 ## How the game flows right now
 
 New Game -> (chapter fades in) "Your team" (3 random characters, Begin) -> [every 3 wins:
-recruitment offer] -> "Prepare" menu (Fight! / Shop / Deploy (>3 alive) / Transfer / Fuse) ->
+recruitment offer] -> "Prepare" menu (Fight! / Shop / Deploy (>3 alive) / Transfer / Fuse / Relics) ->
 3v3 battle on the arena map -> win: gold, HP kept, new shop stock, FE8 save screen -> next battle.
 Level-ups show the stat-choice menu. Losing (all deployed dead, or turn 20 passes) ends the run and
 invalidates its save. Elite/Boss encounters are counted by the run state but still play as normal
@@ -42,10 +44,10 @@ fights (their content is Phases 11-12).
 
 ## Next (in order)
 
-1. **Phase 9 - Relics** (spec §33-36): 2 relic slots per unit, rarity, positive/negative/conditional
-   effects, transfer, duplicates, build-changing effects, reward-modifying relics. Then add the
-   Relic category to the shop (Col_ShopGenerate in `src/shop/shop.c` skips it for now). Relics
-   need run-state space (per roster slot) - the run state has room (0x54-0xFF free).
+1. **Developer play-test of the relics** (Prepare > Relics; shop relics; Blood Pact, Guardian's
+   Crest, Golden Thread in real fights). The developer should paste the full list of relic concepts
+   discussed elsewhere into `docs/RELICS_FUTURE.md`. The relic prompt arrived cut off after its
+   section 9: ask whether sections 10+ had more requirements.
 2. **Phase 10 - Roguelike progression**: post-battle menu (Next Fight / Shop / Recover) replacing
    FE8's save screen between fights and taking over the Prepare menu; the real 3-win reward choice
    (Recruit / Skill / Promotion / Heal / Gold 100-500) - today every 3-win reward is a recruitment

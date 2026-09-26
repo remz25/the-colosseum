@@ -31,6 +31,15 @@ without the developer's approval.
 | 2026-09-25 | Gold per victory 200 + 75 per floor above 1 + 0-100 (Elite x2, Boss x4). Shop base prices: recruit 1500, skills 400/700/1100/1700/2800 by rarity, weapons 400-2400 by rank, promotion 2500, heal 500, consumables 150-1800. | Claude (implementation) | Balance levers (Phase 16). |
 | 2026-09-25 | Price scaling: every purchase raises all later prices 10% (compounding, rounded each step), capped at 5x base and 9999. The shop opens from the Prepare menu until the post-battle menu (Phase 10). | Claude (implementation) | Spec §39. |
 | 2026-09-25 | Debug mode: the Skill System's `__DEBUG__` build flag; debug builds are separate ROMs and never the player build (spec §81). | Claude (implementation) | See `ARCHITECTURE.md`. |
+| 2026-09-26 | **Relic prototype pool v1**: exactly 15 relics (6 Common, 5 Uncommon, 3 Rare, 1 Epic) with the effects in docs/RELICS.md; rarities up to Mythic supported; future concepts kept in docs/RELICS_FUTURE.md. | Developer | "Relic System Implementation Prompt". |
+| 2026-09-26 | Relics belong to the run: unequipped relics go to a relic bag (16 places); choosing a relic for a slot can take one from another unit (transfer; a relic already in the slot swaps back). Duplicates allowed (spec §33). | Claude (implementation) | |
+| 2026-09-26 | When a wearer dies or is replaced, its relics return to the bag (lost only if the bag is full). Enemies never wear relics (for now). | Claude (implementation) | Developer may prefer relics lost on death: one line in run_state.c. |
+| 2026-09-26 | One percentage rule for all relics: percentages of a kind add up, apply once after all flat changes, round to nearest (halves away from zero); damage: dealt % then taken %, after crits. | Claude (implementation) | Asked for by the prompt (§8, §13). |
+| 2026-09-26 | Bloodied Band's "below 50% HP" (HP x 2 < max) is checked on every stat read and at the start of every combat (like FE's Wrath), not mid-exchange. | Claude (implementation) | |
+| 2026-09-26 | Guardian's Crest: +3 Def only against physical attacks (Def isn't used against magic); two crests stack; shown in the forecast, not the stat screen. | Claude (implementation) | |
+| 2026-09-26 | Golden Thread counts for every living roster member wearing it (reserves too) and stacks (+25% each); it only changes battle victory gold. | Claude (implementation) | |
+| 2026-09-26 | Blood Pact's 2 HP cost applies to every attack the wearer makes: counters, follow-ups and misses too; never below 1 HP. | Claude (implementation) | |
+| 2026-09-26 | Shop relic weights C 45 / U 30 / R 17 / E 8 / L 4 / M 1 (empty rarities skipped); base prices 500 / 900 / 1400 / 2200 / 3200 / 4500. One relic per stock plus possible extras. | Claude (implementation) | Balance levers (Phase 16). |
 
 ## Open questions (not decided yet)
 

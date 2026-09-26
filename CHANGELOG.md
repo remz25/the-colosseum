@@ -1,5 +1,23 @@
 # COLISEUM: Changelog
 
+## 2026-09-26 (Phase 9: relics, prototype pool v1)
+- Relic system (`src/relics/`, docs/RELICS.md): 15 prototype relics (6 Common, 5 Uncommon,
+  3 Rare, 1 Epic), rarities up to Mythic supported, a generic modifier engine (flat/percent stats,
+  battle rates, damage %, HP cost, gold %, adjacent-ally aura, conditions).
+- Prepare > Relics: equip / unequip / transfer with an info screen (rarity, effects, drawbacks).
+- Shop: Relic category (rarity-weighted, priced by rarity); bought relics go into the relic bag.
+- Battle gold passes through the gold relics (`Col_OnBattleWon`).
+- Relics return to the bag when their wearer dies or is replaced.
+- Run state v5 (relics + bag); v4 saves are upgraded on load.
+- Tests: 14 relic map tests; Test_ShopStock expects the Relic category.
+- **Upstream Skill System files changed** (one line each, marked "COLISEUM relics"):
+  `EngineHacks/Necessary/StatGetters/{Power,Magic,Skill,Speed,Luck,Defense,Resistance,Movement}.event`
+  (relic getter before prMinZero / the Freeze and Guard-AI nullifiers),
+  `EngineHacks/Necessary/CalcLoops/PreBattleCalcLoop/PreBattleCalcLoop.event` (Col_RelicPreBattle),
+  `EngineHacks/Necessary/CalcLoops/BattleProcCalcLoop/BattleProcCalcLoop.event`
+  (Col_RelicDamageProc before Bane/Lethality, Col_RelicHpCostProc before Proc_Finish).
+- docs/RELICS_FUTURE.md keeps the relic ideas for later.
+
 ## 2026-09-25 (fix)
 - Fixed: after New Game the screen stayed black. The battle's beginning event opened the
   team/Prepare menus before FE8 faded the chapter in (FE8 fades in after that event), so the menus

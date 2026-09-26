@@ -38,7 +38,7 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 | Legacy / Hall of Champions | A separate save module that survives new runs (the space of the unused save slots 2-3). |
 | Roster (5 / deploy 3) | Run state holds the 5 roster characters; the battle chapter deploys 3. |
 | Level-ups | Vanilla growth rolls + a choose-1-of-3 stat screen; level cap 30; stat ceiling 127. |
-| Relics | 2 slots per unit in run state; effects through MSG stat getters and skill-system hooks. |
+| Relics | 2 slots per pool character + a 16-relic bag in the run state; generic modifiers applied through MSG stat getters, the pre-battle and battle proc loops, and the victory gold (docs/RELICS.md). |
 | Shop, rewards, recruitment, fusion | Custom menus (procs), data tables for prices/pools. |
 | Legacy weapon names | Item name hook returning a RAM string for Legacy item IDs. |
 | Advanced AI | C scoring AI hooked into FE8's AI decision step; budgeted per enemy (Elite/Boss deeper). |
@@ -78,9 +78,16 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
   __umodsi3 (remainder in r0, EABI wants quotient r0 / remainder r1). scripts/build.py links
   against `build/fireemblem8.ref.o` without those two; `src/core/divmod.c` defines them.
   lyn runs with `-nohook` so a C function named like a vanilla one never patches the ROM.
-- **RAM block layout**: 0x000-0x0FF run state (saved, v4, 256-byte save chunks), 0x100-0x1FF
+- **RAM block layout**: 0x000-0x0FF run state (saved, v5, 256-byte save chunks), 0x100-0x1FF
   reserved (Legacy), 0x200-0x27F UI scratch (menus only: stat choice +0x00, roster +0x10,
-  skill +0x20, Prepare/Shop +0x30).
+  skill +0x20, Prepare/Shop +0x30, relics +0x50).
+- **Relic hooks** (docs/RELICS.md): MSG stat-getter modifiers are C functions `int f(int value,
+  struct Unit *unit)` (the call sequence reloads the unit for every entry). Pre-battle loop
+  entries get `(BattleUnit *a, BattleUnit *b)` and run for both orders, so each call changes only
+  `a`. Battle proc loop entries get `(attacker, defender, hit entry, battle data)` once per strike:
+  damage is the s16 at battle data +4, and the attacker's HP change is the s8 at hit entry +5
+  (applied and clamped to >= 1 HP by the Skill System's `Proc_Finish`; attribute 0x100 makes the
+  animation show it). Battle stats are computed from the getters when a combat starts.
 - **Fades**: a chapter starts faded to black and FE8 fades in after the beginning event, so any
   menu in that event needs `FADU` first. The scripted screenshots (VRAM) ignore fades; check
   gLCDControlBuffer (0x03003080: bldcnt effect 3 + blendY 16 = black) instead.

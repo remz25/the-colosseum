@@ -133,6 +133,7 @@ void Col_RemoveFromRoster(int slot)
         return;
     if (u)
         ClearUnit(u);
+    Col_RelicsReturnToBag(gColRun.roster[slot]);  /* relics stay in the run (docs/RELICS.md) */
     gColRun.roster[slot] = 0xFF;
     gColRun.hp[slot] = 0;
     gColRun.choiceLevel[slot] = 0;

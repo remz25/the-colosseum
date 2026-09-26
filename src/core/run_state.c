@@ -123,6 +123,7 @@ void Col_RosterRemoveDead(int slot)
         return;
     pool = gColRun.roster[slot];
     gColRun.deadMask |= (u16)(1 << pool);
+    Col_RelicsReturnToBag(pool);                 /* relics stay in the run (docs/RELICS.md) */
     gColRun.roster[slot] = 0xFF;
     gColRun.hp[slot] = 0;
     gColRun.choiceLevel[slot] = 0;
@@ -169,12 +170,15 @@ void Col_SaveRunChunk(void *sram, unsigned size)
     WriteAndVerifySramFast(&gColRun, sram, sizeof(struct ColRunState));
 }
 
-/* Loading a save without COLISEUM data (or an older layout) leaves no active run. */
+/* Loading a save without COLISEUM data (or an older layout) leaves no active run. A v4 run
+ * (before relics) is upgraded: its relic fields were reserved bytes, always zero. */
 void Col_LoadRunChunk(void *sram, unsigned size)
 {
     if (size < sizeof(struct ColRunState))
         return;
     ReadSramFast(sram, &gColRun, sizeof(struct ColRunState));
+    if (gColRun.magic == COL_RUN_MAGIC && gColRun.version == 4)
+        gColRun.version = COL_RUN_VERSION;      /* v4 -> v5: relic fields were reserved (zero) */
     if (!Col_RunIsValid())
         Col_RunClear();
 }

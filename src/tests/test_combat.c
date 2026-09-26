@@ -318,6 +318,21 @@ int Test_RecruitBuild(struct Unit *, struct Unit *);
 int Test_Deployment(struct Unit *, struct Unit *);
 int Test_RunLost(struct Unit *, struct Unit *);
 int Test_NewGameClearsRun(struct Unit *, struct Unit *);
+/* test_relics.c */
+int Test_RelicPool(struct Unit *, struct Unit *);
+int Test_RelicTexts(struct Unit *, struct Unit *);
+int Test_RelicEquip(struct Unit *, struct Unit *);
+int Test_RelicsLeaveRun(struct Unit *, struct Unit *);
+int Test_RelicSave(struct Unit *, struct Unit *);
+int Test_RelicFlatStats(struct Unit *, struct Unit *);
+int Test_RelicPercentStats(struct Unit *, struct Unit *);
+int Test_RelicBattleRates(struct Unit *, struct Unit *);
+int Test_RelicBloodiedBand(struct Unit *, struct Unit *);
+int Test_RelicGuardian(struct Unit *, struct Unit *);
+int Test_RelicDamage(struct Unit *, struct Unit *);
+int Test_RelicBloodPact(struct Unit *, struct Unit *);
+int Test_RelicGold(struct Unit *, struct Unit *);
+int Test_RelicShop(struct Unit *, struct Unit *);
 
 typedef int (*ColMapTestFn)(struct Unit *actor, struct Unit *target);
 static const ColMapTestFn kMapTests[] = {
@@ -330,6 +345,9 @@ static const ColMapTestFn kMapTests[] = {
     Test_SkillCatalog, Test_SkillOffers, Test_RunClearsSkills, Test_EnemySkills,
     Test_FusionRecipes, Test_Fuse, Test_Transfer, Test_FastProficiency, Test_SpecialWeapons,
     Test_ShopPrices, Test_ShopStock, Test_ShopBuy, Test_HealTeam, Test_BattleGold,
+    Test_RelicPool, Test_RelicTexts, Test_RelicEquip, Test_RelicsLeaveRun, Test_RelicSave,
+    Test_RelicFlatStats, Test_RelicPercentStats, Test_RelicBattleRates, Test_RelicBloodiedBand,
+    Test_RelicGuardian, Test_RelicDamage, Test_RelicBloodPact, Test_RelicGold, Test_RelicShop,
 };
 
 int ColTest_MapCount(void)

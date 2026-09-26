@@ -5,8 +5,8 @@
  *     so the vanilla screens show it.
  *   Stock: rolled once per battle (after each victory, and for the first battle), never
  *     rerolled. One entry per relevant category - Recruit (while anyone can still be recruited),
- *     Skill, Weapon, Healing, Promotion, Consumable (Relic joins in Phase 9) - plus extras up to
- *     8 entries (weapons, consumables, skills).
+ *     Skill, Weapon, Relic, Healing, Promotion, Consumable - plus extras up to 8 entries
+ *     (weapons, consumables, skills, relics). Relics are rarity-weighted (Col_RelicRoll).
  *   Prices (spec 39): each purchase makes every later purchase 10% dearer, compounding over the
  *     run: price = base x 1.1^purchases, at most 5x base and 9999 gold. */
 #include "coliseum.h"
@@ -64,6 +64,8 @@ static int RankPrice(int item)
 }
 
 static const u16 kSkillPrice[COL_RARITY_COUNT + 1] = { 0, 400, 700, 1100, 1700, 2800 };
+/* Common .. Mythic (Phase 16 levers) */
+static const u16 kRelicPrice[COL_RELIC_RARITY_COUNT + 1] = { 0, 500, 900, 1400, 2200, 3200, 4500 };
 
 /* ---- pools ---- */
 
@@ -161,6 +163,18 @@ static void AddSkill(void)
     }
 }
 
+static void AddRelic(void)
+{
+    int tries;
+    for (tries = 0; tries < 10; tries++) {
+        int relic = Col_RelicRoll();
+        if (relic && !HasEntry(COL_SHOP_RELIC, relic)) {
+            Add(COL_SHOP_RELIC, relic, kRelicPrice[Col_RelicDef(relic)->rarity]);
+            return;
+        }
+    }
+}
+
 /* A new stock (spec 38): one of each relevant category, then extras. */
 void Col_ShopGenerate(void)
 {
@@ -172,13 +186,14 @@ void Col_ShopGenerate(void)
         Add(COL_SHOP_RECRUIT, recruits[0], RECRUIT_PRICE);
     AddSkill();
     AddWeapon();
+    AddRelic();
     Add(COL_SHOP_HEAL, 50, HEAL_PRICE);
     Add(COL_SHOP_PROMOTION, kPromotions[NextRN_N(Count8(kPromotions))], kPromotionPrice);
     AddConsumable();
     while (gColRun.shopCount < COL_SHOP_SIZE) {
-        int r = NextRN_N(3);
+        int r = NextRN_N(4);
         int before = gColRun.shopCount;
-        if (r == 0) AddWeapon(); else if (r == 1) AddConsumable(); else AddSkill();
+        if (r == 0) AddWeapon(); else if (r == 1) AddConsumable(); else if (r == 2) AddSkill(); else AddRelic();
         if (gColRun.shopCount == before)
             AddConsumable();
     }

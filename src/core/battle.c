@@ -187,7 +187,8 @@ void Col_OnBattleWon(void)
     }
     {
         int encounter = Col_NextEncounter();
-        Col_AddGold(Col_BattleGold(encounter));          /* spec 37: battles award gold */
+        /* spec 37: battles award gold; gold relics (spec 36) change only this amount */
+        Col_AddGold(Col_RelicApplyGold(Col_BattleGold(encounter)));
         Col_SyncPartyGold();
         Col_OnVictory(encounter);
     }

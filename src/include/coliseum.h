@@ -32,6 +32,9 @@
 #define COL_RECRUIT_CHOICES     3    /* spec 9: recruits offered */
 #define COL_SKILL_SLOTS         3    /* spec 27: + 1 personal skill = 4 */
 #define COL_RARITY_COUNT        5    /* spec 28: Common, Uncommon, Rare, Epic, Legendary */
+#define COL_RELIC_SLOTS         2    /* spec 33: relics per character */
+#define COL_RELIC_BAG           16   /* unequipped relics kept for the run */
+#define COL_RELIC_RARITY_COUNT  6    /* spec 34: Common .. Legendary, Mythic */
 
 enum ColEncounter {
     COL_ENC_NORMAL = 0,
@@ -55,7 +58,7 @@ enum ColShopCategory {
  * EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event). Fixed size: new fields go
  * into `reserved` and bump COL_RUN_VERSION. */
 #define COL_RUN_MAGIC    0x524C4F43   /* "COLR" */
-#define COL_RUN_VERSION  4
+#define COL_RUN_VERSION  5            /* 5: relics (v4 saves are upgraded on load) */
 #define COL_RUN_SIZE     0x100
 
 struct ColRunState {
@@ -83,7 +86,9 @@ struct ColRunState {
     /* 32 */ u8  shopCount;         /* entries in this battle's shop stock (spec 38) */
     /* 33 */ u8  shopSold;          /* bit = stock entry already bought */
     /* 34 */ struct ColShopEntry shop[COL_SHOP_SIZE];   /* rolled once per battle: no reroll */
-    /* 54 */ u8  reserved[COL_RUN_SIZE - 0x54];
+    /* 54 */ u8  relics[COL_POOL_SIZE][COL_RELIC_SLOTS];  /* relic IDs worn, per pool character; 0 empty */
+    /* 72 */ u8  relicBag[COL_RELIC_BAG];  /* unequipped relics of this run (spec 33); 0 empty */
+    /* 82 */ u8  reserved[COL_RUN_SIZE - 0x82];
 };
 
 /* The playable pool (pool.c). */
@@ -184,6 +189,63 @@ int  Col_ShopEntryPrice(int index);
 int  Col_ShopCanAfford(int index);
 int  Col_ShopPay(int index);                            /* 1 if paid (after delivering) */
 void Col_HealTeam(int percent);
+
+/* relics/relics.c (the relic table is in relics_data.c; docs/RELICS.md) */
+enum ColRelicModKind {
+    COL_RM_END = 0,
+    /* flat stat changes (stat getters) */
+    COL_RM_STR, COL_RM_MAG, COL_RM_SKL, COL_RM_SPD, COL_RM_LCK, COL_RM_DEF, COL_RM_RES, COL_RM_MOV,
+    /* percentage stat changes (stat getters, after every flat change) */
+    COL_RM_STR_PCT, COL_RM_MAG_PCT, COL_RM_SKL_PCT, COL_RM_SPD_PCT, COL_RM_LCK_PCT,
+    COL_RM_DEF_PCT, COL_RM_RES_PCT,
+    /* battle rates (pre-battle calc loop) */
+    COL_RM_HIT, COL_RM_AVOID, COL_RM_CRIT,
+    /* damage per hit (battle proc loop) */
+    COL_RM_MAGIC_DMG_PCT,           /* damage dealt with magic weapons */
+    COL_RM_DMG_DEALT_PCT,           /* all damage dealt */
+    COL_RM_DMG_TAKEN_PCT,           /* all damage received */
+    /* rewards */
+    COL_RM_GOLD_PCT,                /* battle gold (Col_OnBattleWon) */
+    /* team effects */
+    COL_RM_ADJ_ALLY_DEF,            /* adjacent allies (not the wearer) get +n Def in combat */
+    /* costs */
+    COL_RM_HP_PER_ATTACK,           /* the wearer loses n HP on each of its attacks (never below 1) */
+    COL_RM_KIND_COUNT
+};
+enum ColRelicCond {
+    COL_RC_ALWAYS = 0,
+    COL_RC_BELOW_HALF_HP,           /* current HP below 50% of max HP */
+};
+struct ColRelicMod {
+    u8 kind;                        /* enum ColRelicModKind */
+    s8 amount;                      /* points or percent */
+    u8 cond;                        /* enum ColRelicCond */
+    u8 pad;
+};
+#define COL_RELIC_MODS 5
+struct ColRelicDef {
+    const char *name;
+    u8 rarity;                      /* 1 Common .. 6 Mythic */
+    u8 pad[3];
+    struct ColRelicMod mods[COL_RELIC_MODS];   /* ends at COL_RM_END */
+};
+extern const struct ColRelicDef gColRelics[];   /* index = relic ID; entry 0 unused */
+int  Col_RelicCount(void);                      /* highest relic ID */
+const struct ColRelicDef *Col_RelicDef(int relic);     /* NULL for 0 / unknown */
+const char *Col_RelicRarityName(int rarity);
+int  Col_PoolIndexOfUnit(struct Unit *unit);    /* -1 if not a pool character */
+int  Col_UnitRelic(struct Unit *unit, int slot);        /* 0 if none (enemies: always 0) */
+int  Col_RelicModTotal(struct Unit *unit, int kind);    /* summed over worn relics, conditions checked */
+int  Col_RelicBagCount(void);
+int  Col_RelicBagAdd(int relic);                /* 1 if added (bag not full) */
+int  Col_RelicEquipFromBag(int pool, int slot, int bagIndex);   /* the old relic goes to the bag */
+int  Col_RelicMove(int fromPool, int fromSlot, int toPool, int toSlot);   /* swaps if both hold one */
+int  Col_RelicUnequip(int pool, int slot);      /* into the bag; 0 if the bag is full */
+void Col_RelicsReturnToBag(int pool);           /* the character left the run */
+int  Col_RelicApplyGold(int gold);              /* battle gold with the roster's gold relics */
+int  Col_RelicRoll(void);                       /* rarity-weighted random relic ID */
+int  Col_RelicModText(const struct ColRelicMod *mod, char *out);   /* "+5 Def"; 1 if good for the wearer */
+int  Col_RelicPercent(int value, int percent);  /* value changed by percent, rounded to nearest */
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

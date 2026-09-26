@@ -30,6 +30,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import portraits  # noqa: E402  (scripts/portraits.py)
+import charpal    # noqa: E402  (scripts/charpal.py)
 
 ROOT = Path(__file__).resolve().parent.parent
 CLEAN = ROOT / "FE8_clean.gba"
@@ -47,6 +48,7 @@ CLIB = TOOLS / "FE-Clib"
 LYN = EA / "Tools" / "lyn.exe"
 PORTRAIT_FORMATTER = EA / "Tools" / "PortraitFormatter.exe"
 PORTRAIT_MANIFEST = SRC / "graphics" / "portraits" / "Portraits.txt"
+CHARPAL_MANIFEST = SRC / "graphics" / "battle_palettes.txt"
 ARM_TC = Path(os.environ.get("ARM_TOOLCHAIN",
               r"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 mpacbti-rel1\bin"))
 CFLAGS = ["-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork", "-mtune=arm7tdmi", "-mlong-calls", "-O2",
@@ -164,6 +166,16 @@ def build_portraits() -> list:
     return items
 
 
+def build_char_palettes(clean: bytes) -> list:
+    info("Recolouring character battle palettes")
+    try:
+        items = charpal.compile_all(CHARPAL_MANIFEST, clean, GEN)
+    except charpal.CharPalError as e:
+        raise BuildError(str(e))
+    ok(f"Built {sum(len(c.classes) for c in items)} battle palette(s) for {len(items)} character(s)")
+    return items
+
+
 def assemble(clean: bytes, debug: bool = False) -> bytes:
     info("Assembling ROMBuildfile.event (ColorzCore)" + (" [DEBUG build]" if debug else ""))
     TMP.unlink(missing_ok=True)
@@ -216,13 +228,14 @@ def main() -> int:
             build_text()
             build_maps()
         items = build_portraits()
+        pal_items = build_char_palettes(clean)
         build_c(args.test)
         out = TEST_OUT if args.test else DEBUG_OUT if args.debug else OUT
         data = assemble(clean, args.debug or args.test)
-        problems = portraits.verify_rom(items, data)
+        problems = portraits.verify_rom(items, data) + charpal.verify_rom(pal_items, data)
         if problems:
             TMP.unlink(missing_ok=True)
-            raise BuildError("Portrait table check failed:\n  " + "\n  ".join(problems))
+            raise BuildError("Portrait / battle palette check failed:\n  " + "\n  ".join(problems))
         finish(data, out)
     except BuildError as e:
         print(f"[FAIL ] {e}", file=sys.stderr)

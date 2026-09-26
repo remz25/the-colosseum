@@ -19,7 +19,7 @@
 /* ---- Rules fixed by the spec (docs/COLISEUM_SPEC.md; changing them needs developer approval) ---- */
 #define COL_MAX_ROSTER          5    /* spec 8  */
 #define COL_MAX_DEPLOY          3    /* spec 8  */
-#define COL_POOL_SIZE           20   /* spec 10 (15) + 5 original characters (GAME_DESIGN.md) */
+#define COL_POOL_SIZE           25   /* spec 10 (15) + 10 original characters (GAME_DESIGN.md) */
 #define COL_POOL_MAX            32   /* run-state capacity (32-bit masks, relic slots) */
 #define COL_POOL_ALL            ((u32)((1ull << COL_POOL_SIZE) - 1))   /* every pool character */
 #define COL_RECOVER_PER_FLOOR   3    /* spec 54 */

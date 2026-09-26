@@ -1,5 +1,16 @@
 # COLISEUM: Changelog
 
+## 2026-09-26 (second batch of original characters; battle palettes)
+- Dagny, Oriane, Ysolde, Celestine, Aurel (pool 25) in the slots of Amelia, Tana, Myrrh, Syrene
+  and Forde: FE-Repo portraits (credited), stats, skills, death quotes; Syrene's and Tana's
+  pegasus Triangle Attack flag removed.
+- Per-character battle palettes (`scripts/charpal.py`, manifest `src/graphics/battle_palettes.txt`):
+  the 10 original characters' battle sprites use their portraits' colours in their base classes
+  and promotions. FE8's per-character class/palette rows (0x95E0A4 / 0x95EEA4) are rewritten; the
+  new palettes live in palette-list entries of FE8 characters who never appear (repointed). The
+  build verifies every row and palette in the output ROM. `py -3 scripts/charpal.py CHAR CLASS...`
+  prints a base palette.
+
 ## 2026-09-26 (5 original characters: the pool grows to 20)
 - Morrow (Pirate), Silas (Mage), Hale (Archer), Selene (Dancer), Idris (Priest): FE-Repo
   portraits, names, descriptions, level-5 bases, growths, magic, personal skills, death quotes;

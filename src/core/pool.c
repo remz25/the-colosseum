@@ -1,5 +1,5 @@
-/* The playable character pool (spec 10: 15 characters, all eligible from the start, plus 5
- * original characters approved by the developer on 2026-09-26: 20).
+/* The playable character pool (spec 10: 15 characters, all eligible from the start, plus 10
+ * original characters approved by the developer on 2026-09-26, in two batches: 25).
  *
  * 15 FE8 characters (their portraits and animations exist), one per class the spec lists plus a
  * second Myrmidon (spec 10: characters sharing a class differ by skill, growths, equipment).
@@ -34,4 +34,10 @@ const struct ColPoolEntry gColPool[COL_POOL_SIZE] = {
     { 0x11, 0x19, { 0x2D, 0x6C } },  /* Hale     Archer      Iron Bow   (Kyle's slot)    */
     { 0x15, 0x4D, { 0x6C } },        /* Selene   Dancer      (Dance)    (Tethys's slot)  */
     { 0x05, 0x45, { 0x4B, 0x6C } },  /* Idris    Priest      Heal       (Moulder's slot) */
+    /* Second batch (approved 2026-09-26) */
+    { 0x12, 0x0A, { 0x14, 0x6C } },  /* Dagny     Knight (F)    Iron Lance  (Amelia's slot) */
+    { 0x22, 0x06, { 0x14, 0x6C } },  /* Oriane    Cavalier (F)  Iron Lance  (Tana's slot)   */
+    { 0x1E, 0x3C, { 0xAA, 0x6C } },  /* Ysolde    Manakete (F)  Dragonstone (Myrrh's slot)  */
+    { 0x21, 0x02, { 0x09, 0x6C } },  /* Celestine Lord (Eirika's class) Rapier (Syrene's slot) */
+    { 0x10, 0x01, { 0x14, 0x6C } },  /* Aurel     Lord (Ephraim's class) Iron Lance (Forde's slot) */
 };

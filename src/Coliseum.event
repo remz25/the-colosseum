@@ -14,6 +14,9 @@ ALIGN 4
 // Portraits (scripts/portraits.py from src/graphics/portraits/Portraits.txt)
 #include "../build/Portraits.event"
 
+// Character battle palettes (scripts/charpal.py from src/graphics/battle_palettes.txt)
+#include "../build/CharPalettes.event"
+
 // The reusable battle chapter (chapter slot 0)
 #include "battle/BattleChapter.event"
 #include "battle/SkipWorldMap.event"

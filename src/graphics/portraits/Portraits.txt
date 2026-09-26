@@ -8,3 +8,8 @@
 0x18  Hale.png    4 5  3 3    # Archer; replaces Kyle's portrait (Hale = Kyle's slot, character 0x11)
 0x1C  Selene.png  3 5  3 3    # Dancer; replaces Tethys's portrait (Selene = Tethys's slot, character 0x15)
 0x07  Idris.png   3 5  3 3    # Priest; replaces Moulder's portrait (Idris = Moulder's slot, character 0x05)
+0x19  Dagny.png      2 5  2 3    # Knight (F); Amelia's portrait slot (character 0x12)
+0x2C  Oriane.png     3 6  4 4    # Cavalier (F); Tana's portrait slot (character 0x22)
+0x26  Ysolde.png     2 5  2 3    # Manakete (F); Myrrh's portrait slot (character 0x1E)
+0x2B  Celestine.png  3 5  3 3    # Lord (Eirika's class); Syrene's portrait slot (character 0x21)
+0x16  Aurel.png      2 5  2 3    # Lord (Ephraim's class); Forde's portrait slot (character 0x10)

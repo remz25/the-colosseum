@@ -51,5 +51,7 @@ adding yourself!
 
 - Garytop: "Aster" (Morrow), "Keith" (Silas), "Jacinth" (Selene), "Saphyre" (Idris)
 - BoneManSeth and MeatOfJustice: "Sniperguy Hatman" (Hale)
+- Ghostblade: "Eirene" (Dagny), "Thalia Valkyrie" (Oriane), "Female Manakete" (Ysolde), "Joyeuse" (Aurel)
+- Garytop: "Beryl" (Celestine)
 
 Source: https://github.com/Klokinator/FE-Repo (Portrait Repository / Spriting Community OC's).

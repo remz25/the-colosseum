@@ -90,6 +90,11 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
   replace name, description, stats, skills; portraits come from `src/graphics/portraits/`
   (manifest `Portraits.txt`, built by `scripts/portraits.py`, verified in the ROM). The run
   state (v6) has room for 32 pool characters.
+- **Battle palettes**: FE8 picks a character's battle palette from two parallel 7-byte rows per
+  character (index = character ID - 1): classes at 0x95E0A4, palette-list indices at 0x95EEA4
+  (list at 0xEF8008: name[12] + LZ77 pointer, 108 entries). `scripts/charpal.py` rewrites the
+  rows of the original characters and repoints list entries of unused FE8 characters to the new
+  palettes (checked by the build).
 - **Enemies** (`src/core/encounters.c`): normal enemies are generic character 0x80; Elite roles
   are generic characters 0x81-0x88 (name + personal skill + level-1 skill list in the tables).
   Drops are keyed by enemy unit index; FE-CLib's `unit->index` is a *signed* byte, so compare

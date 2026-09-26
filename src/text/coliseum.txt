@@ -130,3 +130,48 @@ The arena infirmary's medic.[N]He follows the fighters in.[X]
 
 # 0x0C28
 [OpenMidRight][LoadFace][0x07][0x01][OpenMidRight]Who will tend[NL]them now[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Dagny
+Dagny[X]
+
+## ColCharDesc_Dagny
+Held the east gate for twenty[N]years. Now she fights through it.[X]
+
+# 0x0C3E
+[OpenMidRight][LoadFace][0x19][0x01][OpenMidRight]The gate[.][ToggleMouthMove]...[.][ToggleMouthMove][NL]is open[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Oriane
+Oriane[X]
+
+## ColCharDesc_Oriane
+A courier knight who rides[N]for the thrill of the charge.[X]
+
+# 0x0C34
+[OpenMidRight][LoadFace][0x2C][0x01][OpenMidRight]I rode too far[NL]ahead[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Ysolde
+Ysolde[X]
+
+## ColCharDesc_Ysolde
+A young dragon who hides her[N]face. She trusts no one.[X]
+
+# 0x0C41
+[OpenMidRight][LoadFace][0x26][0x01][OpenMidRight]So this is[NL]how dragons end[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Celestine
+Celestine[X]
+
+## ColCharDesc_Celestine
+A disinherited noble who duels[N]to win back her name.[X]
+
+# 0x0C43
+[OpenMidRight][LoadFace][0x2B][0x01][OpenMidRight]My name[.][ToggleMouthMove]...[.][ToggleMouthMove] was[NL]never restored[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Aurel
+Aurel[X]
+
+## ColCharDesc_Aurel
+An exiled prince recruiting[N]champions for his army.[X]
+
+# 0x0C33
+[OpenMidRight][LoadFace][0x16][0x01][OpenMidRight]My army[.][ToggleMouthMove]...[.][ToggleMouthMove][NL]was never raised[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]

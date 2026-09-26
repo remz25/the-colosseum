@@ -1,0 +1,60 @@
+# Per-character battle palettes (scripts/charpal.py): the original characters' battle sprites
+# take their portraits' colours.
+#
+#   char ID  classes C,C,...  base default|ID     the classes this character can be (base class and
+#                                                 promotions); base = whose FE8 palettes are recoloured
+#                                                 (the old slot character's), or the class default
+#   map RRGGBB RRGGBB ... -> RRGGBB               these colours (as they appear in the base palettes)
+#                                                 take the target's hue/saturation, keeping their shading
+#
+# Print a base palette's colours with: py -3 scripts/charpal.py CHAR_ID CLASS_ID ...
+
+# Morrow (Ross's slot): red captain's coat instead of Ross's blue
+char 0x07 classes 0x42,0x40,0x43 base 0x07
+map 60a0e8 68a8e8 68c0e8 4870d0 3860c8 303880 -> a83030
+
+# Silas (Ewan's slot): silver hair instead of red; navy robes instead of orange
+char 0x18 classes 0x25,0x27,0x29 base 0x18
+map c88850 d04000 901800 f86820 e04000 a01800 -> b8b8d8
+map f8b038 d05010 583030 e8a840 d05828 903018 c06058 802830 -> 34407c
+
+# Hale (Kyle's slot, archer line from the class default): teal hair, brown hunter's clothes
+char 0x11 classes 0x19,0x1B,0x1D base default
+map d8f870 50e838 489008 -> 4c9c8c
+map a8f8f8 68e8f8 5080f8 3838c0 b0f8f8 58e0f8 b0d0f0 7898b8 507090 80f8f8 78c0f8 4068f0 2020a8 8098f8 -> 8a6840
+
+# Selene (Tethys's slot): silver hair instead of red; gold dress instead of pink
+char 0x15 classes 0x4D base 0x15
+map f86878 d03830 802018 -> d4d4e4
+map f8b8f0 c860e0 782078 -> d0a030
+
+# Idris (Moulder's slot): platinum hair, blue cloak, darker skin
+char 0x05 classes 0x45,0x2B,0x27 base 0x05
+map c0a030 886810 583808 -> e0d8b0
+map d8b870 c08030 986010 583010 d8b878 a88850 f8e890 d08028 a85800 702000 -> 3454a8
+map f8c090 f8c088 f8c890 -> b07a50
+
+# Dagny (Amelia's slot): teal armour instead of Amelia's red and gold (the armoured sprites hide
+# the hair; Amelia's gold colours are armour highlights there, seen in game)
+char 0x12 classes 0x0A,0x0C,0x36 base 0x12
+map f8f8a8 b8a048 f0b078 e0e040 909048 d8d068 707828 b04038 e86038 f88860 f8b088 984838 -> 3a8098
+
+# Oriane (Tana's slot, cavalier line from Amelia's palettes): keeps the blonde hair, magenta scarf
+char 0x22 classes 0x06,0x08,0x36 base 0x12
+map f05840 c04018 402020 f88850 d04820 903020 -> b04878
+
+# Ysolde (Myrrh's slot, class default): pale silver-blue hair, white hood
+char 0x1E classes 0x3C base default
+map d860d8 903898 581068 -> a8b8d8
+map f8f808 d8c828 b89828 -> e4e4ec
+map e84810 a01000 -> 9aa8c8
+
+# Celestine (Syrene's slot, Eirika's lord line from the class default): blonde, green
+char 0x21 classes 0x02,0x04 base default
+map 98e8f8 48a0f0 1058b8 a8e0f0 78c0e8 50a0e8 1850a0 -> e8c850
+map e04000 b01810 781818 -> 3c9050
+
+# Aurel (Forde's slot, Ephraim's lord line from the class default): purple hair, navy tunic
+char 0x10 classes 0x01,0x03 base default
+map 98e8f8 48a0f0 1058a8 -> 8050b8
+map d03808 802018 -> 384878

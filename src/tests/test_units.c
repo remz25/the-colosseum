@@ -58,7 +58,7 @@ int Test_LoadPoolUnits(struct Unit *a, struct Unit *t)
     return result;
 }
 
-/* The 5 original characters (2026-09-26): name, class, portrait, personal skill, female flag. */
+/* The 10 original characters (2026-09-26): name, class, portrait, personal skill, female flag. */
 static int StrEq(const char *a, const char *b)
 {
     while (*a && *a == *b)
@@ -74,10 +74,15 @@ int Test_OriginalCharacters(struct Unit *a, struct Unit *t)
         { 17, 0x11, 0x19, 0x18, 42, "Hale" },               /* Archer, Deadeye */
         { 18, 0x15, 0x4D, 0x1C, 188, "Selene" },            /* Dancer, Stunning Smile */
         { 19, 0x05, 0x45, 0x07, 93, "Idris" },              /* Priest, Amaterasu */
+        { 20, 0x12, 0x0A, 0x19, 23, "Dagny" },              /* Knight (F), Barricade */
+        { 21, 0x22, 0x06, 0x2C, 167, "Oriane" },            /* Cavalier (F), Charge */
+        { 22, 0x1E, 0x3C, 0x26, 209, "Ysolde" },            /* Manakete (F), Tantivy */
+        { 23, 0x21, 0x02, 0x2B, 184, "Celestine" },         /* Eirika's lord class, Charisma */
+        { 24, 0x10, 0x01, 0x16, 205, "Aurel" },             /* Ephraim's lord class, Inspiration */
     };
     unsigned i;
 
-    CHECK(COL_POOL_SIZE == 20 && COL_POOL_ALL == 0xFFFFF);
+    CHECK(COL_POOL_SIZE == 25 && COL_POOL_ALL == 0x1FFFFFF);
     for (i = 0; i < sizeof(k) / sizeof(k[0]); i++) {
         const struct CharacterData *c = GetCharacterData(k[i].charId);
         struct Unit *u;
@@ -87,7 +92,7 @@ int Test_OriginalCharacters(struct Unit *a, struct Unit *t)
         CHECK(PersonalSkillTable[k[i].charId] == k[i].skill);
         u = Col_LoadPoolUnit(k[i].pool);
         CHECK(u && u->pClassData->number == k[i].classId);
-        CHECK(!!(UNIT_CATTRIBUTES(u) & CA_FEMALE) == (k[i].pool == 18));   /* only Selene */
+        CHECK(!!(UNIT_CATTRIBUTES(u) & CA_FEMALE) == (k[i].pool == 18 || (k[i].pool >= 20 && k[i].pool <= 23)));
         ClearUnit(u);
     }
     return 0;

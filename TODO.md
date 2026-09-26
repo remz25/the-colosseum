@@ -148,8 +148,8 @@ built, working in game, tested, documented.
 ## Original characters (developer request, 2026-09-26)
 - [x] Batch 1 (approved): Morrow, Silas, Hale, Selene, Idris - pool 15 -> 20; portrait pipeline;
       run state v6 (room for 32)
-- [ ] Batch 2: 5 more designs proposed for approval (pool -> 25)
-- [ ] Battle palettes matching the new portraits (today: the old FE8 characters' colours)
+- [x] Batch 2 (approved): Dagny, Oriane, Ysolde, Celestine, Aurel - pool 25
+- [x] Battle palettes matching the portraits (base classes and promotions)
 
 ## Shop (developer request, 2026-09-26)
 - [x] Fully random stock every round (categories and order), Heal 30/50/100%

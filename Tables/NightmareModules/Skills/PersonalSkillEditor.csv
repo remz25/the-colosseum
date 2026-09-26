@@ -15,9 +15,9 @@ Lute,ParagonID
 Natasha,SealLukID
 Cormag,RallyStrID
 Ephraim,InspirationID
-Forde,SpurSpdID
+Aurel,InspirationID
 Hale,DeadeyeID
-Amelia,ParagonID
+Dagny,BarricadeID
 Artur,FocusID
 Gerik,BondID
 Selene,StunningSmileID
@@ -29,11 +29,11 @@ Dozla,PivotID
 0,0x0
 Rennac,SpurSpdID
 Duessel,RepositionID
-Myrrh,DragonsBloodID
+Ysolde,TantivyID
 Knoll,VoiceOfPeaceID
 Joshua,GambleID
-Syrene,TantivyID
-Tana,LilysPoiseID
+Celestine,CharismaID
+Oriane,ChargeID
 Lyon,LunaID
 Orson,0x0
 Glen,0x0

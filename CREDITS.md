@@ -47,3 +47,9 @@ adding yourself!
 - Feier: Mage Slayer, Liquid Ooze 
 - circleseverywhere: Skill Animations
 
+# COLISEUM portraits (FE-Repo community art, marked F2E: free to use and edit with credit)
+
+- Garytop: "Aster" (Morrow), "Keith" (Silas), "Jacinth" (Selene), "Saphyre" (Idris)
+- BoneManSeth and MeatOfJustice: "Sniperguy Hatman" (Hale)
+
+Source: https://github.com/Klokinator/FE-Repo (Portrait Repository / Spriting Community OC's).

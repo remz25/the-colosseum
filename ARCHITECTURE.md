@@ -85,6 +85,11 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
   battle's beginning event, so reserves are only `US_HIDDEN` during a battle. FE8's game-over
   count (`CountAvailableBlueUnits`, checked at each phase start) is replaced so hidden units
   don't count (`src/roster/Roster.event`).
+- **Original characters**: pool entries 15+ reuse the character IDs of FE8 characters outside
+  the pool (their BWL skill bytes, supports and save slots work like everyone else's); tables
+  replace name, description, stats, skills; portraits come from `src/graphics/portraits/`
+  (manifest `Portraits.txt`, built by `scripts/portraits.py`, verified in the ROM). The run
+  state (v6) has room for 32 pool characters.
 - **Enemies** (`src/core/encounters.c`): normal enemies are generic character 0x80; Elite roles
   are generic characters 0x81-0x88 (name + personal skill + level-1 skill list in the tables).
   Drops are keyed by enemy unit index; FE-CLib's `unit->index` is a *signed* byte, so compare

@@ -296,7 +296,7 @@ static int EntryAvailable(int index)
 
     if (!Col_ShopCanAfford(index))
         return 0;
-    if (e->category == COL_SHOP_RECRUIT && (gColRun.recruitedMask & (1 << e->value)))
+    if (e->category == COL_SHOP_RECRUIT && (gColRun.recruitedMask & (1u << e->value)))
         return 0;                               /* recruited meanwhile (3-win reward) */
     if (e->category == COL_SHOP_RELIC && Col_RelicBagCount() >= COL_RELIC_BAG)
         return 0;                               /* no room in the relic bag */

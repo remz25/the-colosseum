@@ -19,7 +19,9 @@
 /* ---- Rules fixed by the spec (docs/COLISEUM_SPEC.md; changing them needs developer approval) ---- */
 #define COL_MAX_ROSTER          5    /* spec 8  */
 #define COL_MAX_DEPLOY          3    /* spec 8  */
-#define COL_POOL_SIZE           15   /* spec 10: playable characters */
+#define COL_POOL_SIZE           20   /* spec 10 (15) + 5 original characters (GAME_DESIGN.md) */
+#define COL_POOL_MAX            32   /* run-state capacity (32-bit masks, relic slots) */
+#define COL_POOL_ALL            ((u32)((1ull << COL_POOL_SIZE) - 1))   /* every pool character */
 #define COL_RECOVER_PER_FLOOR   3    /* spec 54 */
 #define COL_WINS_PER_REWARD     3    /* spec 51: 3-win reward */
 #define COL_NORMAL_FIGHTS_FLOOR 9    /* spec 5: battles 1-9, then the boss is fight 10 */
@@ -68,7 +70,7 @@ struct ColDrop {
  * EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event). Fixed size: new fields go
  * into `reserved` and bump COL_RUN_VERSION. */
 #define COL_RUN_MAGIC    0x524C4F43   /* "COLR" */
-#define COL_RUN_VERSION  5            /* 5: relics (v4 saves are upgraded on load) */
+#define COL_RUN_VERSION  6            /* 6: pool of up to 32 (v4/v5 saves are upgraded on load) */
 #define COL_RUN_SIZE     0x100
 
 struct ColRunState {
@@ -82,11 +84,10 @@ struct ColRunState {
     /* 0B */ u8  rewardDue;         /* 1: a 3-win reward is waiting to be chosen */
     /* 0C */ u8  recoverCharges;    /* 0-3 */
     /* 0D */ u8  rosterCount;
-    /* 0E */ u8  roster[COL_MAX_ROSTER];   /* pool indices (0-14) of living roster members; 0xFF empty */
+    /* 0E */ u8  roster[COL_MAX_ROSTER];   /* pool indices of living roster members; 0xFF empty */
     /* 13 */ u8  deployed[COL_MAX_DEPLOY]; /* roster slots deployed next battle; 0xFF empty */
-    /* 16 */ u16 deadMask;          /* bit = pool index: died this run (spec 12) */
-    /* 18 */ u16 recruitedMask;     /* bit = pool index: recruited this run (spec 9: never twice) */
-    /* 1A */ u16 shopPurchases;     /* purchases this run (price scaling, spec 39) */
+    /* 16 */ u16 shopPurchases;     /* purchases this run (price scaling, spec 39) */
+    /* 18 */ u32 deadMask;          /* bit = pool index: died this run (spec 12) */
     /* 1C */ u32 gold;
     /* 20 */ u32 seed;              /* run seed */
     /* 24 */ u32 battlesWon;        /* total victories this run (history) */
@@ -96,12 +97,13 @@ struct ColRunState {
     /* 32 */ u8  shopCount;         /* entries in this battle's shop stock (spec 38) */
     /* 33 */ u8  shopSold;          /* bit = stock entry already bought */
     /* 34 */ struct ColShopEntry shop[COL_SHOP_SIZE];   /* rolled once per battle: no reroll */
-    /* 54 */ u8  relics[COL_POOL_SIZE][COL_RELIC_SLOTS];  /* relic IDs worn, per pool character; 0 empty */
-    /* 72 */ u8  relicBag[COL_RELIC_BAG];  /* unequipped relics of this run (spec 33); 0 empty */
-    /* 82 */ u8  elite;             /* the Elite setup of the coming/current Elite battle (index + 1), 0 none */
-    /* 83 */ u8  pad83;
-    /* 84 */ struct ColDrop drops[COL_MAX_DROPS];  /* this battle's enemy drops (encounters.c) */
-    /* 94 */ u8  reserved[COL_RUN_SIZE - 0x94];
+    /* 54 */ u32 recruitedMask;     /* bit = pool index: recruited this run (spec 9: never twice) */
+    /* 58 */ u8  relicBag[COL_RELIC_BAG];  /* unequipped relics of this run (spec 33); 0 empty */
+    /* 68 */ u8  elite;             /* the Elite setup of the coming/current Elite battle (index + 1), 0 none */
+    /* 69 */ u8  pad69[3];
+    /* 6C */ struct ColDrop drops[COL_MAX_DROPS];  /* this battle's enemy drops (encounters.c) */
+    /* 7C */ u8  relics[COL_POOL_MAX][COL_RELIC_SLOTS];  /* relic IDs worn, per pool character; 0 empty */
+    /* BC */ u8  reserved[COL_RUN_SIZE - 0xBC];
 };
 
 /* The playable pool (pool.c). */
@@ -116,6 +118,7 @@ extern const struct ColPoolEntry gColPool[COL_POOL_SIZE];
 
 /* run_state.c */
 void Col_RunClear(void);
+void Col_UpgradeRunState(void);                /* a v4/v5 run state in gColRun -> v6 */
 void Col_RunNew(u32 seed);
 int  Col_RunIsValid(void);
 int  Col_NextEncounter(void);

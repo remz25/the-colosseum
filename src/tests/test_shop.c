@@ -48,7 +48,7 @@ int Test_ShopStock(struct Unit *a, struct Unit *t)
             CHECK(e->basePrice > 0);
             switch (e->category) {
             case COL_SHOP_RECRUIT:
-                CHECK(e->value < COL_POOL_SIZE && !(gColRun.recruitedMask & (1 << e->value)));
+                CHECK(e->value < COL_POOL_SIZE && !(gColRun.recruitedMask & (1u << e->value)));
                 break;
             case COL_SHOP_SKILL:
                 CHECK(Col_SkillInfo(e->value) && !(Col_SkillInfo(e->value)->flags & COL_SKF_ENEMY_ONLY));
@@ -91,7 +91,7 @@ int Test_ShopStock(struct Unit *a, struct Unit *t)
                       | (1 << COL_SHOP_CONSUMABLE)));
     CHECK(layouts >= 30);                                   /* the category layout is not fixed */
     /* nobody left to recruit: no Recruit entry, still a full stock */
-    gColRun.recruitedMask = 0x7FFF;
+    gColRun.recruitedMask = COL_POOL_ALL;
     Col_ShopGenerate();
     CHECK(gColRun.shopCount == COL_SHOP_SIZE);
     for (i = 0; i < gColRun.shopCount; i++)

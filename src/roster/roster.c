@@ -36,9 +36,9 @@ void Col_StartRun(void)
     Col_ClearRunSkills();                                        /* skills are per run */
     while (picked < 3) {
         int pool = NextRN_N(COL_POOL_SIZE);
-        if (gColRun.recruitedMask & (1 << pool))
+        if (gColRun.recruitedMask & (1u << pool))
             continue;
-        gColRun.recruitedMask |= (u16)(1 << pool);
+        gColRun.recruitedMask |= 1u << pool;
         gColRun.roster[picked] = (u8)pool;
         gColRun.deployed[picked] = (u8)picked;
         gColRun.hp[picked] = 0;                  /* 0 = full (not yet in a battle) */
@@ -68,7 +68,7 @@ int Col_RollRecruits(u8 out[COL_RECRUIT_CHOICES])
     int n = 0, count = 0, pool;
 
     for (pool = 0; pool < COL_POOL_SIZE; pool++)
-        if (!(gColRun.recruitedMask & (1 << pool)))
+        if (!(gColRun.recruitedMask & (1u << pool)))
             eligible[n++] = (u8)pool;
     while (count < COL_RECRUIT_CHOICES && n > 0) {
         int k = NextRN_N(n);
@@ -152,7 +152,7 @@ struct Unit *Col_Recruit(int pool, int replaceSlot)
     struct Unit *unit;
     int slot, level;
 
-    if (pool < 0 || pool >= COL_POOL_SIZE || (gColRun.recruitedMask & (1 << pool)))
+    if (pool < 0 || pool >= COL_POOL_SIZE || (gColRun.recruitedMask & (1u << pool)))
         return NULL;
     level = Col_RecruitLevel();
     if (replaceSlot >= 0) {
@@ -171,7 +171,7 @@ struct Unit *Col_Recruit(int pool, int replaceSlot)
     Col_ScaleUnitToLevel(unit, level);
     unit->state |= US_HIDDEN | US_NOT_DEPLOYED;
     gColRun.roster[slot] = (u8)pool;
-    gColRun.recruitedMask |= (u16)(1 << pool);
+    gColRun.recruitedMask |= 1u << pool;
     gColRun.rosterCount++;
     gColRun.hp[slot] = 0;
     gColRun.choiceLevel[slot] = (u8)unit->level;

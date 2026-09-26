@@ -84,3 +84,49 @@ Reaper[X]
 
 ## ColChar_Striker
 Striker[X]
+
+
+## ColChar_Morrow
+Morrow[X]
+
+## ColCharDesc_Morrow
+A retired sea captain who[N]fights for the purse.[X]
+
+# 0x0C2B
+[OpenMidRight][LoadFace][0x09][0x01][OpenMidRight]Ha[.][ToggleMouthMove]...[.][ToggleMouthMove] The house[NL]wins this one[.][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Silas
+Silas[X]
+
+## ColCharDesc_Silas
+An arena scholar who studies[N]every opponent.[X]
+
+# 0x0C3A
+[OpenMidRight][LoadFace][0x21][0x01][OpenMidRight]I should have[NL]studied you longer[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Hale
+Hale[X]
+
+## ColCharDesc_Hale
+A bounty hunter who took[N]up arena work.[X]
+
+# 0x0C32
+[OpenMidRight][LoadFace][0x18][0x01][OpenMidRight]No bounty is[NL]worth this[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Selene
+Selene[X]
+
+## ColCharDesc_Selene
+The crowd's favourite. Her[N]dance lets an ally move again.[X]
+
+# 0x0C37
+[OpenMidRight][LoadFace][0x1C][0x01][OpenMidRight]The music[.][ToggleMouthMove]...[.][ToggleMouthMove][NL]it stopped[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+## ColChar_Idris
+Idris[X]
+
+## ColCharDesc_Idris
+The arena infirmary's medic.[N]He follows the fighters in.[X]
+
+# 0x0C28
+[OpenMidRight][LoadFace][0x07][0x01][OpenMidRight]Who will tend[NL]them now[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]

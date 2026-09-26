@@ -11,6 +11,7 @@
 #include "bmmap.h"
 #include "bmbattle.h"
 #include "bmsave.h"
+#include "agb_sram.h"
 
 #define CHECK(cond) do { if (!(cond)) return __LINE__; } while (0)
 
@@ -247,14 +248,47 @@ int Test_RelicSave(struct Unit *sA, struct Unit *sT)
     CHECK(gColRun.relics[POOL_LUTE][0] == ARCANE_BLOOD && gColRun.relics[POOL_LUTE][1] == FORTRESS_HEART);
     CHECK(gColRun.relicBag[0] == GOLDEN_THREAD);
 
-    Col_RunNew(7);                                                  /* a v4 run: upgraded, kept */
-    Col_AddGold(55);
-    gColRun.version = 4;
-    Col_SaveRunChunk(sram, COL_RUN_SIZE);
-    Col_RunClear();
-    Col_LoadRunChunk(sram, COL_RUN_SIZE);
-    CHECK(Col_RunIsValid() && gColRun.active && gColRun.gold == 55 && gColRun.version == COL_RUN_VERSION);
-    CHECK(Col_RelicBagCount() == 0);
+    /* A v5 save (pool of 15: 16-bit masks at 0x16/0x18, purchases 0x1A, relics[15][2] at 0x54,
+     * bag 0x72, elite 0x82, drops 0x84), byte by byte, is upgraded to v6 with every field kept.
+     * A v4 save has the same layout (its relic and drop bytes are zero). */
+    {
+        u8 v5[COL_RUN_SIZE];
+        int i, version;
+        for (version = 4; version <= 5; version++) {
+            for (i = 0; i < COL_RUN_SIZE; i++)
+                v5[i] = 0;
+            v5[0] = 'C'; v5[1] = 'O'; v5[2] = 'L'; v5[3] = 'R';
+            v5[4] = (u8)version;
+            v5[6] = 1;                                      /* active */
+            v5[7] = 2;                                      /* floor */
+            v5[0x0D] = 1; v5[0x0E] = 9;                     /* roster: Lute */
+            for (i = 1; i < COL_MAX_ROSTER; i++) v5[0x0E + i] = 0xFF;
+            v5[0x13] = 0; v5[0x14] = 0xFF; v5[0x15] = 0xFF;
+            v5[0x16] = 0x80; v5[0x17] = 0x00;               /* dead: pool 7 */
+            v5[0x18] = 0x03; v5[0x19] = 0x42;               /* recruited: 0, 1, 9, 14 */
+            v5[0x1A] = 7;                                   /* purchases */
+            v5[0x1C] = 0x39; v5[0x1D] = 0x05;               /* gold 1337 */
+            v5[0x20] = 0x44;                                /* seed */
+            v5[0x54 + 9 * 2] = WIND_SOUL;                   /* Lute wears Wind Soul */
+            v5[0x54 + 14 * 2 + 1] = IRON_HEART;             /* pool 14 (last v5 character), slot 2 */
+            v5[0x72] = GOLDEN_THREAD;                       /* bag */
+            v5[0x82] = 3;                                   /* elite */
+            v5[0x84] = 0x81; v5[0x85] = COL_DROP_RELIC; v5[0x86] = 5; v5[0x87] = 0x02;
+            WriteAndVerifySramFast(v5, sram, COL_RUN_SIZE);
+            Col_RunClear();
+            Col_LoadRunChunk(sram, COL_RUN_SIZE);
+            CHECK(Col_RunIsValid() && gColRun.version == COL_RUN_VERSION && gColRun.active == 1 && gColRun.floor == 2);
+            CHECK(gColRun.rosterCount == 1 && gColRun.roster[0] == 9 && gColRun.deployed[0] == 0);
+            CHECK(gColRun.deadMask == 0x80 && gColRun.recruitedMask == 0x4203 && gColRun.shopPurchases == 7);
+            CHECK(gColRun.gold == 1337 && gColRun.seed == 0x44);
+            CHECK(gColRun.relics[9][0] == WIND_SOUL && gColRun.relics[14][1] == IRON_HEART);
+            CHECK(gColRun.relics[15][0] == 0 && gColRun.relics[19][1] == 0);   /* new characters: none */
+            CHECK(gColRun.relicBag[0] == GOLDEN_THREAD && Col_RelicBagCount() == 1);
+            CHECK(gColRun.elite == 3);
+            CHECK(gColRun.drops[0].unit == 0x81 && gColRun.drops[0].kind == COL_DROP_RELIC
+                  && gColRun.drops[0].value == 5 && gColRun.drops[0].killer == 2);
+        }
+    }
     return 0;
 }
 

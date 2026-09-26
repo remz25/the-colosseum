@@ -145,6 +145,12 @@ built, working in game, tested, documented.
 - [ ] More Elite rewards (recruitable Elites, reward choice) with the Phase 10 reward menu
 - [ ] Elite setups per floor/faction; balance (Phase 16)
 
+## Original characters (developer request, 2026-09-26)
+- [x] Batch 1 (approved): Morrow, Silas, Hale, Selene, Idris - pool 15 -> 20; portrait pipeline;
+      run state v6 (room for 32)
+- [ ] Batch 2: 5 more designs proposed for approval (pool -> 25)
+- [ ] Battle palettes matching the new portraits (today: the old FE8 characters' colours)
+
 ## Shop (developer request, 2026-09-26)
 - [x] Fully random stock every round (categories and order), Heal 30/50/100%
 

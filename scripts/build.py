@@ -2,7 +2,7 @@
 """COLISEUM build: the Skill System buildfile steps (MAKE_HACK_full.cmd), run from the
 right folders with every tool named explicitly and every step checked.
 
-    py -3 scripts/build.py           full build (tables, text, maps, assemble)
+    py -3 scripts/build.py           full build (tables, text, maps, portraits, assemble)
     py -3 scripts/build.py --quick   assemble only (no tables/text/maps)
     py -3 scripts/build.py --test    test build (links src/tests/: on-target unit tests, run by
                                      tests/run_tests.py) -> Coliseum_test.gba
@@ -28,6 +28,9 @@ import sys
 import zlib
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import portraits  # noqa: E402  (scripts/portraits.py)
+
 ROOT = Path(__file__).resolve().parent.parent
 CLEAN = ROOT / "FE8_clean.gba"
 CLEAN_CRC = 0xA47246AE                      # FE8U (USA), 16 MiB
@@ -42,6 +45,8 @@ SRC = ROOT / "src"
 GEN = ROOT / "build"
 CLIB = TOOLS / "FE-Clib"
 LYN = EA / "Tools" / "lyn.exe"
+PORTRAIT_FORMATTER = EA / "Tools" / "PortraitFormatter.exe"
+PORTRAIT_MANIFEST = SRC / "graphics" / "portraits" / "Portraits.txt"
 ARM_TC = Path(os.environ.get("ARM_TOOLCHAIN",
               r"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 mpacbti-rel1\bin"))
 CFLAGS = ["-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork", "-mtune=arm7tdmi", "-mlong-calls", "-O2",
@@ -147,6 +152,18 @@ def build_c(test: bool) -> int:
     return len(sources)
 
 
+def build_portraits() -> list:
+    info("Converting portraits (PortraitFormatter)")
+    try:
+        items, warnings = portraits.compile_all(PORTRAIT_MANIFEST, PORTRAIT_FORMATTER, GEN)
+    except portraits.PortraitError as e:
+        raise BuildError(str(e))
+    for w in warnings:
+        print(f"[warn ] {w}")
+    ok(f"Converted {len(items)} portrait(s) from src/graphics/portraits/")
+    return items
+
+
 def assemble(clean: bytes, debug: bool = False) -> bytes:
     info("Assembling ROMBuildfile.event (ColorzCore)" + (" [DEBUG build]" if debug else ""))
     TMP.unlink(missing_ok=True)
@@ -198,9 +215,15 @@ def main() -> int:
             build_tables()
             build_text()
             build_maps()
+        items = build_portraits()
         build_c(args.test)
         out = TEST_OUT if args.test else DEBUG_OUT if args.debug else OUT
-        finish(assemble(clean, args.debug or args.test), out)
+        data = assemble(clean, args.debug or args.test)
+        problems = portraits.verify_rom(items, data)
+        if problems:
+            TMP.unlink(missing_ok=True)
+            raise BuildError("Portrait table check failed:\n  " + "\n  ".join(problems))
+        finish(data, out)
     except BuildError as e:
         print(f"[FAIL ] {e}", file=sys.stderr)
         return 1

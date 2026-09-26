@@ -289,6 +289,7 @@ int Test_NoStatCaps(struct Unit *, struct Unit *);
 int Test_StatChoices(struct Unit *, struct Unit *);
 int Test_PendingChoices(struct Unit *, struct Unit *);
 int Test_NoDurability(struct Unit *, struct Unit *);
+int Test_OriginalCharacters(struct Unit *, struct Unit *);
 /* test_skills.c */
 int Test_ClassSkillInSlot(struct Unit *, struct Unit *);
 int Test_ThreeSlots(struct Unit *, struct Unit *);
@@ -357,7 +358,7 @@ static const ColMapTestFn kMapTests[] = {
     Test_RelicFlatStats, Test_RelicPercentStats, Test_RelicBattleRates, Test_RelicBloodiedBand,
     Test_RelicGuardian, Test_RelicDamage, Test_RelicBloodPact, Test_RelicGold, Test_RelicShop,
     Test_EliteSetups, Test_EliteChampion, Test_EliteSquad, Test_NormalEnemiesAndFirstRelic,
-    Test_DropOdds, Test_DropKiller, Test_DeployedAlive,
+    Test_DropOdds, Test_DropKiller, Test_DeployedAlive, Test_OriginalCharacters,
 };
 
 int ColTest_MapCount(void)

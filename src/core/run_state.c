@@ -122,7 +122,7 @@ void Col_RosterRemoveDead(int slot)
     if (slot < 0 || slot >= COL_MAX_ROSTER || gColRun.roster[slot] >= COL_POOL_SIZE)
         return;
     pool = gColRun.roster[slot];
-    gColRun.deadMask |= (u16)(1 << pool);
+    gColRun.deadMask |= 1u << pool;
     Col_RelicsReturnToBag(pool);                 /* relics stay in the run (docs/RELICS.md) */
     gColRun.roster[slot] = 0xFF;
     gColRun.hp[slot] = 0;
@@ -170,6 +170,38 @@ void Col_SaveRunChunk(void *sram, unsigned size)
     WriteAndVerifySramFast(&gColRun, sram, sizeof(struct ColRunState));
 }
 
+/* v4/v5 (a pool of 15, 16-bit masks) -> v6 (up to 32). v4 is v5 with its relic and drop
+ * fields still reserved (zero). Everything up to the shop stock keeps its offset except the
+ * masks and the purchase count; the rest moves. */
+void Col_UpgradeRunState(void)
+{
+    u8 old[COL_RUN_SIZE];
+    const u8 *o = old;
+    unsigned i;
+
+    for (i = 0; i < COL_RUN_SIZE; i++)
+        old[i] = ((const u8 *)&gColRun)[i];
+    gColRun.deadMask = (u32)(o[0x16] | o[0x17] << 8);
+    gColRun.recruitedMask = (u32)(o[0x18] | o[0x19] << 8);
+    gColRun.shopPurchases = (u16)(o[0x1A] | o[0x1B] << 8);
+    for (i = 0; i < COL_RELIC_BAG; i++)
+        gColRun.relicBag[i] = o[0x72 + i];
+    gColRun.elite = o[0x82];
+    for (i = 0; i < 3; i++)
+        gColRun.pad69[i] = 0;
+    for (i = 0; i < COL_MAX_DROPS; i++) {
+        gColRun.drops[i].unit = o[0x84 + 4 * i];
+        gColRun.drops[i].kind = o[0x85 + 4 * i];
+        gColRun.drops[i].value = o[0x86 + 4 * i];
+        gColRun.drops[i].killer = o[0x87 + 4 * i];
+    }
+    for (i = 0; i < COL_POOL_MAX * COL_RELIC_SLOTS; i++)
+        ((u8 *)gColRun.relics)[i] = i < 15 * COL_RELIC_SLOTS ? o[0x54 + i] : 0;
+    for (i = 0; i < sizeof(gColRun.reserved); i++)
+        gColRun.reserved[i] = 0;
+    gColRun.version = COL_RUN_VERSION;
+}
+
 /* Loading a save without COLISEUM data (or an older layout) leaves no active run. A v4 run
  * (before relics) is upgraded: its relic fields were reserved bytes, always zero. */
 void Col_LoadRunChunk(void *sram, unsigned size)
@@ -177,8 +209,8 @@ void Col_LoadRunChunk(void *sram, unsigned size)
     if (size < sizeof(struct ColRunState))
         return;
     ReadSramFast(sram, &gColRun, sizeof(struct ColRunState));
-    if (gColRun.magic == COL_RUN_MAGIC && gColRun.version == 4)
-        gColRun.version = COL_RUN_VERSION;      /* v4 -> v5: relic fields were reserved (zero) */
+    if (gColRun.magic == COL_RUN_MAGIC && (gColRun.version == 4 || gColRun.version == 5))
+        Col_UpgradeRunState();
     if (!Col_RunIsValid())
         Col_RunClear();
 }

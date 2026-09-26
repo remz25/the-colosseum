@@ -28,7 +28,8 @@ int Test_Pool(struct Unit *a, struct Unit *t)
     return 0;
 }
 
-/* Every pool character loads at level 5 with EXP 0, its level-5 bases, and a usable weapon. */
+/* Every pool character loads at level 5 with EXP 0, its level-5 bases, and a usable weapon
+ * (a dancer carries none: she dances). */
 int Test_LoadPoolUnits(struct Unit *a, struct Unit *t)
 {
     int i, result = 0;
@@ -49,12 +50,47 @@ int Test_LoadPoolUnits(struct Unit *a, struct Unit *t)
             for (k = 0; k < UNIT_ITEM_COUNT; k++)
                 if (u->items[k] && (CanUnitUseWeapon(u, u->items[k]) || CanUnitUseStaff(u, u->items[k])))
                     usable = 1;
-            if (!usable)
+            if (!usable && !(u->pClassData->attributes & CA_REFRESHER))
                 result = __LINE__;
         }
         ClearUnit(u);
     }
     return result;
+}
+
+/* The 5 original characters (2026-09-26): name, class, portrait, personal skill, female flag. */
+static int StrEq(const char *a, const char *b)
+{
+    while (*a && *a == *b)
+        a++, b++;
+    return *a == *b;
+}
+
+int Test_OriginalCharacters(struct Unit *a, struct Unit *t)
+{
+    static const struct { u8 pool, charId, classId, portrait, skill; const char *name; } k[] = {
+        { 15, 0x07, 0x42, 0x09, 187, "Morrow" },            /* Pirate, Pickup */
+        { 16, 0x18, 0x25, 0x21, 226, "Silas" },             /* Mage, Perfectionist */
+        { 17, 0x11, 0x19, 0x18, 42, "Hale" },               /* Archer, Deadeye */
+        { 18, 0x15, 0x4D, 0x1C, 188, "Selene" },            /* Dancer, Stunning Smile */
+        { 19, 0x05, 0x45, 0x07, 93, "Idris" },              /* Priest, Amaterasu */
+    };
+    unsigned i;
+
+    CHECK(COL_POOL_SIZE == 20 && COL_POOL_ALL == 0xFFFFF);
+    for (i = 0; i < sizeof(k) / sizeof(k[0]); i++) {
+        const struct CharacterData *c = GetCharacterData(k[i].charId);
+        struct Unit *u;
+        CHECK(gColPool[k[i].pool].charId == k[i].charId && gColPool[k[i].pool].classId == k[i].classId);
+        CHECK(StrEq(GetStringFromIndex(c->nameTextId), k[i].name));
+        CHECK(c->portraitId == k[i].portrait && c->defaultClass == k[i].classId);
+        CHECK(PersonalSkillTable[k[i].charId] == k[i].skill);
+        u = Col_LoadPoolUnit(k[i].pool);
+        CHECK(u && u->pClassData->number == k[i].classId);
+        CHECK(!!(UNIT_CATTRIBUTES(u) & CA_FEMALE) == (k[i].pool == 18));   /* only Selene */
+        ClearUnit(u);
+    }
+    return 0;
 }
 
 /* Level cap 30 (spec 21): EXP keeps working past vanilla's 20 and stops at 30. */

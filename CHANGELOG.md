@@ -1,5 +1,19 @@
 # COLISEUM: Changelog
 
+## 2026-09-26 (5 original characters: the pool grows to 20)
+- Morrow (Pirate), Silas (Mage), Hale (Archer), Selene (Dancer), Idris (Priest): FE-Repo
+  portraits, names, descriptions, level-5 bases, growths, magic, personal skills, death quotes;
+  pool entries 15-19 (`src/core/pool.c`). Credits in CREDITS.md.
+- Portrait pipeline ported from The Severed Star: `scripts/portraits.py` + `scripts/mugtool.py`,
+  manifest `src/graphics/portraits/Portraits.txt`; the build converts the sheets with
+  PortraitFormatter, writes the portrait table and verifies it in the output ROM.
+- Run state v6: pool of up to 32 (32-bit dead/recruited masks, relic slots for 32 characters);
+  v4/v5 saves are upgraded on load (`Col_UpgradeRunState`, tested byte by byte).
+- **Upstream Skill System file changed**: `skill_definitions.event` - Pickup and Stunning Smile
+  enabled with the IDs of Thighdeology (187) and Thotslayer (188), which are now disabled.
+- Tests: Test_OriginalCharacters; the pool load test accepts a dancer (no weapon); the save test
+  now upgrades real v4/v5 images.
+
 ## 2026-09-26 (fix: the run didn't end when every deployed unit died)
 - Cause: FE8 clears every blue unit's not-deployed flag after the battle's beginning event, so
   the hidden reserves counted as available units and FE8's game over (no units left) never came;

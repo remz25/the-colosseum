@@ -91,5 +91,10 @@ mGBA, not only compiled.
 | All deployed units dead -> run over: enemy-phase deaths (3 units, and 3 + a reserve), last unit killed by a counter on the player phase | PASS (in game) | test ROM, scripted; each reached FE8's GAME OVER and cleared the run | 2026-09-26 |
 | Turn-start safety net (no blue unit fighting on the map -> run lost + GAME OVER; no false trigger on turn 1) | PASS (in game) + map test 58 | event run directly with every deployed unit dead | 2026-09-26 |
 | Developer's report "battle went on to turn 20 after everyone died" (reserves in the roster) | FIXED (in game) | cause: FE8 clears the reserves' not-deployed flag after the beginning event, so its unit count included hidden reserves; CountAvailableBlueUnits replaced. Reproduced with a reserve recruited before the battle, then fixed: GAME OVER right after the enemy phase | 2026-09-26 |
+| Original characters: name, class, portrait, personal skill, female flag (Selene only), loadable at level 5 | PASS | map test 59 + pool tests | 2026-09-26 |
+| Portrait table entries for the 5 sheets hold the converted data (build step) | PASS | scripts/portraits.py verify_rom | 2026-09-26 |
+| v4 and v5 saves upgrade to v6 with every field kept (byte-built images) | PASS | map test 42 | 2026-09-26 |
+| In game: Morrow / Hale / Selene deployed - unit window portrait, stat screens (portrait, name, class, skill icons), map sprites; Selene's Dance refreshed Morrow (with animation, EXP); Selene's new death quote with her portrait | PASS (in game) | player ROM, scripted with screenshots | 2026-09-26 |
+| Silas and Idris seen in game; Morrow's Pickup; Hale's Deadeye sleep | NOT VERIFIED in game | data checked by tests | |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

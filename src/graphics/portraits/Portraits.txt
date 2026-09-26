@@ -1,0 +1,10 @@
+# Portraits inserted by the build (scripts/portraits.py).
+# Format: PORTRAIT_ID  FILE.png  MOUTH_X MOUTH_Y  EYE_X EYE_Y   (tile coordinates)
+# Get suggested coordinates with: py -3 scripts/mugtool.py src/graphics/portraits/FILE.png
+# Sheets: 128x112, at most 16 colours (FE-Repo "formatted" sheets). Credit every sheet in CREDITS.md.
+
+0x09  Morrow.png  3 4  3 2    # Pirate; replaces Ross's portrait (Morrow = Ross's slot, character 0x07)
+0x21  Silas.png   3 6  3 4    # Mage; replaces Ewan's portrait (Silas = Ewan's slot, character 0x18)
+0x18  Hale.png    4 5  3 3    # Archer; replaces Kyle's portrait (Hale = Kyle's slot, character 0x11)
+0x1C  Selene.png  3 5  3 3    # Dancer; replaces Tethys's portrait (Selene = Tethys's slot, character 0x15)
+0x07  Idris.png   3 5  3 3    # Priest; replaces Moulder's portrait (Idris = Moulder's slot, character 0x05)

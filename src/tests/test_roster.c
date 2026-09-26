@@ -27,7 +27,7 @@ static void Roster(const u8 *pools, int n)
     Col_RunNew(7);
     for (i = 0; i < n; i++) {
         gColRun.roster[i] = pools[i];
-        gColRun.recruitedMask |= (u16)(1 << pools[i]);
+        gColRun.recruitedMask |= 1u << pools[i];
         gColRun.choiceLevel[i] = COL_START_LEVEL;
     }
     gColRun.rosterCount = (u8)n;
@@ -41,11 +41,11 @@ int Test_RollRecruits(struct Unit *a, struct Unit *t)
     int i, k, n;
 
     Col_RunNew(1);
-    gColRun.recruitedMask = 0x7FFF & ~((1 << 4) | (1 << 9));   /* only pools 4 and 9 left */
+    gColRun.recruitedMask = COL_POOL_ALL & ~((1u << 4) | (1u << 9));   /* only pools 4 and 9 left */
     n = Col_RollRecruits(out);
     CHECK(n == 2 && out[0] != out[1]);
     CHECK((out[0] == 4 || out[0] == 9) && (out[1] == 4 || out[1] == 9));
-    gColRun.recruitedMask = 0x7FFF;
+    gColRun.recruitedMask = COL_POOL_ALL;
     CHECK(Col_RollRecruits(out) == 0);
 
     gColRun.recruitedMask = (1 << 0) | (1 << 1) | (1 << 2);

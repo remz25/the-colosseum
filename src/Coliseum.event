@@ -11,6 +11,9 @@
 ALIGN 4
 #include "../build/Coliseum.lyn.event"
 
+// Portraits (scripts/portraits.py from src/graphics/portraits/Portraits.txt)
+#include "../build/Portraits.event"
+
 // The reusable battle chapter (chapter slot 0)
 #include "battle/BattleChapter.event"
 #include "battle/SkipWorldMap.event"

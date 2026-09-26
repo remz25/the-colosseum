@@ -136,5 +136,17 @@ built, working in game, tested, documented.
 - Later: relic rewards from Elites/Bosses and reward choices (Phases 10-12); relic list on the
   stat screen (optional); relic weights/prices (Phase 16).
 
-## Phase 10-17
+## Phase 11: Elites — PARTLY DONE (2026-09-26)
+- [x] Elite battles are distinct: announcement before the battle; Champion (1 strong enemy, own
+      skills, Elite weapon dropped) or Elite Squad (3 roles built for synergy) (spec 47-48)
+- [x] Elite rewards: 2x gold, a guaranteed relic drop, the Champion's weapon (spec 50, part)
+- [x] Enemy drops (developer request): gold / skill / relic; first battle of each run: a relic
+- [ ] Advanced Elite AI (spec 49): Elites still use FE8's AI (charge; healers heal)
+- [ ] More Elite rewards (recruitable Elites, reward choice) with the Phase 10 reward menu
+- [ ] Elite setups per floor/faction; balance (Phase 16)
+
+## Shop (developer request, 2026-09-26)
+- [x] Fully random stock every round (categories and order), Heal 30/50/100%
+
+## Phase 10, 12-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

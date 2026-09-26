@@ -28,13 +28,16 @@ int Test_ShopPrices(struct Unit *a, struct Unit *t)
     return 0;
 }
 
-/* spec 38: 8 entries, every relevant category, no duplicate weapon/skill, floor-appropriate. */
+/* spec 38: 8 entries, fully random categories (every category over many rounds, the layout
+ * changes), at most one recruit / heal / promotion, no duplicate weapon/skill/relic,
+ * floor-appropriate weapons. */
 int Test_ShopStock(struct Unit *a, struct Unit *t)
 {
-    int round, i, j;
+    int round, i, j, seenAll = 0, layouts = 0;
+    u8 firstLayout[COL_SHOP_SIZE];
 
-    for (round = 0; round < 20; round++) {
-        int seen = 0;
+    for (round = 0; round < 40; round++) {
+        int seen = 0, singles[COL_SHOP_CONSUMABLE + 1] = { 0 }, same = 1;
         Col_RunNew(round);
         gColRun.floor = 1;
         Col_ShopGenerate();
@@ -55,7 +58,7 @@ int Test_ShopStock(struct Unit *a, struct Unit *t)
                 CHECK(GetItemRequiredExp(e->value) < 121);   /* floor 1: no B/A/S */
                 break;
             case COL_SHOP_HEAL:
-                CHECK(e->value == 50);
+                CHECK(e->value == 30 || e->value == 50 || e->value == 100);
                 break;
             case COL_SHOP_RELIC:
                 CHECK(Col_RelicDef(e->value) != NULL);
@@ -71,10 +74,22 @@ int Test_ShopStock(struct Unit *a, struct Unit *t)
                 if (e->category == COL_SHOP_WEAPON || e->category == COL_SHOP_SKILL || e->category == COL_SHOP_RELIC)
                     CHECK(!(gColRun.shop[j].category == e->category && gColRun.shop[j].value == e->value));
         }
-        CHECK(seen == ((1 << COL_SHOP_RECRUIT) | (1 << COL_SHOP_SKILL) | (1 << COL_SHOP_WEAPON)
-                       | (1 << COL_SHOP_RELIC) | (1 << COL_SHOP_HEAL) | (1 << COL_SHOP_PROMOTION)
-                       | (1 << COL_SHOP_CONSUMABLE)));
+        for (i = 0; i < gColRun.shopCount; i++) {
+            singles[gColRun.shop[i].category]++;
+            if (round == 0)
+                firstLayout[i] = gColRun.shop[i].category;
+            else if (firstLayout[i] != gColRun.shop[i].category)
+                same = 0;
+        }
+        CHECK(singles[COL_SHOP_RECRUIT] <= 1 && singles[COL_SHOP_HEAL] <= 1 && singles[COL_SHOP_PROMOTION] <= 1);
+        if (round && !same)
+            layouts++;
+        seenAll |= seen;
     }
+    CHECK(seenAll == ((1 << COL_SHOP_RECRUIT) | (1 << COL_SHOP_SKILL) | (1 << COL_SHOP_WEAPON)
+                      | (1 << COL_SHOP_RELIC) | (1 << COL_SHOP_HEAL) | (1 << COL_SHOP_PROMOTION)
+                      | (1 << COL_SHOP_CONSUMABLE)));
+    CHECK(layouts >= 30);                                   /* the category layout is not fixed */
     /* nobody left to recruit: no Recruit entry, still a full stock */
     gColRun.recruitedMask = 0x7FFF;
     Col_ShopGenerate();

@@ -318,6 +318,13 @@ int Test_RecruitBuild(struct Unit *, struct Unit *);
 int Test_Deployment(struct Unit *, struct Unit *);
 int Test_RunLost(struct Unit *, struct Unit *);
 int Test_NewGameClearsRun(struct Unit *, struct Unit *);
+/* test_encounters.c */
+int Test_EliteSetups(struct Unit *, struct Unit *);
+int Test_EliteChampion(struct Unit *, struct Unit *);
+int Test_EliteSquad(struct Unit *, struct Unit *);
+int Test_NormalEnemiesAndFirstRelic(struct Unit *, struct Unit *);
+int Test_DropOdds(struct Unit *, struct Unit *);
+int Test_DropKiller(struct Unit *, struct Unit *);
 /* test_relics.c */
 int Test_RelicPool(struct Unit *, struct Unit *);
 int Test_RelicTexts(struct Unit *, struct Unit *);
@@ -348,6 +355,8 @@ static const ColMapTestFn kMapTests[] = {
     Test_RelicPool, Test_RelicTexts, Test_RelicEquip, Test_RelicsLeaveRun, Test_RelicSave,
     Test_RelicFlatStats, Test_RelicPercentStats, Test_RelicBattleRates, Test_RelicBloodiedBand,
     Test_RelicGuardian, Test_RelicDamage, Test_RelicBloodPact, Test_RelicGold, Test_RelicShop,
+    Test_EliteSetups, Test_EliteChampion, Test_EliteSquad, Test_NormalEnemiesAndFirstRelic,
+    Test_DropOdds, Test_DropKiller,
 };
 
 int ColTest_MapCount(void)

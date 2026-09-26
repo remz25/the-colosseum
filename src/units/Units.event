@@ -12,6 +12,7 @@ POP
 // (Col_PostCombatStatChoice, listed in PostBattleCalcLoop.event).
 ALIGN 4
 ColEvt_StatChoice:
+ASMC Col_StartDropClaims|1      // enemy drops first (src/core/notice_ui.c)
 ASMC Col_StartStatChoices|1
 NoFade
 ENDA

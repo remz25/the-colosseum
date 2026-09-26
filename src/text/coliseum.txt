@@ -69,3 +69,18 @@ Abyss Tome[X]
 
 ## ColItemDesc_AbyssTome
 A Coliseum champion's[N]dark tome. Range 1-2.[X]
+
+## ColChar_Champion
+Champion[X]
+
+## ColChar_Guardian
+Guardian[X]
+
+## ColChar_Mender
+Mender[X]
+
+## ColChar_Reaper
+Reaper[X]
+
+## ColChar_Striker
+Striker[X]

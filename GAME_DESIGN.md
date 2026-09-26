@@ -40,6 +40,11 @@ without the developer's approval.
 | 2026-09-26 | Golden Thread counts for every living roster member wearing it (reserves too) and stacks (+25% each); it only changes battle victory gold. | Claude (implementation) | |
 | 2026-09-26 | Blood Pact's 2 HP cost applies to every attack the wearer makes: counters, follow-ups and misses too; never below 1 HP. | Claude (implementation) | |
 | 2026-09-26 | Shop relic weights C 45 / U 30 / R 17 / E 8 / L 4 / M 1 (empty rarities skipped); base prices 500 / 900 / 1400 / 2200 / 3200 / 4500. One relic per stock plus possible extras. | Claude (implementation) | Balance levers (Phase 16). |
+| 2026-09-26 | **Shop fully random every round**: all 8 entries pick a random category (weights: Weapon 22, Consumable 20, Skill 18, Relic 16, Recruit 10, Promotion 8, Heal 6); at most one Recruit / Heal / Promotion; Heal is 30/50/100% (300/500/900 G). Still rolled once per battle. | Developer | Replaces "one of each category". Weights are Phase 16 levers. |
+| 2026-09-26 | **Enemy drops**: enemies can carry gold, a skill or a relic, given when they die. **The first battle of every run always has one enemy carrying a relic.** | Developer | |
+| 2026-09-26 | Drop odds: normal enemies 25% (Elite squads 50%); gold 50% / skill 25% / relic 25%; gold 120-180 on floor 1 (+40 per floor, x2 in Elites); every Elite also guarantees one relic. A skill drop is a random skill the killer can learn, offered to the killer (learn / replace / decline). A relic with a full bag, or a skill nobody can learn, becomes 300 gold. Drops are hidden until claimed. | Claude (implementation) | Balance levers. |
+| 2026-09-26 | **Elite battles made real (Phase 11, first part)**: "ELITE BATTLE!" announcement before the Prepare menu; 4 Champions (1 boosted promoted enemy, own skills, Elite weapon it drops) and 3 Elite Squads (Guardian / Mender / Reaper / Striker roles with synergy skills); 2x gold + a guaranteed relic. | Developer (scope), Claude (content) | Advanced Elite AI (spec 49) still to come: they use FE8's AI. |
+| 2026-09-26 | Elite balance: Champion at Elite level (+3) with +12 HP and +2 other stats; squads 2 levels below the normal level with iron weapons on floor 1 (steel from floor 2). | Claude (implementation) | A floor-1 squad with steel weapons nearly one-shot Lv 6 units in testing. |
 
 ## Open questions (not decided yet)
 

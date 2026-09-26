@@ -148,7 +148,7 @@ static int AdjacentAllyDef(struct BattleUnit *bu)
         if (x < 0 || y < 0 || x >= gBmMapSize.x || y >= gBmMapSize.y)
             continue;
         id = gBmMapUnit[y][x];
-        if (!id || id == bu->unit.index || !AreUnitsAllied(id, bu->unit.index))
+        if (!id || id == (u8)bu->unit.index || !AreUnitsAllied(id, (u8)bu->unit.index))
             continue;
         ally = GetUnit(id);
         if (ally && ally->pCharacterData && !(ally->state & (US_DEAD | US_NOT_DEPLOYED)))

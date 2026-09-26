@@ -312,6 +312,12 @@ void Col_OpenDeployMenu(struct Proc *parent)
 }
 
 void Col_StartPrepare(struct Proc *parent);     /* prepare_ui.c */
+void Col_AnnounceEncounter(struct Proc *parent); /* notice_ui.c: "ELITE BATTLE!" */
+
+static void Flow_Announce(struct Proc *proc)
+{
+    Col_AnnounceEncounter(proc);
+}
 
 static void Flow_Prepare(struct Proc *proc)
 {
@@ -328,6 +334,8 @@ static const struct ProcCmd kProcScr_BattleStart[] = {
     PROC_CALL(Flow_Replace),
     PROC_YIELD,
     PROC_CALL(Flow_RecruitAgain),
+    PROC_CALL(Flow_Announce),
+    PROC_YIELD,
     PROC_CALL(Flow_Prepare),
     PROC_YIELD,
     PROC_END,

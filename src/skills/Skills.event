@@ -103,3 +103,37 @@ BYTE 16 VantageID
 BYTE 22 LunaID
 BYTE 0 0
 ALIGN 4
+
+// Elite role characters (src/core/encounters.c; spec 47-48): one generic character per role,
+// its personal skill in PersonalSkillEditor.csv and these lists (level 1 = always) in
+// CharacterLevelUpSkillEditor.csv. Phase 16 levers.
+//   0x81 Champion (Blademaster)  Astra + Vantage       0x85 Guardian  Spur Def + Pavise
+//   0x82 Champion (Warlord)      Colossus + Wrath      0x86 Mender    Amaterasu + Breath of Life
+//   0x83 Champion (Lancer)       Pavise + Luna         0x87 Reaper    Opportunist + Vantage
+//   0x84 Champion (Deadeye)      Sure Shot + Certain Blow  0x88 Striker Charm + Quick Riposte
+ALIGN 4
+ColEliteSkills_Blade:
+BYTE 1 VantageID
+BYTE 0 0
+ColEliteSkills_Axe:
+BYTE 1 WrathID
+BYTE 0 0
+ColEliteSkills_Lance:
+BYTE 1 LunaID
+BYTE 0 0
+ColEliteSkills_Bow:
+BYTE 1 CertainBlowID
+BYTE 0 0
+ColEliteSkills_Guardian:
+BYTE 1 PaviseID
+BYTE 0 0
+ColEliteSkills_Mender:
+BYTE 1 BreathOfLifeID
+BYTE 0 0
+ColEliteSkills_Reaper:
+BYTE 1 VantageID
+BYTE 0 0
+ColEliteSkills_Striker:
+BYTE 1 QuickRiposteID
+BYTE 0 0
+ALIGN 4

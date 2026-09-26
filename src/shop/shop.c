@@ -4,9 +4,11 @@
  *     Elite x2, Boss x4 - Phase 16 levers). The run's gold is mirrored into FE8's party gold
  *     so the vanilla screens show it.
  *   Stock: rolled once per battle (after each victory, and for the first battle), never
- *     rerolled. One entry per relevant category - Recruit (while anyone can still be recruited),
- *     Skill, Weapon, Relic, Healing, Promotion, Consumable - plus extras up to 8 entries
- *     (weapons, consumables, skills, relics). Relics are rarity-weighted (Col_RelicRoll).
+ *     rerolled within a battle's preparation. Fully random (developer, 2026-09-26): each of the
+ *     8 entries picks a category by weight - Weapon, Skill, Relic, Consumable, Recruit (at most
+ *     one, while anyone can still be recruited), Healing (at most one: 30/50/100%), Promotion
+ *     (at most one) - so the mix and the order change every round. No duplicate weapon, skill
+ *     or relic. Relics are rarity-weighted (Col_RelicRoll).
  *   Prices (spec 39): each purchase makes every later purchase 10% dearer, compounding over the
  *     run: price = base x 1.1^purchases, at most 5x base and 9999 gold. */
 #include "coliseum.h"
@@ -86,7 +88,9 @@ static const u16 kPromotionPrice = 2500;
  * Speedwings, Goddess Icon, Dragonshield, Talisman */
 static const u8 kConsumables[] = { 0x6C, 0x6C, 0x6D, 0x6E, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0 };
 static const u16 kConsumablePrice[] = { 150, 150, 600, 300, 1800, 1800, 1800, 1800, 1500, 1800, 1800 };
-#define HEAL_PRICE 500
+/* team healing offers: percent and base price */
+static const u8 kHealPercent[] = { 30, 50, 100 };
+static const u16 kHealPrice[] = { 300, 500, 900 };
 #define RECRUIT_PRICE 1500
 
 static int Count8(const u8 *list)
@@ -175,27 +179,59 @@ static void AddRelic(void)
     }
 }
 
-/* A new stock (spec 38): one of each relevant category, then extras. */
+static int HasCategory(int category)
+{
+    int i;
+    for (i = 0; i < gColRun.shopCount; i++)
+        if (gColRun.shop[i].category == category)
+            return 1;
+    return 0;
+}
+
+/* Category weights for each stock entry (Phase 16 levers). */
+static const u8 kCategoryWeight[] = {
+    [COL_SHOP_RECRUIT] = 10, [COL_SHOP_SKILL] = 18, [COL_SHOP_WEAPON] = 22, [COL_SHOP_RELIC] = 16,
+    [COL_SHOP_HEAL] = 6, [COL_SHOP_PROMOTION] = 8, [COL_SHOP_CONSUMABLE] = 20,
+};
+
+/* A new stock (spec 38): 8 entries, each a random category. */
 void Col_ShopGenerate(void)
 {
     u8 recruits[COL_RECRUIT_CHOICES];
+    int canRecruit = Col_RollRecruits(recruits), guard;
 
     gColRun.shopCount = 0;
     gColRun.shopSold = 0;
-    if (Col_RollRecruits(recruits))
-        Add(COL_SHOP_RECRUIT, recruits[0], RECRUIT_PRICE);
-    AddSkill();
-    AddWeapon();
-    AddRelic();
-    Add(COL_SHOP_HEAL, 50, HEAL_PRICE);
-    Add(COL_SHOP_PROMOTION, kPromotions[NextRN_N(Count8(kPromotions))], kPromotionPrice);
-    AddConsumable();
-    while (gColRun.shopCount < COL_SHOP_SIZE) {
-        int r = NextRN_N(4);
-        int before = gColRun.shopCount;
-        if (r == 0) AddWeapon(); else if (r == 1) AddConsumable(); else if (r == 2) AddSkill(); else AddRelic();
-        if (gColRun.shopCount == before)
-            AddConsumable();
+    for (guard = 0; gColRun.shopCount < COL_SHOP_SIZE && guard < 64; guard++) {
+        int total = 0, pick, c, before = gColRun.shopCount;
+
+        for (c = COL_SHOP_RECRUIT; c <= COL_SHOP_CONSUMABLE; c++)
+            total += kCategoryWeight[c];
+        pick = NextRN_N(total);
+        for (c = COL_SHOP_RECRUIT; c < COL_SHOP_CONSUMABLE && pick >= kCategoryWeight[c]; c++)
+            pick -= kCategoryWeight[c];
+        switch (c) {
+        case COL_SHOP_RECRUIT:                  /* at most one; a different candidate each round */
+            if (canRecruit && !HasCategory(c))
+                Add(c, recruits[NextRN_N(canRecruit)], RECRUIT_PRICE);
+            break;
+        case COL_SHOP_SKILL:      AddSkill(); break;
+        case COL_SHOP_WEAPON:     AddWeapon(); break;
+        case COL_SHOP_RELIC:      AddRelic(); break;
+        case COL_SHOP_HEAL:
+            if (!HasCategory(c)) {
+                int k = NextRN_N(sizeof(kHealPercent));
+                Add(c, kHealPercent[k], kHealPrice[k]);
+            }
+            break;
+        case COL_SHOP_PROMOTION:
+            if (!HasCategory(c))
+                Add(c, kPromotions[NextRN_N(Count8(kPromotions))], kPromotionPrice);
+            break;
+        default:                  AddConsumable(); break;
+        }
+        if (gColRun.shopCount == before && guard >= 48)
+            AddConsumable();                    /* never short of 8 entries */
     }
 }
 

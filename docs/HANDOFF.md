@@ -44,6 +44,8 @@ fights (their content is Phases 11-12).
 
 ## Next (in order)
 
+0. **Developer play-test of Elites, drops and the random shop** (2026-09-26 additions, checked by
+   Claude in game with the test ROM). Still open for Phase 11: advanced Elite AI (spec 49).
 1. **Developer play-test of the relics** (Prepare > Relics; shop relics; Blood Pact, Guardian's
    Crest, Golden Thread in real fights). The developer should paste the full list of relic concepts
    discussed elsewhere into `docs/RELICS_FUTURE.md`. The relic prompt arrived cut off after its

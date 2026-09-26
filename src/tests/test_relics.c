@@ -569,12 +569,13 @@ int Test_RelicGold(struct Unit *sA, struct Unit *sT)
     return 0;
 }
 
-/* The shop sells relics: a valid relic, priced by rarity. */
+/* The shop sells relics (not every round now that the stock is fully random): valid relics,
+ * priced by rarity. */
 int Test_RelicShop(struct Unit *sA, struct Unit *sT)
 {
-    int round, i, found;
+    int round, i, found, total = 0;
 
-    for (round = 0; round < 10; round++) {
+    for (round = 0; round < 20; round++) {
         Col_RunNew(100 + round);
         Col_ShopGenerate();
         for (found = 0, i = 0; i < gColRun.shopCount; i++) {
@@ -585,7 +586,8 @@ int Test_RelicShop(struct Unit *sA, struct Unit *sT)
             CHECK(e->basePrice >= 500);
             found++;
         }
-        CHECK(found >= 1);
+        total += found;
     }
+    CHECK(total >= 10);                                     /* ~2 relics per stock on average */
     return 0;
 }

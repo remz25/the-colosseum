@@ -80,7 +80,11 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
   lyn runs with `-nohook` so a C function named like a vanilla one never patches the ROM.
 - **RAM block layout**: 0x000-0x0FF run state (saved, v5, 256-byte save chunks), 0x100-0x1FF
   reserved (Legacy), 0x200-0x27F UI scratch (menus only: stat choice +0x00, roster +0x10,
-  skill +0x20, Prepare/Shop +0x30, relics +0x50).
+  skill +0x20, Prepare/Shop +0x30, relics +0x50, notices +0x80 (UI scratch is 0x200-0x2FF).
+- **Enemies** (`src/core/encounters.c`): normal enemies are generic character 0x80; Elite roles
+  are generic characters 0x81-0x88 (name + personal skill + level-1 skill list in the tables).
+  Drops are keyed by enemy unit index; FE-CLib's `unit->index` is a *signed* byte, so compare
+  it as `(u8)` with saved indices (enemy indices are 0x80+).
 - **Relic hooks** (docs/RELICS.md): MSG stat-getter modifiers are C functions `int f(int value,
   struct Unit *unit)` (the call sequence reloads the unit for every entry). Pre-battle loop
   entries get `(BattleUnit *a, BattleUnit *b)` and run for both orders, so each call changes only

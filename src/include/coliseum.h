@@ -13,7 +13,7 @@
 #define COL_RAM_BASE        0x0203F600
 #define COL_RAM_SIZE        0x800
 /* Layout: 0x000-0x0FF run state (saved), 0x100-0x1FF reserved (Legacy, Phase 13),
- *         0x200-0x27F UI scratch (not saved; only valid while a COLISEUM menu is open). */
+ *         0x200-0x2FF UI scratch (not saved; only valid while a COLISEUM menu is open). */
 #define COL_UI_SCRATCH      (COL_RAM_BASE + 0x200)
 
 /* ---- Rules fixed by the spec (docs/COLISEUM_SPEC.md; changing them needs developer approval) ---- */
@@ -54,6 +54,16 @@ enum ColShopCategory {
     COL_SHOP_HEAL, COL_SHOP_PROMOTION, COL_SHOP_CONSUMABLE,
 };
 
+/* An enemy's drop (encounters.c): claimed when that enemy dies. */
+#define COL_MAX_DROPS 4
+enum ColDropKind { COL_DROP_NONE, COL_DROP_GOLD, COL_DROP_SKILL, COL_DROP_RELIC };
+struct ColDrop {
+    u8 unit;                        /* the enemy's unit index */
+    u8 kind;                        /* enum ColDropKind; NONE once claimed */
+    u8 value;                       /* gold / 10, or the relic ID (skills are chosen for the killer) */
+    u8 killer;                      /* unit index of whoever struck the killing blow (0 unknown) */
+};
+
 /* The run state (spec 76). Saved in the game save and the suspend save (save chunks in
  * EngineHacks/Necessary/ExpandedModularSave/ExModularSave.event). Fixed size: new fields go
  * into `reserved` and bump COL_RUN_VERSION. */
@@ -88,7 +98,10 @@ struct ColRunState {
     /* 34 */ struct ColShopEntry shop[COL_SHOP_SIZE];   /* rolled once per battle: no reroll */
     /* 54 */ u8  relics[COL_POOL_SIZE][COL_RELIC_SLOTS];  /* relic IDs worn, per pool character; 0 empty */
     /* 72 */ u8  relicBag[COL_RELIC_BAG];  /* unequipped relics of this run (spec 33); 0 empty */
-    /* 82 */ u8  reserved[COL_RUN_SIZE - 0x82];
+    /* 82 */ u8  elite;             /* the Elite setup of the coming/current Elite battle (index + 1), 0 none */
+    /* 83 */ u8  pad83;
+    /* 84 */ struct ColDrop drops[COL_MAX_DROPS];  /* this battle's enemy drops (encounters.c) */
+    /* 94 */ u8  reserved[COL_RUN_SIZE - 0x94];
 };
 
 /* The playable pool (pool.c). */
@@ -246,6 +259,25 @@ int  Col_RelicApplyGold(int gold);              /* battle gold with the roster's
 int  Col_RelicRoll(void);                       /* rarity-weighted random relic ID */
 int  Col_RelicModText(const struct ColRelicMod *mod, char *out);   /* "+5 Def"; 1 if good for the wearer */
 int  Col_RelicPercent(int value, int percent);  /* value changed by percent, rounded to nearest */
+
+/* core/encounters.c: enemies, Elite battles (spec 47-50), drops */
+struct ColEliteMember {
+    u8 charId;                      /* generic character: its name and skills (tables) */
+    u8 classId;
+    u8 items[2];
+};
+struct ColEliteSetup {
+    const char *name;               /* shown before the battle */
+    u8 count;                       /* 1 = Champion, 3 = Elite Squad */
+    u8 pad[3];
+    struct ColEliteMember members[3];
+};
+extern const struct ColEliteSetup gColEliteSetups[];
+int  Col_EliteSetupCount(void);
+const struct ColEliteSetup *Col_CurrentElite(void);     /* rolls it if needed; NULL unless an Elite is next */
+void Col_CreateEnemies(int encounter);
+void Col_RollDrops(int encounter, struct Unit **enemies, int count);
+int  Col_PendingDrop(void);                              /* a drop whose enemy has died, or -1 */
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

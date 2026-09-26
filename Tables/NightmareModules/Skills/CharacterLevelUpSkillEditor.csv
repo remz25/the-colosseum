@@ -128,14 +128,14 @@ Orson (Ch 16),0
 -,0
 Grado Soldier (Special),0
 Grado Soldier 1 (Normal),ColEnemySkillList|IsPointer
-Grado Soldier 2,0
-Grado Soldier 3,0
-Grado Soldier 4,0
-Grado Soldier 5,0
-Grado Soldier 6,0
-Grado Soldier 7,0
-Grado Soldier 8,0
-Grado Soldier 9,0
+Grado Soldier 2,ColEliteSkills_Blade|IsPointer
+Grado Soldier 3,ColEliteSkills_Axe|IsPointer
+Grado Soldier 4,ColEliteSkills_Lance|IsPointer
+Grado Soldier 5,ColEliteSkills_Bow|IsPointer
+Grado Soldier 6,ColEliteSkills_Guardian|IsPointer
+Grado Soldier 7,ColEliteSkills_Mender|IsPointer
+Grado Soldier 8,ColEliteSkills_Reaper|IsPointer
+Grado Soldier 9,ColEliteSkills_Striker|IsPointer
 Grado Soldier 10 (Duessel's),0
 Grado Soldier 11 (Duessel's),0
 Grado Soldier 12 (Duessel's),0

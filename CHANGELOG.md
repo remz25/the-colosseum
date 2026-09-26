@@ -1,5 +1,24 @@
 # COLISEUM: Changelog
 
+## 2026-09-26 (Elite battles, enemy drops, random shop)
+- Elite battles (`src/core/encounters.c`): an "ELITE BATTLE!" announcement (`src/core/notice_ui.c`)
+  before the Prepare menu; 4 Champion setups (boosted, own skills, Elite weapon dropped on
+  defeat) and 3 Elite Squads (Guardian / Mender / Reaper / Striker roles). Role characters
+  0x81-0x88 renamed and given skills (CharacterTable.csv, PersonalSkillEditor.csv,
+  CharacterLevelUpSkillEditor.csv, lists in Skills.event).
+- Enemy drops: gold / skill / relic, claimed with a notice after the kill (player phase), at the
+  next player phase (enemy-phase kills) or at the battle's end; skill drops open the learn menu
+  for the killer. The first battle of every run always has a relic drop; every Elite too.
+- Shop: all 8 entries random every round (categories, order); Heal 30/50/100%.
+- Enemy creation moved from battle.c to encounters.c. Run state: `elite` and `drops[4]` in
+  reserved space (still v5). UI scratch grown to 0x200-0x2FF (notices at +0x80).
+- Fixed: comparisons of FE-CLib's signed `unit->index` with saved unsigned indices (enemy
+  indices 0x80+ never matched); found by the new drop tests.
+- Tests: 6 map tests (Elite setups, Champion, Squad, first-battle relic, drop odds, killer
+  tracking); Test_ShopStock rewritten for random stock.
+- **Upstream Skill System file changed**: `BattleProcCalcLoop.event` (+`Col_DropKillProc` before
+  Proc_Finish).
+
 ## 2026-09-26 (Phase 9: relics, prototype pool v1)
 - Relic system (`src/relics/`, docs/RELICS.md): 15 prototype relics (6 Common, 5 Uncommon,
   3 Rare, 1 Epic), rarities up to Mythic supported, a generic modifier engine (flat/percent stats,

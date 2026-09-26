@@ -284,7 +284,7 @@ static const char *EntryName(const struct ColShopEntry *e)
     switch (e->category) {
     case COL_SHOP_RECRUIT: return GetStringFromIndex(GetCharacterData(gColPool[e->value].charId)->nameTextId);
     case COL_SHOP_SKILL:   return Col_SkillName(e->value);
-    case COL_SHOP_HEAL:    return "Heal team 50%";
+    case COL_SHOP_HEAL:    return e->value >= 100 ? "Heal team 100%" : e->value >= 50 ? "Heal team 50%" : "Heal team 30%";
     case COL_SHOP_RELIC:   return Col_RelicDef(e->value) ? Col_RelicDef(e->value)->name : "";
     default:               return GetItemName(e->value);
     }

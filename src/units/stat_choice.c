@@ -125,9 +125,10 @@ void Col_StartStatChoices(struct Proc *eventProc)
         Proc_StartBlocking(kProcScr_StatChoices, eventProc);
 }
 
-/* Skill System post-combat loop entry (r0 = actor, r1 = target), player phase. */
+/* Skill System post-combat loop entry (r0 = actor, r1 = target), player phase: enemy drops
+ * (notice_ui.c) and then stat choices, in one event. */
 void Col_PostCombatStatChoice(struct Unit *actor, struct Unit *target)
 {
-    if (Col_FindPendingChoice() >= 0)
+    if (Col_PendingDrop() >= 0 || Col_FindPendingChoice() >= 0)
         CallEvent(ColEvt_StatChoice, 1);
 }

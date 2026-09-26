@@ -79,5 +79,14 @@ mGBA, not only compiled.
 | Relic stats in game: stat screen shows "Spd 12 -3 / Def 4 +5" (Iron Heart); getters give Blood Pact +10% Spd (9 -> 10) | PASS (in game) | player ROM, screenshot + getter calls | 2026-09-26 |
 | Blood Pact in a real battle with animation: 19 HP -> 4 (2 attacks x 2 + an 11-damage counter), HP drain shown, kept on the map | PASS (in game) | player ROM, real attack, screenshots | 2026-09-26 |
 | Golden Thread at a real victory; Guardian's Crest / Fortress Heart / Mage's Ring in a played battle; Sturdy Boots on the movement range; relics after a real save + reload from the title | NOT VERIFIED in game | covered by the on-target tests above, not played through | |
+| Shop stock fully random: every category over 40 rolls, layout varies (30+ of 39), at most one Recruit/Heal/Promotion, Heal 30/50/100 | PASS | map test 34 (rewritten) | 2026-09-26 |
+| Elite setups: 4 Champions + 3 Squads, promoted classes, role characters, rolled once and kept | PASS | map test 52 | 2026-09-26 |
+| Champion: Blademaster spawns alone, Keen Edge usable and dropped (US_DROP_ITEM), boosted HP, a relic drop | PASS | map test 53 | 2026-09-26 |
+| Elite Squad (Vanguard): 3 roles, every weapon/staff usable, Mender can use Mend, a relic drop | PASS | map test 54 | 2026-09-26 |
+| Normal battle: 3 generic enemies; the run's first battle has a relic drop | PASS | map test 55 | 2026-09-26 |
+| Drop odds: first battle always a relic; ~25% per normal enemy, gold > skill, relics appear; every Elite a relic | PASS | map test 56 | 2026-09-26 |
+| Killing blow recorded in real battles only (not forecasts); drop claimable only once its enemy is dead | PASS | map test 57 | 2026-09-26 |
+| In game: "ELITE BATTLE! / Elite Squad: Vanguard" announcement, random shop, squad on the map ("Guardian", "Reaper" names), relic drop notice after a kill (relic in the bag), skill drop notice ("Skill: Pursuit / Lute can learn it") then the learn menu, stat choice after the notice | PASS (in game) | test ROM, scripted with screenshots | 2026-09-26 |
+| Champion fight played through; Mender actually healing; Champion weapon drop in game; gold drop notice; drop claimed from an enemy-phase kill | NOT VERIFIED in game | covered by the on-target tests where possible | |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

@@ -1,5 +1,10 @@
 # COLISEUM: Changelog
 
+## 2026-09-26 (run-over safety net)
+- The developer saw a battle continue to the turn limit after every unit died. Not reproduced;
+  the player-phase turn event now also ends the run when no deployed unit is alive
+  (`Col_CheckDeployedAlive`, `BattleChapter.event`). Map test 58.
+
 ## 2026-09-26 (Elite battles, enemy drops, random shop)
 - Elite battles (`src/core/encounters.c`): an "ELITE BATTLE!" announcement (`src/core/notice_ui.c`)
   before the Prepare menu; 4 Champion setups (boosted, own skills, Elite weapon dropped on

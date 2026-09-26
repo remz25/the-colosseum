@@ -88,5 +88,8 @@ mGBA, not only compiled.
 | Killing blow recorded in real battles only (not forecasts); drop claimable only once its enemy is dead | PASS | map test 57 | 2026-09-26 |
 | In game: "ELITE BATTLE! / Elite Squad: Vanguard" announcement, random shop, squad on the map ("Guardian", "Reaper" names), relic drop notice after a kill (relic in the bag), skill drop notice ("Skill: Pursuit / Lute can learn it") then the learn menu, stat choice after the notice | PASS (in game) | test ROM, scripted with screenshots | 2026-09-26 |
 | Champion fight played through; Mender actually healing; Champion weapon drop in game; gold drop notice; drop claimed from an enemy-phase kill | NOT VERIFIED in game | covered by the on-target tests where possible | |
+| All deployed units dead -> run over: enemy-phase deaths (3 units, and 3 + a reserve), last unit killed by a counter on the player phase | PASS (in game) | test ROM, scripted; each reached FE8's GAME OVER and cleared the run | 2026-09-26 |
+| Turn-start safety net (no blue unit fighting on the map -> run lost + GAME OVER; no false trigger on turn 1) | PASS (in game) + map test 58 | event run directly with every deployed unit dead | 2026-09-26 |
+| Developer's report "battle went on to turn 20 after everyone died" | NOT REPRODUCED | the safety net covers it; cause unknown | |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

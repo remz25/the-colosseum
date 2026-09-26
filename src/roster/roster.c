@@ -245,6 +245,23 @@ void Col_InitPlayConfig(int isDifficult, s8 controller)
     gPlaySt.config.textSpeed = 1;
 }
 
+/* ASMC (turn event, every player phase): event slot C = blue units still fighting on the map.
+ * A safety net for "all deployed units dead = the run is over" (GAME_DESIGN.md): FE8's own
+ * check (CountAvailableBlueUnits at each phase start) normally ends the battle first; a
+ * play-test on 2026-09-26 reported a battle that went on to the turn limit, not reproduced. */
+void Col_CheckDeployedAlive(struct Proc *eventProc)
+{
+    int i, n = 0;
+    for (i = FACTION_BLUE + 1; i < FACTION_BLUE + 0x40; i++) {
+        struct Unit *u = GetUnit(i);
+        if (u && u->pCharacterData && u->curHP > 0
+            && !(u->state & (US_DEAD | US_NOT_DEPLOYED | US_BIT16))
+            && (!(u->state & US_HIDDEN) || (u->state & US_RESCUED)))
+            n++;
+    }
+    gEventSlots[0xC] = (u32)n;
+}
+
 /* Replaces vanilla CallGameOverEvent (0x0800D390): the run is lost, then FE8's game over. */
 void Col_OnGameOver(void)
 {

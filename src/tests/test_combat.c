@@ -325,6 +325,7 @@ int Test_EliteSquad(struct Unit *, struct Unit *);
 int Test_NormalEnemiesAndFirstRelic(struct Unit *, struct Unit *);
 int Test_DropOdds(struct Unit *, struct Unit *);
 int Test_DropKiller(struct Unit *, struct Unit *);
+int Test_DeployedAlive(struct Unit *, struct Unit *);
 /* test_relics.c */
 int Test_RelicPool(struct Unit *, struct Unit *);
 int Test_RelicTexts(struct Unit *, struct Unit *);
@@ -356,7 +357,7 @@ static const ColMapTestFn kMapTests[] = {
     Test_RelicFlatStats, Test_RelicPercentStats, Test_RelicBattleRates, Test_RelicBloodiedBand,
     Test_RelicGuardian, Test_RelicDamage, Test_RelicBloodPact, Test_RelicGold, Test_RelicShop,
     Test_EliteSetups, Test_EliteChampion, Test_EliteSquad, Test_NormalEnemiesAndFirstRelic,
-    Test_DropOdds, Test_DropKiller,
+    Test_DropOdds, Test_DropKiller, Test_DeployedAlive,
 };
 
 int ColTest_MapCount(void)

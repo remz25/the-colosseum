@@ -87,6 +87,11 @@ MNC2 ColBattleChapter                    // next fight
 ENDA
 
 ColBattle_StatChoice:
+ASMC Col_CheckDeployedAlive|1            // sC = deployed units still alive on the map
+BNE 1 0 0xC                              // someone still fights: go on
+ASMC Col_RunLost|1                       // safety net: every deployed unit is dead = the run is
+GameOver                                 // over (FE8's own check normally catches it first)
+LABEL 1
 ASMC Col_StartDropClaims|1               // drops of enemies killed on the enemy phase
 ASMC Col_StartStatChoices|1
 ENDA

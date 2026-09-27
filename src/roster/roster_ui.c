@@ -233,7 +233,7 @@ static u8 Roster_Help(struct MenuProc *m, struct MenuItemProc *i)
         Col_HelpUnit(i, Col_RosterUnit(i->itemNumber - 1));
     return 0;
 }
-static const struct MenuDef kReplaceMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kReplaceItems, COL_HELP_MENU(Roster_Help) };
+static const struct MenuDef kReplaceMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kReplaceItems, COL_HELP_MENU(Roster_Help), .onBPress = Replace_Back };
 
 /* ---- 2b. the 3-win reward ---- */
 
@@ -382,7 +382,7 @@ static const struct MenuItemDef kWhoItems[] = {
     ROW(MenuAlwaysEnabled, Who_BackDraw, Who_Back),
     { 0 },
 };
-static const struct MenuDef kWhoMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kWhoItems, COL_HELP_MENU(Roster_Help) };
+static const struct MenuDef kWhoMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kWhoItems, COL_HELP_MENU(Roster_Help), .onBPress = Who_Back };
 
 /* ---- 3. deployment ---- */
 

@@ -232,6 +232,7 @@ def main() -> int:
     ap.add_argument("--quick", action="store_true", help="assemble only (skip tables, text, maps)")
     ap.add_argument("--debug", action="store_true", help="debug build -> Colosseum_debug.gba")
     ap.add_argument("--test", action="store_true", help="test build with on-target unit tests -> Colosseum_test.gba")
+    ap.add_argument("--output", type=Path, help="write the ROM here instead (e.g. while Colosseum.gba is open in mGBA)")
     args = ap.parse_args()
     try:
         clean = check_clean_rom()
@@ -243,7 +244,7 @@ def main() -> int:
         pal_items = build_char_palettes(clean)
         arena_items = build_arena_maps(clean)
         build_c(args.test)
-        out = TEST_OUT if args.test else DEBUG_OUT if args.debug else OUT
+        out = args.output.resolve() if args.output else TEST_OUT if args.test else DEBUG_OUT if args.debug else OUT
         data = assemble(clean, args.debug or args.test)
         problems = (portraits.verify_rom(items, data) + charpal.verify_rom(pal_items, data)
                     + arenas.verify_rom(arena_items, data))
@@ -251,12 +252,12 @@ def main() -> int:
             TMP.unlink(missing_ok=True)
             raise BuildError("Portrait / battle palette / arena map check failed:\n  " + "\n  ".join(problems))
         finish(data, out)
-        if out == OUT:                          # spec 81: the player ROM never has debug tools
-            syms = {l.split()[1]: int(l.split()[0], 16) for l in SYM.read_text(errors="replace").splitlines()
+        if not (args.test or args.debug):       # spec 81: the player ROM never has debug tools
+            syms = {l.split()[1]: int(l.split()[0], 16) for l in out.with_suffix(".sym").read_text(errors="replace").splitlines()
                     if len(l.split()) == 2 and all(c in "0123456789ABCDEFabcdef" for c in l.split()[0])}
             flag = syms.get("ColDebugMenu")
             if flag is None or data[flag - 0x08000000] != 0:
-                raise BuildError("Colosseum.gba has the arena debug menu switched on (ColDebugMenu)")
+                raise BuildError(f"{out.name} has the arena debug menu switched on (ColDebugMenu)")
     except BuildError as e:
         print(f"[FAIL ] {e}", file=sys.stderr)
         return 1

@@ -138,7 +138,7 @@ static u8 U_Help(struct MenuProc *m, struct MenuItemProc *i)
         Col_HelpWornRelics(i, gColRun.roster[i->itemNumber - 1]);
     return 0;
 }
-static const struct MenuDef kUnitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kUnitItems, COL_HELP_MENU(U_Help) };
+static const struct MenuDef kUnitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kUnitItems, COL_HELP_MENU(U_Help), .onBPress = Back };
 
 /* ---- the unit's two slots ---- */
 
@@ -190,7 +190,7 @@ static u8 S_Help(struct MenuProc *m, struct MenuItemProc *i)
         Col_HelpRelic(i, gColRun.relics[UnitPool()][i->itemNumber - 1]);
     return 0;
 }
-static const struct MenuDef kSlotMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kSlotItems, COL_HELP_MENU(S_Help) };
+static const struct MenuDef kSlotMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kSlotItems, COL_HELP_MENU(S_Help), .onBPress = Back };
 
 /* ---- choosing a relic for the slot ---- */
 
@@ -297,7 +297,7 @@ static u8 C_Help(struct MenuProc *m, struct MenuItemProc *i)
         Col_HelpRelic(i, ChoiceRelic(c));
     return 0;
 }
-static const struct MenuDef kChoiceMenu = { .rect = { MENU_X, 0, MENU_W, 0 }, .menuItems = kChoiceItems, COL_HELP_MENU(C_Help) };
+static const struct MenuDef kChoiceMenu = { .rect = { MENU_X, 0, MENU_W, 0 }, .menuItems = kChoiceItems, COL_HELP_MENU(C_Help), .onBPress = Back };
 
 /* ---- relic info ---- */
 
@@ -386,7 +386,7 @@ static const struct MenuItemDef kInfoItems[] = {
     ROW(MenuAlwaysEnabled, BackDraw, Back),
     { 0 },
 };
-static const struct MenuDef kInfoMenu = { .rect = { MENU_X, 0, MENU_W, 0 }, .menuItems = kInfoItems };
+static const struct MenuDef kInfoMenu = { .rect = { MENU_X, 0, MENU_W, 0 }, .menuItems = kInfoItems, .onBPress = Back };
 
 /* ---- the flow ---- */
 

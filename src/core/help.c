@@ -12,7 +12,8 @@
  * Relic and other built text: the anti-Huffman patch lets a text ID point at a plain string
  * (0x80000000 | address), so text ID ColText_Help points at a RAM buffer
  * (COL_RAM_BASE + 0x400, Colosseum.event) that is filled before the help box opens. FE8 caches the
- * last decoded text ID (0x0202A6AC), so the cache is cleared first. */
+ * last decoded text ID at 0x0202B6AC (the decoded string itself is at 0x0202A6AC), so the cache
+ * is cleared first. */
 #include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
@@ -22,7 +23,7 @@
 #define HELP_BUF      ((char *)(COL_RAM_BASE + 0x400))
 #define HELP_BUF_SIZE 0x100
 #define HELP_NEWLINE  1                         /* FE8 text: new line */
-#define gLastMsgId    (*(u32 *)0x0202A6AC)      /* GetStringFromIndex's cache (anti-Huffman patch) */
+#define gLastMsgId    (*(u32 *)0x0202B6AC)      /* GetStringFromIndex: last decoded text ID (sMsgString + 0x1000) */
 
 extern const u16 ColHelpTextId;                 /* Colosseum.event: the text ID of the RAM buffer */
 extern const u16 SkillDescTable[];

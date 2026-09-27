@@ -238,7 +238,7 @@ static u8 U_Help(struct MenuProc *m, struct MenuItemProc *i)
         Col_HelpUnit(i, Col_RosterUnit(i->itemNumber - 1));
     return 0;
 }
-static const struct MenuDef kUnitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kUnitItems, COL_HELP_MENU(U_Help) };
+static const struct MenuDef kUnitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kUnitItems, COL_HELP_MENU(U_Help), .onBPress = Back };
 
 /* ---- item list (transfer) ---- */
 
@@ -276,7 +276,7 @@ static u8 I_Help(struct MenuProc *m, struct MenuItemProc *i)
         Col_HelpItem(i, u->items[i->itemNumber - 1]);
     return 0;
 }
-static const struct MenuDef kItemMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kItemItems, COL_HELP_MENU(I_Help) };
+static const struct MenuDef kItemMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kItemItems, COL_HELP_MENU(I_Help), .onBPress = Back };
 
 /* ---- fusion list ---- */
 
@@ -324,7 +324,7 @@ static u8 F_Help(struct MenuProc *m, struct MenuItemProc *i)
                                                      u->items[gColPrepUi.fusions[k][1]])));
     return 0;
 }
-static const struct MenuDef kFuseMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kFuseItems, COL_HELP_MENU(F_Help) };
+static const struct MenuDef kFuseMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kFuseItems, COL_HELP_MENU(F_Help), .onBPress = Back };
 
 /* ---- shop ---- */
 

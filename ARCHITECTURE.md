@@ -91,7 +91,7 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 - **R-button help** (`src/core/help.c`): MenuDef.onRPress = MenuAutoHelpBoxSelect, onHelpBox =
   the menu's function (`COL_HELP_MENU(fn)`). Built text: text ID 0x0FF0 points at
   COL_RAM_BASE + 0x400 (anti-Huffman: 0x80000000 | address = plain string, 0x01 = new line);
-  GetStringFromIndex caches the last ID at 0x0202A6AC, so it is cleared before every help box
+  GetStringFromIndex caches the last ID at 0x0202B6AC (string at 0x0202A6AC), so it is cleared before every help box
   (Col_SkillName truncates the cached string at ':'). FE8 types help text out over ~1 second.
 - **Arenas** (docs/ARENAS.md): `GetROMChapterStruct` (0x08034618) returns the arena's copy of
   chapter 0's data, so FE8 loads the arena's map, tileset, fog and weather by itself. Cut maps

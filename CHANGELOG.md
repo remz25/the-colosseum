@@ -1,5 +1,12 @@
-# COLOSSEUM: Changelog
+﻿# COLOSSEUM: Changelog
 
+## 2026-09-28 (release preparation fixes)
+- B now works as Back in every menu with a Back row (relic menus, transfer, fuse, replace,
+  "who gets it?"); before, only the Back row closed them.
+- Fix: reopening an R help box for the same row showed a garbled first line. The text cache that
+  is cleared before each help box is at 0x0202B6AC (0x0202A6AC is the decoded text itself).
+- `scripts/ups.py`: UPS patch create/apply (CRC-checked); `scripts/build.py --output PATH`
+  builds the player ROM elsewhere (e.g. while Colosseum.gba is open in mGBA).
 ## 2026-09-27 (in-game name: The Colosseum)
 - Player-visible text renamed (developer): chapter title card "The Colosseum", arena "Grand
   Colosseum", Elite weapon descriptions "A Colosseum champion's ...". Code, files and docs keep

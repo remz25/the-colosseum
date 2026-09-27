@@ -1,5 +1,17 @@
 # COLISEUM: Changelog
 
+## 2026-09-27 (R-button help in every COLISEUM menu)
+- Pressing R on a menu row shows FE8's help box for it without choosing it; moving the cursor
+  updates it; R or B closes it (`src/core/help.c`). Skills: their description. Relics: name,
+  rarity and every effect. Weapons and items: FE8's stat / description box. Characters: their
+  personal skill (team, recruit) or personal + slot skills (roster lists). Reward rows: what the
+  reward does. Menus: team, recruit, replace, deploy, 3-win reward, "who gets it?", skill learn
+  menu (new skill and each slot), shop, transfer items, fusions, relic unit list (both relics),
+  relic slots, relic choices.
+- Built text goes through text ID 0x0FF0 (`ColText_Help`), which points at a RAM buffer
+  (COL_RAM_BASE + 0x400) via the anti-Huffman patch.
+- Prepare menu one tile wider; the Recover row reads "Recover 3/3 300G".
+
 ## 2026-09-27 (Phase 10: roguelike progression)
 - 3-win reward menu (spec 51-53): 3 different valid kinds from Recruit / Skill / Promotion /
   Heal / Gold, rolled once and saved (run state 0xBC-0xC1, formerly reserved); rows show the

@@ -15,7 +15,8 @@
 /* Layout: 0x000-0x0FF run state (saved), 0x100-0x1FF reserved (Legacy, Phase 13),
  *         0x200-0x2FF UI scratch (not saved; only valid while a COLISEUM menu is open),
  *         0x300-0x393 the battle chapter's data for the current arena (arenas.c; rebuilt from
- *                     the run state whenever FE8 reads it, so never saved). */
+ *                     the run state whenever FE8 reads it, so never saved),
+ *         0x3A0-0x3A3 arena debug menu, 0x400-0x4FF R-button help text (help.c). */
 #define COL_UI_SCRATCH      (COL_RAM_BASE + 0x200)
 #define COL_ARENA_CHAPTER   (COL_RAM_BASE + 0x300)
 
@@ -365,6 +366,17 @@ int  Col_ArenaDebugPending(void);
 void Col_StartArenaDebug(struct Proc *parent);
 void Col_AnnounceArena(struct Proc *parent);
 void Col_ShowNotice(struct Proc *parent, const char *title, const char *line1, const char *line2);                   /* notice_ui.c: arena, weather, tiles */
+
+/* core/help.c: R-button help boxes in COLISEUM menus */
+struct MenuItemProc;
+void Col_HelpText(struct MenuItemProc *item, const char *text);
+void Col_HelpSkill(struct MenuItemProc *item, int skill);
+void Col_HelpRelic(struct MenuItemProc *item, int relic);
+void Col_HelpWornRelics(struct MenuItemProc *item, int pool);
+void Col_HelpItem(struct MenuItemProc *item, int itemId);
+void Col_HelpPool(struct MenuItemProc *item, int pool);
+void Col_HelpUnit(struct MenuItemProc *item, struct Unit *unit);
+#define COL_HELP_MENU(fn) .onRPress = MenuAutoHelpBoxSelect, .onHelpBox = fn   /* R: help on the row */
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

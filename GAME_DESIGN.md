@@ -63,6 +63,7 @@ without the developer's approval.
 | 2026-09-27 | Recover costs 300 G + 100 per floor above 1; greyed when nobody is hurt (no wasted charge). The Prepare menu is the post-battle menu (Next fight / Shop / Recover + team tools) and opens with the next arena on screen. | Claude (implementation) | Cost is a Phase 16 lever. |
 | 2026-09-27 | Autosave after every win replaces FE8's save menu (spec 76); the run is saved to the slot chosen at New Game. | Claude (implementation) | |
 | 2026-09-27 | Declining the recruit offer, or Back from "who gets it?", returns to the reward choice: the 3-win reward cannot be skipped by accident (spec 51: choose exactly one). | Claude (implementation) | |
+| 2026-09-27 | **R shows help on any COLISEUM menu row** (skills, relics, items, characters, rewards) without selecting it, like FE8's own R help. | Developer (request) | |
 
 ## Open questions (not decided yet)
 

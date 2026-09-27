@@ -175,3 +175,6 @@ An exiled prince recruiting[N]champions for his army.[X]
 
 # 0x0C33
 [OpenMidRight][LoadFace][0x16][0x01][OpenMidRight]My army[.][ToggleMouthMove]...[.][ToggleMouthMove][NL]was never raised[.][ToggleMouthMove]...[.][ToggleMouthMove][A][OpenMidRight][CloseEyes][X]
+
+# 0x0FF0 ColText_Help
+(help)[X]

@@ -124,7 +124,15 @@ static const struct MenuItemDef kTeamItems[] = {
     ROW(MenuAlwaysEnabled, Team_BeginDraw, Team_Begin),
     { 0 },
 };
-static const struct MenuDef kTeamMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kTeamItems };
+static u8 Team_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    if (i->itemNumber >= 1 && i->itemNumber <= 3)
+        Col_HelpPool(i, gColRun.roster[i->itemNumber - 1]);
+    else if (i->itemNumber >= 4 && i->itemNumber <= 6)
+        Col_HelpRelic(i, gColRun.relicBag[i->itemNumber - 4]);
+    return 0;
+}
+static const struct MenuDef kTeamMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kTeamItems, COL_HELP_MENU(Team_Help) };
 
 /* ---- 2. recruitment ---- */
 
@@ -177,7 +185,13 @@ static const struct MenuItemDef kRecruitItems[] = {
     ROW(MenuAlwaysEnabled, Recruit_DeclineDraw, Recruit_Decline),
     { 0 },
 };
-static const struct MenuDef kRecruitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kRecruitItems };
+static u8 Recruit_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    if (i->itemNumber >= 1 && i->itemNumber <= gColRosterUi.count)
+        Col_HelpPool(i, gColRosterUi.candidates[i->itemNumber - 1]);
+    return 0;
+}
+static const struct MenuDef kRecruitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kRecruitItems, COL_HELP_MENU(Recruit_Help) };
 
 static int Replace_Title(struct MenuProc *m, struct MenuItemProc *i) { DrawLabel(m, i, TEXT_COLOR_SYSTEM_GOLD, "Replace whom?"); return 0; }
 static u8 Roster_RowAvail(const struct MenuItemDef *d, int n)
@@ -213,7 +227,13 @@ static const struct MenuItemDef kReplaceItems[] = {
     ROW(MenuAlwaysEnabled, Replace_BackDraw, Replace_Back),
     { 0 },
 };
-static const struct MenuDef kReplaceMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kReplaceItems };
+static u8 Roster_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    if (i->itemNumber >= 1 && i->itemNumber <= COL_MAX_ROSTER)
+        Col_HelpUnit(i, Col_RosterUnit(i->itemNumber - 1));
+    return 0;
+}
+static const struct MenuDef kReplaceMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kReplaceItems, COL_HELP_MENU(Roster_Help) };
 
 /* ---- 2b. the 3-win reward ---- */
 
@@ -280,7 +300,30 @@ static const struct MenuItemDef kRewardItems[] = {
     ROW(Reward_Avail, Reward_Row, Reward_Pick),
     { 0 },
 };
-static const struct MenuDef kRewardMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kRewardItems };
+static u8 Reward_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    if (i->itemNumber < 1 || i->itemNumber > 3)
+        return 0;
+    switch (gColRun.rewardKinds[i->itemNumber - 1]) {
+    case COL_REWARD_SKILL:
+        Col_HelpSkill(i, gColRun.rewardSkill);
+        break;
+    case COL_REWARD_RECRUIT:
+        Col_HelpText(i, "Choose 1 of up to 3 new fighters.\nWith a full roster, someone leaves.");
+        break;
+    case COL_REWARD_PROMOTION:
+        Col_HelpText(i, "A unit of level 10+ gets a seal.\nUse it from Items to promote\n(keeps its level).");
+        break;
+    case COL_REWARD_HEAL:
+        Col_HelpText(i, "Every living fighter\nto full HP.");
+        break;
+    case COL_REWARD_GOLD:
+        Col_HelpText(i, "Gold for the shop and Recover.");
+        break;
+    }
+    return 0;
+}
+static const struct MenuDef kRewardMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kRewardItems, COL_HELP_MENU(Reward_Help) };
 
 static int Who_Can(int slot)
 {
@@ -339,7 +382,7 @@ static const struct MenuItemDef kWhoItems[] = {
     ROW(MenuAlwaysEnabled, Who_BackDraw, Who_Back),
     { 0 },
 };
-static const struct MenuDef kWhoMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kWhoItems };
+static const struct MenuDef kWhoMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kWhoItems, COL_HELP_MENU(Roster_Help) };
 
 /* ---- 3. deployment ---- */
 
@@ -390,7 +433,7 @@ static const struct MenuItemDef kDeployItems[] = {
     ROW(MenuAlwaysEnabled, Deploy_FightDraw, Deploy_Fight),
     { 0 },
 };
-static const struct MenuDef kDeployMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kDeployItems };
+static const struct MenuDef kDeployMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kDeployItems, COL_HELP_MENU(Roster_Help) };
 
 /* ---- the flow ---- */
 

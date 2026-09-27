@@ -17,6 +17,17 @@ ALIGN 4
 // Character battle palettes (scripts/charpal.py from src/graphics/battle_palettes.txt)
 #include "../build/CharPalettes.event"
 
+// R-button help (src/core/help.c): text ID ColText_Help points at a RAM buffer
+// (COL_RAM_BASE + 0x400) through the anti-Huffman patch (0x80000000 | address = plain string).
+PUSH
+ORG TextTable + ColText_Help * 4
+WORD 0x8203FA00
+POP
+ALIGN 4
+ColHelpTextId:
+SHORT ColText_Help
+ALIGN 4
+
 // The reusable battle chapter (chapter slot 0)
 #include "battle/BattleChapter.event"
 #include "battle/SkipWorldMap.event"

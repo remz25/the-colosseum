@@ -104,10 +104,10 @@ static int P_RecoverDraw(struct MenuProc *m, struct MenuItemProc *i)
 
     ClearText(&i->text);
     Text_InsertDrawString(&i->text, 0, color, "Recover");
-    Text_InsertDrawNumberOrBlank(&i->text, 44, TEXT_COLOR_SYSTEM_BLUE, gColRun.recoverCharges);
-    Text_InsertDrawString(&i->text, 52, color, "/3");
-    Text_InsertDrawNumberOrBlank(&i->text, 80, TEXT_COLOR_SYSTEM_BLUE, Col_RecoverCost());
-    Text_InsertDrawString(&i->text, 88, TEXT_COLOR_SYSTEM_GOLD, "G");
+    Text_InsertDrawNumberOrBlank(&i->text, 40, TEXT_COLOR_SYSTEM_BLUE, gColRun.recoverCharges);
+    Text_InsertDrawString(&i->text, 48, color, "/3");
+    Text_InsertDrawNumberOrBlank(&i->text, 88, TEXT_COLOR_SYSTEM_BLUE, Col_RecoverCost());
+    Text_InsertDrawString(&i->text, 96, TEXT_COLOR_SYSTEM_GOLD, "G");
     PutText(&i->text, Tile(m, i, 0));
     return 0;
 }
@@ -150,7 +150,7 @@ static const struct MenuItemDef kPrepItems[] = {
     ROW(P_ArenaDebugAvail, P_ArenaDebugDraw, P_ArenaDebug),
     { 0 },
 };
-static const struct MenuDef kPrepMenu = { .rect = { 8, 3, 14, 0 }, .menuItems = kPrepItems };
+static const struct MenuDef kPrepMenu = { .rect = { 8, 3, 15, 0 }, .menuItems = kPrepItems };
 
 /* ---- unit list (giver / receiver / fuser) ---- */
 
@@ -232,7 +232,13 @@ static const struct MenuItemDef kUnitItems[] = {
     ROW(MenuAlwaysEnabled, BackDraw, Back),
     { 0 },
 };
-static const struct MenuDef kUnitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kUnitItems };
+static u8 U_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    if (i->itemNumber >= 1 && i->itemNumber <= COL_MAX_ROSTER)
+        Col_HelpUnit(i, Col_RosterUnit(i->itemNumber - 1));
+    return 0;
+}
+static const struct MenuDef kUnitMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kUnitItems, COL_HELP_MENU(U_Help) };
 
 /* ---- item list (transfer) ---- */
 
@@ -263,7 +269,14 @@ static const struct MenuItemDef kItemItems[] = {
     ROW(MenuAlwaysEnabled, BackDraw, Back),
     { 0 },
 };
-static const struct MenuDef kItemMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kItemItems };
+static u8 I_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    struct Unit *u = Col_RosterUnit(gColPrepUi.unitSlot);
+    if (u && i->itemNumber >= 1 && i->itemNumber <= UNIT_ITEM_COUNT)
+        Col_HelpItem(i, u->items[i->itemNumber - 1]);
+    return 0;
+}
+static const struct MenuDef kItemMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kItemItems, COL_HELP_MENU(I_Help) };
 
 /* ---- fusion list ---- */
 
@@ -302,7 +315,16 @@ static const struct MenuItemDef kFuseItems[] = {
     ROW(MenuAlwaysEnabled, BackDraw, Back),
     { 0 },
 };
-static const struct MenuDef kFuseMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kFuseItems };
+static u8 F_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    struct Unit *u = Col_RosterUnit(gColPrepUi.unitSlot);
+    int k = i->itemNumber - 1;
+    if (u && k >= 0 && k < gColPrepUi.fusionCount)
+        Col_HelpItem(i, MakeNewItem(Col_FusionResult(u->items[gColPrepUi.fusions[k][0]],
+                                                     u->items[gColPrepUi.fusions[k][1]])));
+    return 0;
+}
+static const struct MenuDef kFuseMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kFuseItems, COL_HELP_MENU(F_Help) };
 
 /* ---- shop ---- */
 
@@ -398,8 +420,45 @@ static const struct MenuItemDef kShopItems[] = {
     { 0 },
 };
 /* 9 rows of 2 tiles fill the screen, so B (not a row) leaves the shop */
+static u8 S_Help(struct MenuProc *m, struct MenuItemProc *i)
+{
+    int index = i->itemNumber - 1;
+    const struct ColShopEntry *e;
+    char buf[40] = "Heals everyone by ";
+    int n = 18;
+
+    if (index < 0 || index >= gColRun.shopCount)
+        return 0;
+    e = &gColRun.shop[index];
+    switch (e->category) {
+    case COL_SHOP_SKILL:
+        Col_HelpSkill(i, e->value);
+        break;
+    case COL_SHOP_RELIC:
+        Col_HelpRelic(i, e->value);
+        break;
+    case COL_SHOP_RECRUIT:
+        Col_HelpPool(i, e->value);
+        break;
+    case COL_SHOP_HEAL:
+        if (e->value >= 100)
+            buf[n++] = '1';
+        if (e->value >= 10)
+            buf[n++] = (char)('0' + (e->value / 10) % 10);
+        buf[n++] = (char)('0' + e->value % 10);
+        buf[n++] = '%';
+        buf[n++] = '.';
+        buf[n] = 0;
+        Col_HelpText(i, buf);
+        break;
+    default:                                    /* weapons, promotion items, consumables */
+        Col_HelpItem(i, MakeNewItem(e->value));
+        break;
+    }
+    return 0;
+}
 static const struct MenuDef kShopMenu = {
-    .rect = { 1, 0, 23, 0 }, .menuItems = kShopItems, .onBPress = S_Leave,
+    .rect = { 1, 0, 23, 0 }, .menuItems = kShopItems, .onBPress = S_Leave, COL_HELP_MENU(S_Help),
 };
 
 /* ---- the flow ---- */

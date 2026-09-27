@@ -118,7 +118,15 @@ static const struct MenuItemDef kSkillItems[] = {
     ROW(Decline_Draw, Decline_Select),
     { 0 },
 };
-static const struct MenuDef kSkillMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kSkillItems };
+static u8 Skill_Help(struct MenuProc *menu, struct MenuItemProc *item)
+{
+    if (item->itemNumber == 0)                  /* the new skill */
+        Col_HelpSkill(item, gColSkillUi.skill);
+    else if (item->itemNumber <= COL_SKILL_SLOTS)
+        Col_HelpSkill(item, Col_SlotSkill(gColSkillUi.unit, item->itemNumber - 1));
+    return 0;
+}
+static const struct MenuDef kSkillMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kSkillItems, COL_HELP_MENU(Skill_Help) };
 
 /* ASMC (ColEvt_SkillOffer): the offer set by Col_OfferSkill. */
 void Col_StartSkillOffer(struct Proc *eventProc)

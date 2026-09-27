@@ -56,6 +56,49 @@ hazard-aware AI, Arena debug menu (test/debug builds). Next after that: Phase 10
 Phase 10 done (2026-09-27): 3-win reward menu, promotion (keeps level, Lv 10+), Recover,
 post-battle Prepare menu, autosave. Next: developer play-test, then Phase 11 (Elite AI).
 
+## IN PROGRESS: release package v0.1.0 (stopped 2026-09-28, resume here)
+
+The developer pasted a 27-section release prompt ("THE COLOSSEUM - RELEASE PATCH & SHOWCASE
+PACKAGE"): UPS patch, verified patch test, README, patching guide, credits, changelog, known
+issues, FEUniverse post, 6-10 screenshots, clean ZIP without ROMs, honest wording, final report.
+If more detail is needed, ask the developer to paste it again. Done so far:
+- Clean build verified (build/ deleted, rebuilt; identical ROM). `scripts/build.py --output PATH`
+  builds the player ROM elsewhere while Colosseum.gba is open in mGBA.
+- `scripts/ups.py create|apply`: UPS patches in byuu's format (varints, XOR hunks, 3 CRC32s);
+  checked: clean FE8 + patch = byte-identical ROM (SHA-1), wrong base / damaged patch rejected,
+  500 random round trips. Patch size ~500 KB.
+- Base ROM: Fire Emblem - The Sacred Stones (USA, Australia), 16,777,216 bytes,
+  SHA-1 c25b145e37456171ada4b0d440bf88a19f4d509f, MD5 005531fef9efbb642095fb8f64645236,
+  CRC32 A47246AE.
+- Play-tested on the PATCHED ROM (clean FE8 + UPS) in mGBA, scripted with screenshots: boots to
+  the (vanilla FE8) title, New Game, team screen with starting relics, Prepare, shop + R help,
+  equipping a relic (stat screen shows Wind Soul's Spd +1 / Def -1), a real player attack by
+  button presses (Silas's Fire 17 -> 11, counter 19 -> 17), battle animation, the victory event,
+  autosave (run copy with 1 win in SRAM), 3-win reward menu + help.
+- Fixed while testing: B works as Back in menus with a Back row; R help reopening showed a
+  garbled line (wrong cache address).
+- Licenses: only LICENSE (Skill System, CC0) in the repo; FE-Repo portraits are F2E with credit
+  (CREDITS.md). No custom music or animations. Build tools are not shipped.
+
+Still to do (in order):
+1. Finish the play-test on the patched ROM: Elite battle, a second arena (e.g. Volcanic),
+   save -> quit -> Continue (the run resumes). The scripted drivers are in tests/release/
+   (play.py / t2.py / t3.py; they expect patched.gba and built.sym next to them - copy them into
+   a scratch folder with those files first). Driver gotchas:
+   delete stale .sav files next to the ROM copy; wait until enemies are placed before input;
+   after the shop the Prepare cursor returns to the top.
+2. Screenshots (native 240x160, 2x integer scale): title, run start (team), 3v3 battle, stat
+   screen, relics, Elite, [no bosses yet -> 3-win reward], arena (Volcanic/Desert), shop,
+   [no Legacy -> battle animation].
+3. Docs in release/: README.txt, PATCHING_GUIDE.txt, CREDITS.txt, CHANGELOG.txt,
+   KNOWN_ISSUES.txt, FEUNIVERSE_POST.txt, RELEASE_NOTES.txt. Describe ONLY what is built:
+   no real bosses yet (fight 10 is a stronger normal fight, floors still advance), no Legacy, no
+   custom title screen, arenas = the 8 of docs/ARENAS.md, Elite AI is FE8's.
+   Status: "early playable prototype / development build", version v0.1.0 everywhere.
+4. scripts/make_release.py: build -> UPS -> apply to the clean ROM and compare -> assemble
+   release/ -> The_Colosseum_v0.1.0.zip (no ROMs) -> extract and check the contents.
+5. Final clean-room test on the patched ROM, commit, report to the developer.
+
 ## Next (in order)
 
 0. **Developer play-test of Elites, drops and the random shop** (2026-09-26 additions, checked by

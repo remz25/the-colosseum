@@ -1,4 +1,4 @@
-﻿# COLOSSEUM: Changelog
+# COLOSSEUM: Changelog
 
 ## 2026-09-28 (release preparation fixes)
 - B now works as Back in every menu with a Back row (relic menus, transfer, fuse, replace,

@@ -336,6 +336,11 @@ static void Flow_Announce(struct Proc *proc)
     Col_AnnounceEncounter(proc);
 }
 
+static void Flow_Arena(struct Proc *proc)
+{
+    Col_AnnounceArena(proc);                    /* arena, weather, tiles (notice_ui.c) */
+}
+
 static void Flow_Prepare(struct Proc *proc)
 {
     Col_StartPrepare(proc);
@@ -352,6 +357,8 @@ static const struct ProcCmd kProcScr_BattleStart[] = {
     PROC_YIELD,
     PROC_CALL(Flow_RecruitAgain),
     PROC_CALL(Flow_Announce),
+    PROC_YIELD,
+    PROC_CALL(Flow_Arena),
     PROC_YIELD,
     PROC_CALL(Flow_Prepare),
     PROC_YIELD,

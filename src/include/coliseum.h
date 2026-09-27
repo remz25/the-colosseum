@@ -13,8 +13,11 @@
 #define COL_RAM_BASE        0x0203F600
 #define COL_RAM_SIZE        0x800
 /* Layout: 0x000-0x0FF run state (saved), 0x100-0x1FF reserved (Legacy, Phase 13),
- *         0x200-0x2FF UI scratch (not saved; only valid while a COLISEUM menu is open). */
+ *         0x200-0x2FF UI scratch (not saved; only valid while a COLISEUM menu is open),
+ *         0x300-0x393 the battle chapter's data for the current arena (arenas.c; rebuilt from
+ *                     the run state whenever FE8 reads it, so never saved). */
 #define COL_UI_SCRATCH      (COL_RAM_BASE + 0x200)
+#define COL_ARENA_CHAPTER   (COL_RAM_BASE + 0x300)
 
 /* ---- Rules fixed by the spec (docs/COLISEUM_SPEC.md; changing them needs developer approval) ---- */
 #define COL_MAX_ROSTER          5    /* spec 8  */
@@ -103,7 +106,9 @@ struct ColRunState {
     /* 54 */ u32 recruitedMask;     /* bit = pool index: recruited this run (spec 9: never twice) */
     /* 58 */ u8  relicBag[COL_RELIC_BAG];  /* unequipped relics of this run (spec 33); 0 empty */
     /* 68 */ u8  elite;             /* the Elite setup of the coming/current Elite battle (index + 1), 0 none */
-    /* 69 */ u8  pad69[3];
+    /* 69 */ u8  arena;             /* arena of the current/next battle (arenas.c); 0 = Grand Coliseum */
+    /* 6A */ u8  weather;           /* its weather (enum ColWeather); 0 = clear */
+    /* 6B */ u8  pad6B;
     /* 6C */ struct ColDrop drops[COL_MAX_DROPS];  /* this battle's enemy drops (encounters.c) */
     /* 7C */ u8  relics[COL_POOL_MAX][COL_RELIC_SLOTS];  /* relic IDs worn, per pool character; 0 empty */
     /* BC */ u8  reserved[COL_RUN_SIZE - 0xBC];
@@ -289,6 +294,51 @@ void Col_CreateEnemies(int encounter);
 int  Col_IsFirstElite(void);                     /* floor 1's first Elite: toned down */
 void Col_RollDrops(int encounter, struct Unit **enemies, int count);
 int  Col_PendingDrop(void);                              /* a drop whose enemy has died, or -1 */
+
+/* arenas/arenas.c: arenas, weather, hazard and sacred tiles (docs/ARENAS.md) */
+#define COL_BATTLE_CHAPTER 0
+enum ColWeather {
+    COL_WX_CLEAR, COL_WX_RAIN, COL_WX_SNOW, COL_WX_FOG, COL_WX_SANDSTORM, COL_WX_ASHFALL,
+    COL_WX_COUNT,
+};
+enum ColArenaTileKind {
+    COL_TILE_NONE, COL_TILE_BURNING, COL_TILE_POISON, COL_TILE_VOID, COL_TILE_SACRED,
+    COL_TILE_KIND_COUNT,
+};
+#define COL_ARENA_ELITE  0x01       /* favoured for Elite battles */
+struct ColArenaTile { u8 x, y, kind, pad; };
+struct ColArenaDef {
+    const char *name;
+    const char *hint;               /* notice line about its tiles, or NULL */
+    const struct ColArenaTile *tiles;   /* hazard / sacred tiles, ended by kind 0; may be NULL */
+    u8 chapter;                     /* vanilla chapter giving tileset, palette, tile config, animations */
+    u8 mapAsset;                    /* chapter asset table index of its map (arena_maps.txt) */
+    u8 flags;
+    u8 weather[COL_WX_COUNT];       /* weather weights */
+    u8 player[COL_MAX_DEPLOY][2];   /* spawn tiles */
+    u8 enemy[3][2];
+};
+extern const struct ColArenaDef gColArenas[];
+int  Col_ArenaCount(void);
+const struct ColArenaDef *Col_CurrentArena(void);    /* the Grand Coliseum when no run is active */
+int  Col_CurrentWeather(void);
+const char *Col_WeatherName(int weather);
+int  Col_WeatherHitPenalty(int weather);
+int  Col_FloorPool(int floor, u8 *out);              /* arenas of that floor's pool; returns the count */
+void Col_RollArena(void);                            /* arena + weather of the next battle */
+void Col_SetArena(int arena, int weather);           /* debug / tests */
+int  Col_ArenaTileAt(int x, int y);                  /* enum ColArenaTileKind on the current arena */
+int  Col_HazardDamage(int kind);
+int  Col_HazardDamageAt(struct Unit *unit, int x, int y);  /* hazard damage the unit would take there */
+int  Col_HazardDamageFor(struct Unit *unit);         /* hazard damage this unit takes at its phase start */
+int  Col_SacredTileHeal(struct Unit *unit, int percent);   /* HP restoration loop entry */
+int  Col_AiTerrainScore(int x, int y);               /* replaces FE8's AI terrain score (attack tiles) */
+s8   Col_AiCheckDangerAt(int x, int y, u8 threshold);    /* replaces FE8's AI move-end filter */
+struct Proc;
+int  Col_ArenaDebugAvailable(void);                  /* arena_debug.c: debug/test builds only */
+int  Col_ArenaDebugPending(void);
+void Col_StartArenaDebug(struct Proc *parent);
+void Col_AnnounceArena(struct Proc *parent);                   /* notice_ui.c: arena, weather, tiles */
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

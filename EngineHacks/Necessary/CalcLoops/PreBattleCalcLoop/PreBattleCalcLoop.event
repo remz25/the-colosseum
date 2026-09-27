@@ -53,6 +53,7 @@ POIN LethalitySkill NonGBALethalitySkill
 #ifdef MODULAR_PRE_BATTLE_SKILLS
 	POIN ModularPreBattleSkill 
 #endif // MODULAR_PRE_BATTLE_SKILLS
+POIN Col_WeatherPreBattle // COLISEUM arenas: weather Hit penalty (src/arenas/arenas.c)
 POIN Col_RelicPreBattle // COLISEUM relics: Hit/Avoid/Crit, adjacent-ally Def (src/relics/relics.c)
 //add any new ones before here
 

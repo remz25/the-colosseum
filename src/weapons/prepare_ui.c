@@ -6,6 +6,7 @@
  *                    Transfer   give an item to another unit that can use it (spec 40)
  *                    Fuse       combine two weapons in one unit's inventory (spec 42)
  *                    Relics     equip, unequip and transfer relics (spec 33, relic_ui.c)
+ *                    Arena debug  debug/test builds only (arena_debug.c)
  *
  * Transfer: pick the giver, the item, then the receiver (units that can't take it are grayed).
  * Fuse: pick a unit (grayed without a possible fusion), then the fusion (result name, and the
@@ -25,7 +26,8 @@
 #include "hardware.h"
 #include "icon.h"
 
-enum { NEXT_NONE, NEXT_FIGHT, NEXT_DEPLOY, NEXT_TRANSFER, NEXT_FUSE, NEXT_BACK, NEXT_OK, NEXT_SHOP, NEXT_RELICS };
+enum { NEXT_NONE, NEXT_FIGHT, NEXT_DEPLOY, NEXT_TRANSFER, NEXT_FUSE, NEXT_BACK, NEXT_OK, NEXT_SHOP, NEXT_RELICS,
+       NEXT_ARENA_DEBUG };
 enum { MODE_GIVER, MODE_RECEIVER, MODE_FUSER, MODE_SKILL_TARGET, MODE_ITEM_TARGET };
 
 #define MAX_FUSIONS 5
@@ -98,6 +100,12 @@ static int P_TransferDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m,
 static int P_FuseDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Fuse"); return 0; }
 static int P_RelicsDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Relics"); return 0; }
 static u8 P_Relics(struct MenuProc *m, struct MenuItemProc *i) { gColPrepUi.next = NEXT_RELICS; return END_MENU; }
+static int P_ArenaDebugDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_GRAY, "Arena debug"); return 0; }
+static u8 P_ArenaDebug(struct MenuProc *m, struct MenuItemProc *i) { gColPrepUi.next = NEXT_ARENA_DEBUG; return END_MENU; }
+static u8 P_ArenaDebugAvail(const struct MenuItemDef *d, int n)
+{
+    return Col_ArenaDebugAvailable() ? MENU_ENABLED : MENU_NOTSHOWN;
+}
 static u8 P_DeployAvail(const struct MenuItemDef *d, int n)
 {
     return gColRun.rosterCount > COL_MAX_DEPLOY ? MENU_ENABLED : MENU_NOTSHOWN;
@@ -115,6 +123,7 @@ static const struct MenuItemDef kPrepItems[] = {
     ROW(MenuAlwaysEnabled, P_TransferDraw, P_Transfer),
     ROW(MenuAlwaysEnabled, P_FuseDraw, P_Fuse),
     ROW(MenuAlwaysEnabled, P_RelicsDraw, P_Relics),
+    ROW(P_ArenaDebugAvail, P_ArenaDebugDraw, P_ArenaDebug),
     { 0 },
 };
 static const struct MenuDef kPrepMenu = { .rect = { 9, 3, 12, 0 }, .menuItems = kPrepItems };
@@ -390,7 +399,14 @@ static void Open(const struct MenuDef *def, struct Proc *proc)
     gColPrepUi.next = NEXT_NONE;
 }
 
-static void Prep_Open(struct Proc *proc) { Open(&kPrepMenu, proc); }
+static void Prep_Open(struct Proc *proc)
+{
+    if (Col_ArenaDebugPending()) {              /* "Fight here": the chapter restarts in that arena */
+        Proc_Goto(proc, L_END);
+        return;
+    }
+    Open(&kPrepMenu, proc);
+}
 
 static void Prep_Dispatch(struct Proc *proc)
 {
@@ -414,6 +430,9 @@ static void Prep_Dispatch(struct Proc *proc)
         break;
     case NEXT_RELICS:
         Col_OpenRelicMenu(proc);                /* back to Prepare when it closes */
+        break;
+    case NEXT_ARENA_DEBUG:
+        Col_StartArenaDebug(proc);              /* back to Prepare when it closes */
         break;
     }
 }

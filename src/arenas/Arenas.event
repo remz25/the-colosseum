@@ -1,0 +1,30 @@
+// COLISEUM arenas (src/arenas/arenas.c, docs/ARENAS.md).
+
+// The battle chapter's data comes from the current arena: GetROMChapterStruct (0x08034618)
+// jumps to COLISEUM's version (vanilla behaviour for every other chapter).
+PUSH
+ORG 0x034618
+jumpToHack(Col_GetROMChapterStruct)
+// The poison step at the start of each phase also applies hazard tiles.
+ORG 0x0259EC                    // MakePoisonDamageTargetList(faction)
+jumpToHack(Col_MakePoisonDamageTargetList)
+// Enemy AI: the terrain score of a tile to attack from counts hazards and sacred tiles.
+ORG 0x03E23C                    // AiGetTerrainCombatPositionScoreComponent(x, y)
+jumpToHack(Col_AiTerrainScore)
+// Enemy AI: a move that is not an attack never ends on a hazard that would hurt the unit.
+ORG 0x03E448                    // AiCheckDangerAt(x, y, threshold)
+jumpToHack(Col_AiCheckDangerAt)
+POP
+
+// Arena debug menu (arena_debug.c): only in debug and test builds (spec 81)
+ALIGN 4
+ColDebugMenu:
+#ifdef __DEBUG__
+BYTE 1
+#else
+BYTE 0
+#endif
+ALIGN 4
+
+// Arena maps cut from vanilla chapters (scripts/arenas.py from src/arenas/arena_maps.txt)
+#include "../../build/ArenaMaps.event"

@@ -147,20 +147,29 @@ def main() -> int:
             print(f"{name} not in {SYM.name}: was the test build made with --test?")
             return 2
 
+    import check_arenas                                          # static arena map checks
+    arena_problems = check_arenas.check(ROM)
+    for p in arena_problems:
+        print(f"  [FAIL] {p}")
+    if not arena_problems:
+        print("  [PASS] arenas: maps, spawn tiles, hazard/sacred tiles and paths (every tested class and weather)")
+
     tmp = Path(tempfile.mkdtemp(prefix="coliseum_test_"))
     rom = tmp / "t.gba"
     shutil.copyfile(ROM, rom)
     proc = start_mgba(str(rom))
-    failures = 0
+    failures = len(arena_problems)
     try:
         g = Gdb()
         g.frames(BOOT_FRAMES)
         block = g.read(COL_RAM, 0x800)
-        if any(block):
+        # 0x300-0x393: the battle chapter's arena data, built whenever FE8 reads chapter 0's data
+        # (the title screen does); everything else must still be zero.
+        if any(block[:0x300]) or any(block[0x394:]):
             failures += 1
             print("  [FAIL] RAM block 0x0203F600-0x0203FDFF was written by the game before COLISEUM code ran")
         else:
-            print("  [PASS] RAM block untouched after boot (0x0203F600-0x0203FDFF all zero)")
+            print("  [PASS] RAM block untouched after boot (all zero outside the arena chapter data)")
 
         problem = enter_battle(g, syms)
         if problem:
@@ -168,11 +177,11 @@ def main() -> int:
             return 1
         print("  [PASS] New Game starts a run and loads the battle chapter")
         block = g.read(COL_RAM, 0x800)
-        if any(block[0x100:0x200]) or any(block[0x300:]):
+        if any(block[0x100:0x200]) or any(block[0x394:]):
             failures += 1
             print("  [FAIL] RAM block outside the run state and UI scratch was written during the battle")
         else:
-            print("  [PASS] RAM block outside the run state (0x000-0x0FF) and UI scratch (0x200-0x2FF) untouched in battle")
+            print("  [PASS] RAM block outside the run state (0x000-0x0FF), UI scratch (0x200-0x2FF) and arena chapter data (0x300-0x393) untouched in battle")
 
         count = g.call(syms["ColTest_MapCount"])
         print(f"Running {count} map test(s) (combat, units) on the battle map")

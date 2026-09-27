@@ -29,8 +29,6 @@
 #define FACTION_RED_ALLEGIANCE   2
 #define GENERIC_ENEMY_CHAR       0x80      /* vanilla generic "Soldier" character */
 
-/* Arena spawn tiles (battle map: vanilla chapter 67's hall, see BattleChapter.event) */
-static const u8 kEnemySpawn[3][2] = { { 14, 4 }, { 14, 5 }, { 13, 3 } };
 
 /* Normal enemies (mercenaries): class and weapon. Factions per floor come later. */
 static const u8 kEnemyKinds[][2] = {
@@ -138,8 +136,8 @@ static struct Unit *Spawn(int charId, int classId, const u8 *items, int nItems, 
     def.autolevel = 1;
     def.allegiance = FACTION_RED_ALLEGIANCE;
     def.level = (u8)level;
-    def.xPosition = kEnemySpawn[slot][0];
-    def.yPosition = kEnemySpawn[slot][1];
+    def.xPosition = Col_CurrentArena()->enemy[slot][0];      /* the arena's spawn tiles */
+    def.yPosition = Col_CurrentArena()->enemy[slot][1];
     for (i = 0; i < nItems && i < 4; i++)
         def.items[i] = items[i];
     u = LoadUnit(&def);                         /* AI bytes 0 = charge (vanilla default) */

@@ -99,5 +99,9 @@ mGBA, not only compiled.
 | First Elite gentler (levels, boost), starting relics (2 Common + 1 Rare, distinct Commons), EXP x1.5 for player units through the real EXP loop | PASS | map tests 60-62; full suite 8 run-state + 63 map tests all pass | 2026-09-27 |
 | "Your team" screen shows the 3 starting relics (Rare in gold), faded in, cursor on Begin | PASS (in game) | player ROM, scripted screenshot | 2026-09-27 |
 | First Elite difficulty and EXP pace feel right | NOT VERIFIED | needs the developer's play-test | |
+| Arenas: chapter data per arena/weather, pool rolls, hazard damage (cap at 1 HP, poison adds, fliers immune), sacred heal via the Skill System loop, AI attack score and move filter, weather Hit both sides | PASS | map tests 63-68 | 2026-09-27 |
+| Arenas: every map 15x10, spawns walkable for 6 classes in every rolled weather, not on hazards, foot + armour paths between the sides | PASS | tests/check_arenas.py (run by run_tests.py) | 2026-09-27 |
+| In game: all 8 arenas load with their tileset, weather animation (rain, sandstorm, embers), fog vision 3, spawns; arena notice after a real win (next arena rolled); hot rock 4 -> 1 HP and 15 -> 10 at the phase start; seal 3 -> 4 HP; enemies stop short of hot rock; Arena debug menu restarts in Volcanic/Ashfall | PASS (in game) | player and test ROM, scripted with screenshots | 2026-09-27 |
+| Resuming a suspended battle in a rolled arena | NOT VERIFIED in game | run state round trip is tested | |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

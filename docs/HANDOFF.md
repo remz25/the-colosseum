@@ -50,6 +50,9 @@ Still open from 2026-09-26: view Selene's recoloured dance screenshot; screensho
 palettes not yet seen (Morrow's Berserker, Silas's Mage Knight, Idris's Sage, Hale's Ranger,
 Dagny's and Oriane's Great Knight).
 
+Arena system milestone 1 (docs/ARENAS.md): 8 arenas, weather, hot rock, sacred seal,
+hazard-aware AI, Arena debug menu (test/debug builds). Next after that: Phase 10.
+
 ## Next (in order)
 
 0. **Developer play-test of Elites, drops and the random shop** (2026-09-26 additions, checked by

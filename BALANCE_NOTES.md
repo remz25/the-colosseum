@@ -43,6 +43,12 @@ The developer found the first Elite a little too hard. Changes: the first Elite 
 relic, and player EXP is x1.5. For a floor-1 Champion after 3 wins, that makes it Lv 6 instead
 of Lv 8. Nothing has been measured yet: re-check after the next play-test.
 
+## Arenas (2026-09-27) - first guesses, not measured
+
+Weather Hit: rain -5, sandstorm -10, ashfall -5. Hot rock 5 HP per phase start (never below 1).
+Sacred seal 10% heal (21 tiles). Weather weights and floor pools in src/arenas/arenas.c.
+AI: -10 score per HP of hazard, +10 on sacred tiles.
+
 Skill catalog (src/skills/Skills.event, Phase 6): rarities and prerequisites are first guesses;
 offer weights C 40 / U 30 / R 18 / E 9 / L 3; enemy floor skills at levels 10/16/22.
 

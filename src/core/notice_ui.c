@@ -231,3 +231,38 @@ void Col_AnnounceEncounter(struct Proc *parent)
     Set(gColNoticeUi.line2, "Win: 2x gold and a relic.", NULL);
     Proc_StartBlocking(kProcScr_Elite, parent);
 }
+
+/* ---- the arena notice (battle-start flow, roster_ui.c; ARENA_SPEC 5: weather must be readable) ----
+ *   | Volcanic Arena               |
+ *   | Weather: Ashfall, -5 Hit     |
+ *   | Burning ground: -5 HP a turn |
+ * Not shown for the Grand Coliseum in clear weather (nothing to explain). */
+
+static const struct ProcCmd kProcScr_Arena[] = {
+    PROC_NAME("ColArena"),
+    PROC_CALL(OpenNotice),
+    PROC_YIELD,
+    PROC_END,
+};
+
+void Col_AnnounceArena(struct Proc *parent)
+{
+    const struct ColArenaDef *a = Col_CurrentArena();
+    int weather = Col_CurrentWeather(), penalty = Col_WeatherHitPenalty(weather);
+
+    if (a == &gColArenas[0] && weather == COL_WX_CLEAR)
+        return;
+    Set(gColNoticeUi.title, a->name, NULL);
+    Set(gColNoticeUi.line1, "Weather: ", Col_WeatherName(weather));
+    if (penalty) {
+        Cat(gColNoticeUi.line1, ", -");
+        Number(gColNoticeUi.line1, penalty);
+        Cat(gColNoticeUi.line1, " Hit");
+    } else if (weather == COL_WX_FOG) {
+        Cat(gColNoticeUi.line1, ", short sight");
+    } else if (weather == COL_WX_SNOW) {
+        Cat(gColNoticeUi.line1, ", deep snow");
+    }
+    Set(gColNoticeUi.line2, a->hint ? a->hint : "", NULL);
+    Proc_StartBlocking(kProcScr_Arena, parent);
+}

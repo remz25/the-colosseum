@@ -187,8 +187,9 @@ void Col_UpgradeRunState(void)
     for (i = 0; i < COL_RELIC_BAG; i++)
         gColRun.relicBag[i] = o[0x72 + i];
     gColRun.elite = o[0x82];
-    for (i = 0; i < 3; i++)
-        gColRun.pad69[i] = 0;
+    gColRun.arena = 0;
+    gColRun.weather = 0;
+    gColRun.pad6B = 0;
     for (i = 0; i < COL_MAX_DROPS; i++) {
         gColRun.drops[i].unit = o[0x84 + 4 * i];
         gColRun.drops[i].kind = o[0x85 + 4 * i];

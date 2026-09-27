@@ -53,6 +53,9 @@ without the developer's approval.
 | 2026-09-27 | **The run's first Elite is gentler** (floor 1 after 3 wins): Champion 2 levels lower, +6 HP / +1 other stats instead of +12 / +2; Elite Squads 1 level lower. | Developer ("a little too hard"), Claude (amounts) | Balance levers (Phase 16). |
 | 2026-09-27 | **Every run starts with 3 relics in the bag: 2 different Commons and 1 Rare**, shown on the "Your team" screen; the player equips them from Prepare > Relics. The first battle's guaranteed relic drop stays. | Developer | |
 | 2026-09-27 | **Player units gain 1.5x battle EXP** (rounded up, max 100 per battle, after EXP skills like Paragon). Enemies and staff EXP unchanged. | Developer ("level faster"), Claude (1.5x) | Balance lever `COL_EXP_PERCENT`. |
+| 2026-09-27 | **Arena system** (docs/ARENA_SPEC.md): milestone 1 uses FE8's own tilesets (8 arenas); Frozen, Swamp and a real Graveyard wait for FE-Repo tilesets (milestone 2). | Developer | |
+| 2026-09-27 | **Fog = FE8's real fog of war** (vision 3), no Hit penalty. | Developer | |
+| 2026-09-27 | Arena rules: a run starts in the Grand Coliseum; later arenas are rolled per battle from the floor pool, never twice in a row; Elites favour Royal and Cathedral. Weather Hit: rain -5, sandstorm -10, ashfall -5 (both sides). Hazards hit at the start of the standing unit's phase, 5 HP on hot rock, never below 1 HP, fliers immune. Sacred seal heals 10% (21 tiles). Tiles follow the map art (all glowing rock burns, the whole seal is sacred). Misty Ruins stands in for the Graveyard. | Claude (implementation) | Balance levers (Phase 16); docs/ARENAS.md. |
 
 ## Open questions (not decided yet)
 

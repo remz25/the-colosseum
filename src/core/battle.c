@@ -13,8 +13,6 @@
 
 #define FACTION_BLUE_ALLEGIANCE  0
 
-/* Arena spawn tiles (battle map: vanilla chapter 67's hall, see BattleChapter.event) */
-static const u8 kPlayerSpawn[COL_MAX_DEPLOY][2] = { { 0, 4 }, { 0, 5 }, { 1, 3 } };
 
 static void ClearDef(struct UnitDefinition *d)
 {
@@ -109,8 +107,8 @@ void Col_PrepareBattle(void)
                 deployed = 1;
         if (deployed && placed < COL_MAX_DEPLOY) {
             unit->state &= ~(US_HIDDEN | US_NOT_DEPLOYED | US_UNSELECTABLE);
-            unit->xPos = kPlayerSpawn[placed][0];
-            unit->yPos = kPlayerSpawn[placed][1];
+            unit->xPos = Col_CurrentArena()->player[placed][0];     /* the arena's spawn tiles */
+            unit->yPos = Col_CurrentArena()->player[placed][1];
             placed++;
         } else {
             unit->state |= US_HIDDEN | US_NOT_DEPLOYED;     /* reserve (spec 8) */
@@ -151,6 +149,7 @@ void Col_OnBattleWon(void)
         if (encounter == COL_ENC_ELITE)
             gColRun.elite = 0;                           /* the next Elite rolls a new setup */
     }
+    Col_RollArena();                                     /* the next battle's arena and weather */
     Col_ShopGenerate();                                  /* spec 38: new stock, no reroll */
 }
 

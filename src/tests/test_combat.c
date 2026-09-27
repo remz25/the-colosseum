@@ -358,6 +358,29 @@ int Test_ExpBoost(struct Unit *sA, struct Unit *sT)
     return 0;
 }
 
+/* Weather lowers Hit on both sides alike: rain -5, sandstorm -10, ashfall -5; fog and snow 0
+ * (they act through vision and movement). */
+int Test_WeatherHit(struct Unit *sA, struct Unit *sT)
+{
+    int clear, w;
+
+    Prep(sA, CLASS_MERCENARY, &kPlain, ITEM_IRON_SWORD, AX, AY, TERRAIN_PLAINS);
+    Prep(sT, CLASS_MERCENARY, &kPlain, ITEM_IRON_SWORD, TX, TY, TERRAIN_PLAINS);
+    Col_RunNew(9);
+    Simulate();
+    clear = gBattleActor.battleHitRate;
+    CHECK(clear > 20 && gBattleTarget.battleHitRate == clear);              /* mirror match */
+    for (w = 0; w < COL_WX_COUNT; w++) {
+        Col_SetArena(0, w);
+        Simulate();
+        CHECK(gBattleActor.battleHitRate == clear - Col_WeatherHitPenalty(w));
+        CHECK(gBattleTarget.battleHitRate == clear - Col_WeatherHitPenalty(w));
+    }
+    CHECK(Col_WeatherHitPenalty(COL_WX_RAIN) == 5 && Col_WeatherHitPenalty(COL_WX_SANDSTORM) == 10);
+    CHECK(Col_WeatherHitPenalty(COL_WX_ASHFALL) == 5 && Col_WeatherHitPenalty(COL_WX_FOG) == 0);
+    return 0;
+}
+
 /* test_relics.c */
 int Test_RelicPool(struct Unit *, struct Unit *);
 int Test_RelicTexts(struct Unit *, struct Unit *);
@@ -376,6 +399,12 @@ int Test_RelicShop(struct Unit *, struct Unit *);
 int Test_FirstEliteGentler(struct Unit *, struct Unit *);
 int Test_StartingRelics(struct Unit *, struct Unit *);
 int Test_ExpBoost(struct Unit *, struct Unit *);
+/* test_arenas.c */
+int Test_ArenaChapterData(struct Unit *, struct Unit *);
+int Test_ArenaRoll(struct Unit *, struct Unit *);
+int Test_HazardDamage(struct Unit *, struct Unit *);
+int Test_SacredTiles(struct Unit *, struct Unit *);
+int Test_AiHazardScore(struct Unit *, struct Unit *);
 
 typedef int (*ColMapTestFn)(struct Unit *actor, struct Unit *target);
 static const ColMapTestFn kMapTests[] = {
@@ -394,6 +423,8 @@ static const ColMapTestFn kMapTests[] = {
     Test_EliteSetups, Test_EliteChampion, Test_EliteSquad, Test_NormalEnemiesAndFirstRelic,
     Test_DropOdds, Test_DropKiller, Test_DeployedAlive, Test_OriginalCharacters,
     Test_FirstEliteGentler, Test_StartingRelics, Test_ExpBoost,
+    Test_ArenaChapterData, Test_ArenaRoll, Test_HazardDamage, Test_SacredTiles, Test_AiHazardScore,
+    Test_WeatherHit,
 };
 
 int ColTest_MapCount(void)

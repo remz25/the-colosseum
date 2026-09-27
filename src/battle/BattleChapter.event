@@ -76,6 +76,11 @@ ColBattle_Beginning:
 FADU 16                                  // fade in first: the chapter starts faded to black and
                                          // FE8 only fades in after this event (menus were invisible)
 ASMC Col_BattleStartFlow|1               // new run / recruitment / Prepare menus
+ASMC Col_ArenaDebugRestart|1             // debug "Fight here": sC = 1 -> restart in that arena
+BEQ 2 0 0xC                              // sC == 0: go on
+MNC2 ColBattleChapter
+ENDA
+LABEL 2
 ASMC Col_PrepareBattle|1
 ENDA
 

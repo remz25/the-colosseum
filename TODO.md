@@ -158,5 +158,13 @@ built, working in game, tested, documented.
 - [x] First Elite gentler; 2 Common + 1 Rare starting relics (team screen); EXP x1.5
 - [ ] Developer play-test of the new values
 
+## Arena system (developer request, 2026-09-27), see docs/ARENAS.md
+- [x] Milestone 1: 8 arenas from FE8 tilesets, floor pools, weather (FE8 animations, fog of war,
+      Hit penalties), hot-rock hazards, sacred seal, arena notice, hazard-aware AI, debug menu,
+      tests (on-target + static map checks), seen in game
+- [ ] Developer play-test of the arenas
+- [ ] Milestone 2: Frozen / Swamp / Graveyard with FE-Repo tilesets and their special rules
+- [ ] Boss arenas (with Phase 12); fire animation for burning ground; Abyss hazards
+
 ## Phase 10, 12-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

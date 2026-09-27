@@ -1,5 +1,24 @@
 # COLISEUM: Changelog
 
+## 2026-09-27 (arenas, weather, hazard and sacred tiles: milestone 1, docs/ARENAS.md)
+- 8 arenas cut from vanilla FE8 maps (`src/arenas/`, `scripts/arenas.py`): Grand Coliseum,
+  Forest, Desert, Volcanic, Ruined Cathedral, Royal, Abyss, Misty Ruins; floor pools; the next
+  arena and weather are rolled after each win and saved in the run state (bytes 0x69-0x6A,
+  formerly padding: v6 saves stay valid).
+- The battle chapter's data comes from the arena: `GetROMChapterStruct` replaced; RAM copy at
+  COL_RAM_BASE + 0x300.
+- Weather with FE8's own animations, fog of war and rain/snow movement; Hit penalties (rain -5,
+  sandstorm -10, ashfall -5). Arena notice before each battle.
+- Hazard tiles (hot rock, 5 HP at the phase start, never below 1 HP, fliers immune) through the
+  replaced poison step; sacred tiles (seal, 10% heal) through the HP restoration loop.
+- Enemy AI: hazard-aware attack positions and move end tiles.
+- Arena debug menu in the Prepare menu (debug/test builds only; the build refuses it in the
+  player ROM).
+- **Upstream Skill System files changed**: `PreBattleCalcLoop.event` (+`Col_WeatherPreBattle`),
+  `HPRestorationCalcLoop.event` (+`Col_SacredTileHeal`).
+- Tests: 6 on-target arena/weather tests; `tests/check_arenas.py` static map checks (run by
+  run_tests.py); the runner's RAM checks allow the arena chapter copy.
+
 ## 2026-09-27 (balance after the developer's play-test)
 - The run's first Elite (floor 1, after 3 wins) is gentler: the Champion is 2 levels lower with
   +6 HP / +1 stats (instead of +12 / +2); Elite Squads are 1 level lower (`Col_IsFirstElite`,

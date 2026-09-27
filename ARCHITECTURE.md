@@ -78,9 +78,17 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
   __umodsi3 (remainder in r0, EABI wants quotient r0 / remainder r1). scripts/build.py links
   against `build/fireemblem8.ref.o` without those two; `src/core/divmod.c` defines them.
   lyn runs with `-nohook` so a C function named like a vanilla one never patches the ROM.
-- **RAM block layout**: 0x000-0x0FF run state (saved, v5, 256-byte save chunks), 0x100-0x1FF
-  reserved (Legacy), 0x200-0x27F UI scratch (menus only: stat choice +0x00, roster +0x10,
-  skill +0x20, Prepare/Shop +0x30, relics +0x50, notices +0x80 (UI scratch is 0x200-0x2FF).
+- **RAM block layout**: 0x000-0x0FF run state (saved, v6, 256-byte save chunks), 0x100-0x1FF
+  reserved (Legacy), 0x200-0x2FF UI scratch (menus only: stat choice +0x00, roster +0x10,
+  skill +0x20, Prepare/Shop +0x30, relics +0x50, notices +0x80), 0x300-0x393 the battle
+  chapter's data for the current arena (rebuilt on every read, never saved), 0x3A0-0x3A3 arena
+  debug menu state.
+- **Arenas** (docs/ARENAS.md): `GetROMChapterStruct` (0x08034618) returns the arena's copy of
+  chapter 0's data, so FE8 loads the arena's map, tileset, fog and weather by itself. Cut maps
+  live in asset table slots of vanilla story maps. Hazards use the replaced poison step
+  (0x080259EC); AI hooks at 0x0803E23C (attack tile terrain score) and 0x0803E448 (move end
+  filter). The screenshot driver must wait for the old chapter's units to vanish after a
+  restart, and delete stale .sav files next to its ROM copy (mGBA resumes them).
 - **Reserves and game over**: FE8 clears the not-deployed flag of every blue unit after the
   battle's beginning event, so reserves are only `US_HIDDEN` during a battle. FE8's game-over
   count (`CountAvailableBlueUnits`, checked at each phase start) is replaced so hidden units

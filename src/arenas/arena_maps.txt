@@ -1,0 +1,19 @@
+# COLISEUM arena maps (scripts/arenas.py -> build/ArenaMaps.event).
+#
+# Each arena map is a region cut from a vanilla FE8 chapter map (read from FE8_clean.gba at build
+# time, so no Nintendo data is committed). The arena keeps that chapter's tileset, palette, tile
+# config and tile animations; only the map layer is new. The cut map is stored in the chapter
+# asset table slot ASSET (a vanilla story chapter's map, never loaded by COLISEUM).
+#
+# The gameplay data (name, weather, spawns, hazards, floor pools) is in src/arenas/arenas.c;
+# ARENA numbers must match its table.
+#
+# ARENA  NAME        CHAPTER  X   Y   W   H   ASSET
+0        grand       0x43     0   0   15  10  0xDB    # vanilla asset kept (the original arena)
+1        forest      0x14     2   1   15  10  0x04
+2        desert      0x0F     4   1   15  10  0x08
+3        volcanic    0x12     7   4   15  10  0x0B
+4        cathedral   0x15     4   14  15  10  0x15
+5        royal       0x13     7   5   15  10  0x25
+6        abyss       0x15     1   6   15  10  0x39
+7        ruins       0x2E     3   6   15  10  0x4D

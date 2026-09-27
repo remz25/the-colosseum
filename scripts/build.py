@@ -31,6 +31,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import portraits  # noqa: E402  (scripts/portraits.py)
 import charpal    # noqa: E402  (scripts/charpal.py)
+import arenas     # noqa: E402  (scripts/arenas.py)
 
 ROOT = Path(__file__).resolve().parent.parent
 CLEAN = ROOT / "FE8_clean.gba"
@@ -49,6 +50,7 @@ LYN = EA / "Tools" / "lyn.exe"
 PORTRAIT_FORMATTER = EA / "Tools" / "PortraitFormatter.exe"
 PORTRAIT_MANIFEST = SRC / "graphics" / "portraits" / "Portraits.txt"
 CHARPAL_MANIFEST = SRC / "graphics" / "battle_palettes.txt"
+ARENA_MANIFEST = SRC / "arenas" / "arena_maps.txt"
 ARM_TC = Path(os.environ.get("ARM_TOOLCHAIN",
               r"C:\Program Files (x86)\Arm GNU Toolchain arm-none-eabi\12.2 mpacbti-rel1\bin"))
 CFLAGS = ["-mcpu=arm7tdmi", "-mthumb", "-mthumb-interwork", "-mtune=arm7tdmi", "-mlong-calls", "-O2",
@@ -176,6 +178,16 @@ def build_char_palettes(clean: bytes) -> list:
     return items
 
 
+def build_arena_maps(clean: bytes) -> list:
+    info("Cutting arena maps from vanilla chapters")
+    try:
+        items = arenas.compile_all(ARENA_MANIFEST, clean, GEN)
+    except arenas.ArenaError as e:
+        raise BuildError(str(e))
+    ok(f"{len(items)} arena(s), {sum(1 for a in items if a.blob)} cut map(s)")
+    return items
+
+
 def assemble(clean: bytes, debug: bool = False) -> bytes:
     info("Assembling ROMBuildfile.event (ColorzCore)" + (" [DEBUG build]" if debug else ""))
     TMP.unlink(missing_ok=True)
@@ -229,14 +241,22 @@ def main() -> int:
             build_maps()
         items = build_portraits()
         pal_items = build_char_palettes(clean)
+        arena_items = build_arena_maps(clean)
         build_c(args.test)
         out = TEST_OUT if args.test else DEBUG_OUT if args.debug else OUT
         data = assemble(clean, args.debug or args.test)
-        problems = portraits.verify_rom(items, data) + charpal.verify_rom(pal_items, data)
+        problems = (portraits.verify_rom(items, data) + charpal.verify_rom(pal_items, data)
+                    + arenas.verify_rom(arena_items, data))
         if problems:
             TMP.unlink(missing_ok=True)
-            raise BuildError("Portrait / battle palette check failed:\n  " + "\n  ".join(problems))
+            raise BuildError("Portrait / battle palette / arena map check failed:\n  " + "\n  ".join(problems))
         finish(data, out)
+        if out == OUT:                          # spec 81: the player ROM never has debug tools
+            syms = {l.split()[1]: int(l.split()[0], 16) for l in SYM.read_text(errors="replace").splitlines()
+                    if len(l.split()) == 2 and all(c in "0123456789ABCDEFabcdef" for c in l.split()[0])}
+            flag = syms.get("ColDebugMenu")
+            if flag is None or data[flag - 0x08000000] != 0:
+                raise BuildError("Coliseum.gba has the arena debug menu switched on (ColDebugMenu)")
     except BuildError as e:
         print(f"[FAIL ] {e}", file=sys.stderr)
         return 1

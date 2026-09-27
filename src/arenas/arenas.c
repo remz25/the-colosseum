@@ -10,7 +10,7 @@
  * arena through the run state.
  *
  * Arena and weather are rolled when a battle is won (Col_OnBattleWon), for the next battle, and
- * saved with the run. A new run starts in the Grand Coliseum.
+ * saved with the run. A new run starts in the Grand Colosseum.
  *
  * Weather uses FE8's own systems: rain and snow switch every class to FE8's rain/snow movement
  * costs, fog is FE8's fog of war (vision 3), each has FE8's weather animation. Rain, sandstorm
@@ -63,7 +63,7 @@ static const struct ColArenaTile kCathedralTiles[] = {
 
 /*                         weather weights: Clear Rain Snow Fog Sand Ash */
 const struct ColArenaDef gColArenas[] = {
-    [GRAND]     = { "Grand Coliseum", NULL, NULL, 0x43, 0xDB, 0, { 1, 0, 0, 0, 0, 0 },
+    [GRAND]     = { "Grand Colosseum", NULL, NULL, 0x43, 0xDB, 0, { 1, 0, 0, 0, 0, 0 },
                     { { 0, 4 }, { 0, 5 }, { 1, 3 } }, { { 14, 4 }, { 14, 5 }, { 13, 3 } } },
     [FOREST]    = { "Forest Arena", NULL, NULL, 0x14, 0x04, 0, { 6, 4, 0, 0, 0, 0 },
                     { { 1, 4 }, { 0, 5 }, { 3, 4 } }, { { 14, 1 }, { 13, 2 }, { 12, 1 } } },

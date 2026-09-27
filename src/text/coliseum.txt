@@ -44,31 +44,31 @@ Killing Edge fused with an[N]Elite's blade. Deadly crits.[X]
 Tyrant Blade[X]
 
 ## ColItemDesc_TyrantBlade
-A Coliseum champion's[N]sword.[X]
+A Colosseum champion's[N]sword.[X]
 
 ## ColItem_WarlordPike
 Warlord Pike[X]
 
 ## ColItemDesc_WarlordPike
-A Coliseum champion's[N]lance. Can be thrown.[X]
+A Colosseum champion's[N]lance. Can be thrown.[X]
 
 ## ColItem_RuinCleaver
 Ruin Cleaver[X]
 
 ## ColItemDesc_RuinCleaver
-A Coliseum champion's[N]axe.[X]
+A Colosseum champion's[N]axe.[X]
 
 ## ColItem_StormLongbow
 Storm Longbow[X]
 
 ## ColItemDesc_StormLongbow
-A Coliseum champion's bow.[N]Range 2-3. Effective vs fliers.[X]
+A Colosseum champion's bow.[N]Range 2-3. Effective vs fliers.[X]
 
 ## ColItem_AbyssTome
 Abyss Tome[X]
 
 ## ColItemDesc_AbyssTome
-A Coliseum champion's[N]dark tome. Range 1-2.[X]
+A Colosseum champion's[N]dark tome. Range 1-2.[X]
 
 ## ColChar_Champion
 Champion[X]

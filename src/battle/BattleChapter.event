@@ -27,7 +27,7 @@ POP
 setText(0x160, ColChapterName)                    // chapter title card
 ALIGN 4
 ColChapterName:
-String("The Coliseum")
+String("The Colosseum")
 BYTE 0
 
 EventPointerTable(ColBattleEventID, ColBattle_Block)

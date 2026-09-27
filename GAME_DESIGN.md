@@ -55,7 +55,7 @@ without the developer's approval.
 | 2026-09-27 | **Player units gain 1.5x battle EXP** (rounded up, max 100 per battle, after EXP skills like Paragon). Enemies and staff EXP unchanged. | Developer ("level faster"), Claude (1.5x) | Balance lever `COL_EXP_PERCENT`. |
 | 2026-09-27 | **Arena system** (docs/ARENA_SPEC.md): milestone 1 uses FE8's own tilesets (8 arenas); Frozen, Swamp and a real Graveyard wait for FE-Repo tilesets (milestone 2). | Developer | |
 | 2026-09-27 | **Fog = FE8's real fog of war** (vision 3), no Hit penalty. | Developer | |
-| 2026-09-27 | Arena rules: a run starts in the Grand Coliseum; later arenas are rolled per battle from the floor pool, never twice in a row; Elites favour Royal and Cathedral. Weather Hit: rain -5, sandstorm -10, ashfall -5 (both sides). Hazards hit at the start of the standing unit's phase, 5 HP on hot rock, never below 1 HP, fliers immune. Sacred seal heals 10% (21 tiles). Tiles follow the map art (all glowing rock burns, the whole seal is sacred). Misty Ruins stands in for the Graveyard. | Claude (implementation) | Balance levers (Phase 16); docs/ARENAS.md. |
+| 2026-09-27 | Arena rules: a run starts in the Grand Colosseum; later arenas are rolled per battle from the floor pool, never twice in a row; Elites favour Royal and Cathedral. Weather Hit: rain -5, sandstorm -10, ashfall -5 (both sides). Hazards hit at the start of the standing unit's phase, 5 HP on hot rock, never below 1 HP, fliers immune. Sacred seal heals 10% (21 tiles). Tiles follow the map art (all glowing rock burns, the whole seal is sacred). Misty Ruins stands in for the Graveyard. | Claude (implementation) | Balance levers (Phase 16); docs/ARENAS.md. |
 | 2026-09-27 | **Promotion keeps the unit's level** (Lv 12 Mercenary -> Lv 12 Hero, still capped at 30); FE8's reset to level 1 is removed. | Developer | Phase 10. |
 | 2026-09-27 | **Promotion needs level 10+** (FE8's rule), for every source (3-win reward, shop seals, boss items). | Developer | Phase 10. |
 | 2026-09-27 | **3-win reward: 3 different kinds rolled from Recruit / Skill / Promotion / Heal / Gold; the player picks 1.** Kinds that can't be used (nobody eligible to promote, nobody left to recruit, no learnable skill, everyone at full HP) are replaced by valid ones. | Developer | Spec 51-53, Phase 10. |
@@ -64,6 +64,7 @@ without the developer's approval.
 | 2026-09-27 | Autosave after every win replaces FE8's save menu (spec 76); the run is saved to the slot chosen at New Game. | Claude (implementation) | |
 | 2026-09-27 | Declining the recruit offer, or Back from "who gets it?", returns to the reward choice: the 3-win reward cannot be skipped by accident (spec 51: choose exactly one). | Claude (implementation) | |
 | 2026-09-27 | **R shows help on any COLISEUM menu row** (skills, relics, items, characters, rewards) without selecting it, like FE8's own R help. | Developer (request) | |
+| 2026-09-27 | **The game is called "The Colosseum" in game** (was "The Coliseum"); arena "Grand Colosseum". | Developer | Project/code names unchanged. |
 
 ## Open questions (not decided yet)
 

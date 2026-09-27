@@ -14,7 +14,7 @@ tileset, palette, tile config and tile animations (`src/arenas/arena_maps.txt`,
 
 | # | Arena | Cut from | Weather (weights) | Tiles | Floors |
 |---|---|---|---|---|---|
-| 0 | Grand Coliseum | ch 0x43 hall (whole map) | Clear | - | 1, 2, 5 |
+| 0 | Grand Colosseum | ch 0x43 hall (whole map) | Clear | - | 1, 2, 5 |
 | 1 | Forest Arena | ch 0x14 (2,1): woods, thickets, a mountain | Clear 6 / Rain 4 | - | 1, 2, 4 |
 | 2 | Desert Arena | ch 0x0F (4,1): oasis, temple ruin, cliffs | Clear 5 / Sandstorm 5 | - | 2, 4, 5 |
 | 3 | Volcanic Arena | ch 0x12 (7,4): lava pool ringed by rock | Ashfall | 25 hot-rock tiles (burning) | 6, 7+ |
@@ -23,10 +23,10 @@ tileset, palette, tile config and tile animations (`src/arenas/arena_maps.txt`,
 | 6 | Abyss Arena | ch 0x15 (1,6): walkways over the void | Fog | - | 6, 7+ |
 | 7 | Misty Ruins | ch 0x2E (3,6): Lagdou-style ruins | Clear 3 / Fog 7 | - | 3, 4 |
 
-- A run starts in the Grand Coliseum. After every win, the next battle's arena is rolled from the
+- A run starts in the Grand Colosseum. After every win, the next battle's arena is rolled from the
   floor's pool (floor 7 and up use the last pool), never the same arena twice in a row; Elite
   battles count arenas flagged for them (Royal, Cathedral) twice. Arena and weather are saved in
-  the run state (`arena`, `weather`, bytes 0x69-0x6A; zero = Grand Coliseum, clear).
+  the run state (`arena`, `weather`, bytes 0x69-0x6A; zero = Grand Colosseum, clear).
 - Misty Ruins stands in for the Graveyard (FE8 has no tombstone art).
 - Each arena has its own 3 player and 3 enemy spawn tiles.
 
@@ -43,7 +43,7 @@ tileset, palette, tile config and tile animations (`src/arenas/arena_maps.txt`,
 
 The Hit penalty is in the pre-battle loop, so the forecast shows it. Readability (spec 5): a
 notice before every battle names the arena, the weather and its effect, and the tiles
-(not shown for the Grand Coliseum in clear weather).
+(not shown for the Grand Colosseum in clear weather).
 
 ## Tiles
 

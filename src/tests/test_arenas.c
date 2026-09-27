@@ -63,7 +63,7 @@ int Test_ArenaRoll(struct Unit *sA, struct Unit *sT)
     int floor, k, i;
 
     Col_RunNew(2);
-    CHECK(gColRun.arena == 0 && gColRun.weather == COL_WX_CLEAR);           /* a run opens in the Grand Coliseum */
+    CHECK(gColRun.arena == 0 && gColRun.weather == COL_WX_CLEAR);           /* a run opens in the Grand Colosseum */
     for (floor = 1; floor <= 9; floor++) {
         u8 pool[5];
         int n = Col_FloorPool(floor, pool);

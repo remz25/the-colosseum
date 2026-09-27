@@ -236,7 +236,7 @@ void Col_AnnounceEncounter(struct Proc *parent)
  *   | Volcanic Arena               |
  *   | Weather: Ashfall, -5 Hit     |
  *   | Burning ground: -5 HP a turn |
- * Not shown for the Grand Coliseum in clear weather (nothing to explain). */
+ * Not shown for the Grand Colosseum in clear weather (nothing to explain). */
 
 static const struct ProcCmd kProcScr_Arena[] = {
     PROC_NAME("ColArena"),

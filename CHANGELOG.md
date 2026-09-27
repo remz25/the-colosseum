@@ -1,5 +1,10 @@
 # COLISEUM: Changelog
 
+## 2026-09-27 (in-game name: The Colosseum)
+- Player-visible text renamed (developer): chapter title card "The Colosseum", arena "Grand
+  Colosseum", Elite weapon descriptions "A Colosseum champion's ...". Code, files and docs keep
+  the COLISEUM project name for now.
+
 ## 2026-09-27 (R-button help in every COLISEUM menu)
 - Pressing R on a menu row shows FE8's help box for it without choosing it; moving the cursor
   updates it; R or B closes it (`src/core/help.c`). Skills: their description. Relics: name,
@@ -34,7 +39,7 @@
   promotion functions), Test_Recover.
 
 ## 2026-09-27 (arenas, weather, hazard and sacred tiles: milestone 1, docs/ARENAS.md)
-- 8 arenas cut from vanilla FE8 maps (`src/arenas/`, `scripts/arenas.py`): Grand Coliseum,
+- 8 arenas cut from vanilla FE8 maps (`src/arenas/`, `scripts/arenas.py`): Grand Colosseum,
   Forest, Desert, Volcanic, Ruined Cathedral, Royal, Abyss, Misty Ruins; floor pools; the next
   arena and weather are rolled after each win and saved in the run state (bytes 0x69-0x6A,
   formerly padding: v6 saves stay valid).

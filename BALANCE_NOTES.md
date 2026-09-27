@@ -49,6 +49,11 @@ Weather Hit: rain -5, sandstorm -10, ashfall -5. Hot rock 5 HP per phase start (
 Sacred seal 10% heal (21 tiles). Weather weights and floor pools in src/arenas/arenas.c.
 AI: -10 score per HP of hazard, +10 on sacred tiles.
 
+## Phase 10 (2026-09-27) - first guesses
+
+Recover 300 G + 100 per floor above 1 (3 charges per floor). 3-win Gold 100-500 (spec 52).
+Reward kinds equally likely among the valid ones.
+
 Skill catalog (src/skills/Skills.event, Phase 6): rarities and prerequisites are first guesses;
 offer weights C 40 / U 30 / R 18 / E 9 / L 3; enemy floor skills at levels 10/16/22.
 

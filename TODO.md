@@ -166,5 +166,15 @@ built, working in game, tested, documented.
 - [ ] Milestone 2: Frozen / Swamp / Graveyard with FE-Repo tilesets and their special rules
 - [ ] Boss arenas (with Phase 12); fire animation for burning ground; Abyss hazards
 
-## Phase 10, 12-17
+## Phase 10: Roguelike progression — DONE (2026-09-27)
+- [x] 3-win cycle and reward choice: 3 of Recruit / Skill / Promotion / Heal / Gold, invalid
+      kinds replaced, rolled once, Gold 100-500 (spec 51-53)
+- [x] Promotion: level 10+, keeps level and EXP, branching path via FE8's promotion screen
+- [x] Recover: 3 charges per floor, gold cost, full heal, reset after the boss (spec 54)
+- [x] Post-battle menu: Next fight / Shop / Recover (+ team tools); autosave after every win
+- [ ] Developer play-test (reward menu, Recover, promotion keeping the level)
+- Later: relics that change rewards (spec 36, "choose 2"), promoted recruits (spec 9, rare),
+  boss promotion items (Phase 12).
+
+## Phase 12-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

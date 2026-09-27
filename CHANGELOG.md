@@ -1,5 +1,26 @@
 # COLISEUM: Changelog
 
+## 2026-09-27 (Phase 10: roguelike progression)
+- 3-win reward menu (spec 51-53): 3 different valid kinds from Recruit / Skill / Promotion /
+  Heal / Gold, rolled once and saved (run state 0xBC-0xC1, formerly reserved); rows show the
+  contents ("Skill: Vantage", "Gold: 332G"). Recruit (Decline returns to the choice), Skill and
+  Promotion ask who gets it (Back returns), Heal and Gold apply at once (`src/core/reward.c`,
+  `src/roster/roster_ui.c`). Replaces the interim "every reward is a recruit offer".
+- Promotion reward: the chosen unit (level 10+, unpromoted) gets a promotion item it can use
+  (Master Seal, else Ocean Seal / Lunar or Solar Brace); FE8's own promotion screen with the
+  branching class choice runs when it is used.
+- Promotion keeps level and EXP: the level/EXP reset in ApplyUnitDefaultPromotion and
+  ApplyUnitPromotion is patched out (0x0802BD20, 0x0802BE70; `src/units/Units.event`).
+- Recover (spec 54) in the Prepare menu: "Recover 3/3 300G" (300 + 100 per floor above 1),
+  full heal for every living roster member, one of 3 charges per floor (reset after the boss).
+- The Prepare menu is the post-battle menu (spec 6): Next fight / Shop / Recover / Deploy /
+  Transfer / Fuse / Relics; it opens with the next arena on screen.
+- Autosave after every win (spec 76): FE8's post-chapter save menu is replaced by a save to the
+  run's slot (game control 0x08591924, `src/battle/SkipWorldMap.event`).
+- Generic notice helper (`Col_ShowNotice`).
+- Tests: Test_RewardRoll, Test_RewardTake, Test_Promotion (level and EXP kept in both FE8
+  promotion functions), Test_Recover.
+
 ## 2026-09-27 (arenas, weather, hazard and sacred tiles: milestone 1, docs/ARENAS.md)
 - 8 arenas cut from vanilla FE8 maps (`src/arenas/`, `scripts/arenas.py`): Grand Coliseum,
   Forest, Desert, Volcanic, Ruined Cathedral, Royal, Abyss, Misty Ruins; floor pools; the next

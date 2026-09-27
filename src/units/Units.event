@@ -8,6 +8,16 @@ ORG 0x0181C8                    // UnitCheckStatCaps(unit)
 jumpToHack(Col_UnitCheckStatCaps)
 POP
 
+// Promotion keeps the level and EXP (developer, Phase 10): ApplyUnitDefaultPromotion and
+// ApplyUnitPromotion end with "level = 1; exp = 0" (strb r0,[r5,#8]; strb r1,[r5,#9]); both
+// stores become nops.
+PUSH
+ORG 0x02BD20
+SHORT 0x46C0 0x46C0
+ORG 0x02BE70
+SHORT 0x46C0 0x46C0
+POP
+
 // Level-up stat choice (spec 23), run from the Skill System's post-combat loop
 // (Col_PostCombatStatChoice, listed in PostBattleCalcLoop.event).
 ALIGN 4

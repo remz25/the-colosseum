@@ -405,6 +405,11 @@ int Test_ArenaRoll(struct Unit *, struct Unit *);
 int Test_HazardDamage(struct Unit *, struct Unit *);
 int Test_SacredTiles(struct Unit *, struct Unit *);
 int Test_AiHazardScore(struct Unit *, struct Unit *);
+/* test_progression.c */
+int Test_RewardRoll(struct Unit *, struct Unit *);
+int Test_RewardTake(struct Unit *, struct Unit *);
+int Test_Promotion(struct Unit *, struct Unit *);
+int Test_Recover(struct Unit *, struct Unit *);
 
 typedef int (*ColMapTestFn)(struct Unit *actor, struct Unit *target);
 static const ColMapTestFn kMapTests[] = {
@@ -425,6 +430,7 @@ static const ColMapTestFn kMapTests[] = {
     Test_FirstEliteGentler, Test_StartingRelics, Test_ExpBoost,
     Test_ArenaChapterData, Test_ArenaRoll, Test_HazardDamage, Test_SacredTiles, Test_AiHazardScore,
     Test_WeatherHit,
+    Test_RewardRoll, Test_RewardTake, Test_Promotion, Test_Recover,
 };
 
 int ColTest_MapCount(void)

@@ -5,7 +5,13 @@
 // Both become PROC_CALL(Col_NoStory) (src/core/battle.c). EndWM, which runs next, is safe without a world
 // map (it ends procs that don't exist and resets the backgrounds).
 
+// Autosave (spec 76, Phase 10): after the chapter switch vanilla opens its save menu
+//   0x08591924  PROC_CALL(GameControl_CallPostChapterSaveMenu)
+// which becomes PROC_CALL(Col_AutoSave) (src/core/reward.c): the run is saved to its slot.
+
 PUSH
+ORG 0x591924
+SHORT 2 0; POIN Col_AutoSave|1
 ORG 0x5918AC
 SHORT 2 0; POIN Col_NoStory|1
 ORG 0x5918BC

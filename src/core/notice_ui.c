@@ -266,3 +266,20 @@ void Col_AnnounceArena(struct Proc *parent)
     Set(gColNoticeUi.line2, a->hint ? a->hint : "", NULL);
     Proc_StartBlocking(kProcScr_Arena, parent);
 }
+
+/* ---- a plain notice for other menus (reward results) ---- */
+
+static const struct ProcCmd kProcScr_Plain[] = {
+    PROC_NAME("ColNotice"),
+    PROC_CALL(OpenNotice),
+    PROC_YIELD,
+    PROC_END,
+};
+
+void Col_ShowNotice(struct Proc *parent, const char *title, const char *line1, const char *line2)
+{
+    Set(gColNoticeUi.title, title, NULL);
+    Set(gColNoticeUi.line1, line1 ? line1 : "", NULL);
+    Set(gColNoticeUi.line2, line2 ? line2 : "", NULL);
+    Proc_StartBlocking(kProcScr_Plain, parent);
+}

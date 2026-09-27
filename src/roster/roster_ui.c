@@ -3,9 +3,11 @@
  *
  *   1. New run (spec 7): "Your team" shows the 3 random characters and the 3 starting relics
  *      (rare in gold); Begin accepts (no reroll).
- *   2. Recruitment (spec 9), when a 3-win reward is due. Until the reward menu exists (Phase 10)
- *      the 3-win reward is always a recruitment offer: up to 3 candidates or Decline; with a full
- *      roster, "Replace whom?" picks who leaves (Back returns to the candidates).
+ *   2. The 3-win reward (spec 51-53, reward.c), when due: up to 3 kinds, pick one (no skipping).
+ *      Recruit: up to 3 candidates or Decline (back to the reward choice); with a full roster,
+ *      "Replace whom?" picks who leaves (Back returns to the candidates). Skill / Promotion: "who
+ *      gets it?" (units that can't are grayed; Back returns to the choice), then the learn menu /
+ *      the promotion item. Heal and Gold apply at once.
  *   3. Prepare (prepare_ui.c): Fight! / Deploy / Transfer / Fuse. Deployment (spec 8), when
  *      more than 3 are alive: toggle units, Fight with exactly 3.
  *
@@ -18,7 +20,11 @@
 #include "functions.h"
 #include "hardware.h"
 
-enum { RECRUIT_IDLE, RECRUIT_OPEN, RECRUIT_REPLACE, RECRUIT_BACK, RECRUIT_DONE };
+enum { RECRUIT_IDLE, RECRUIT_OPEN, RECRUIT_REPLACE, RECRUIT_BACK, RECRUIT_DONE,
+       RECRUIT_START,                           /* Recruit chosen as the 3-win reward */
+       RECRUIT_DECLINED,                        /* Decline: back to the reward choice */
+       REWARD_PICK,                             /* Skill / Promotion chosen: who gets it? */
+       REWARD_PICK_BACK, REWARD_PICKED };
 
 struct ColRosterUi {                            /* COL_UI_SCRATCH + 0x10 (stat choice uses 0x00) */
     u8 candidates[COL_RECRUIT_CHOICES];
@@ -26,6 +32,8 @@ struct ColRosterUi {                            /* COL_UI_SCRATCH + 0x10 (stat c
     u8 state;
     u8 chosen;                                  /* candidate pool index being recruited */
     u8 pick;                                    /* deployment menu: bit = roster slot */
+    u8 reward;                                  /* the 3-win reward kind chosen */
+    u8 target;                                  /* roster slot that gets it */
 };
 #define gColRosterUi (*(struct ColRosterUi *)(COL_UI_SCRATCH + 0x10))
 
@@ -157,7 +165,7 @@ static u8 Recruit_Pick(struct MenuProc *m, struct MenuItemProc *i)
 static int Recruit_DeclineDraw(struct MenuProc *m, struct MenuItemProc *i) { DrawLabel(m, i, TEXT_COLOR_SYSTEM_WHITE, "Decline"); return 0; }
 static u8 Recruit_Decline(struct MenuProc *m, struct MenuItemProc *i)
 {
-    RewardTaken();
+    gColRosterUi.state = RECRUIT_DECLINED;      /* the reward is still to choose */
     return END_MENU;
 }
 
@@ -206,6 +214,132 @@ static const struct MenuItemDef kReplaceItems[] = {
     { 0 },
 };
 static const struct MenuDef kReplaceMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kReplaceItems };
+
+/* ---- 2b. the 3-win reward ---- */
+
+static int Reward_Title(struct MenuProc *m, struct MenuItemProc *i) { DrawLabel(m, i, TEXT_COLOR_SYSTEM_GOLD, "3 wins! Choose a reward"); return 0; }
+static u8 Reward_Avail(const struct MenuItemDef *d, int n)
+{
+    return gColRun.rewardKinds[n - 1] != COL_REWARD_NONE ? MENU_ENABLED : MENU_NOTSHOWN;
+}
+static int Reward_Row(struct MenuProc *m, struct MenuItemProc *i)
+{
+    ClearText(&i->text);
+    switch (gColRun.rewardKinds[i->itemNumber - 1]) {
+    case COL_REWARD_RECRUIT:
+        Text_InsertDrawString(&i->text, 0, TEXT_COLOR_SYSTEM_WHITE, "Recruit a fighter");
+        break;
+    case COL_REWARD_SKILL:
+        Text_InsertDrawString(&i->text, 0, TEXT_COLOR_SYSTEM_WHITE, "Skill:");
+        Text_InsertDrawString(&i->text, 40, TEXT_COLOR_SYSTEM_BLUE, Col_SkillName(gColRun.rewardSkill));
+        break;
+    case COL_REWARD_PROMOTION:
+        Text_InsertDrawString(&i->text, 0, TEXT_COLOR_SYSTEM_WHITE, "Promotion (a seal)");
+        break;
+    case COL_REWARD_HEAL:
+        Text_InsertDrawString(&i->text, 0, TEXT_COLOR_SYSTEM_WHITE, "Heal everyone fully");
+        break;
+    case COL_REWARD_GOLD:
+        Text_InsertDrawString(&i->text, 0, TEXT_COLOR_SYSTEM_WHITE, "Gold:");
+        Text_InsertDrawNumberOrBlank(&i->text, 64, TEXT_COLOR_SYSTEM_BLUE, gColRun.rewardGold);
+        Text_InsertDrawString(&i->text, 72, TEXT_COLOR_SYSTEM_GOLD, "G");
+        break;
+    }
+    Put(m, i);
+    return 0;
+}
+static u8 Reward_Pick(struct MenuProc *m, struct MenuItemProc *i)
+{
+    int kind = gColRun.rewardKinds[i->itemNumber - 1];
+
+    gColRosterUi.reward = (u8)kind;
+    switch (kind) {
+    case COL_REWARD_RECRUIT:
+        gColRosterUi.state = RECRUIT_START;
+        break;
+    case COL_REWARD_SKILL:
+    case COL_REWARD_PROMOTION:
+        gColRosterUi.state = REWARD_PICK;
+        break;
+    case COL_REWARD_HEAL:
+        Col_TakeHealReward();
+        gColRosterUi.state = RECRUIT_DONE;
+        break;
+    case COL_REWARD_GOLD:
+        Col_TakeGoldReward();
+        gColRosterUi.state = RECRUIT_DONE;
+        break;
+    }
+    return END_MENU;
+}
+
+static const struct MenuItemDef kRewardItems[] = {
+    ROW(MenuAlwaysEnabled, Reward_Title, NotAnOption),
+    ROW(Reward_Avail, Reward_Row, Reward_Pick),
+    ROW(Reward_Avail, Reward_Row, Reward_Pick),
+    ROW(Reward_Avail, Reward_Row, Reward_Pick),
+    { 0 },
+};
+static const struct MenuDef kRewardMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kRewardItems };
+
+static int Who_Can(int slot)
+{
+    struct Unit *u = Col_RosterUnit(slot);
+
+    if (!u || (u->state & US_DEAD))
+        return 0;
+    return gColRosterUi.reward == COL_REWARD_SKILL ? Col_CanLearnRewardSkill(u) : Col_CanPromote(u);
+}
+static int Who_Title(struct MenuProc *m, struct MenuItemProc *i)
+{
+    DrawLabel(m, i, TEXT_COLOR_SYSTEM_GOLD,
+              gColRosterUi.reward == COL_REWARD_SKILL ? "Who learns it?" : "Who promotes? (Lv 10+)");
+    return 0;
+}
+static u8 Who_Avail(const struct MenuItemDef *d, int n)
+{
+    if (gColRun.roster[n - 1] >= COL_POOL_SIZE)
+        return MENU_NOTSHOWN;
+    return Who_Can(n - 1) ? MENU_ENABLED : MENU_DISABLED;
+}
+static int Who_Row(struct MenuProc *m, struct MenuItemProc *i)
+{
+    int slot = i->itemNumber - 1;
+    DrawRow(m, i, gColRun.roster[slot], SlotLevel(slot), 0);
+    if (i->availability == MENU_DISABLED) {     /* gray the name of units that can't */
+        struct Unit *u = Col_RosterUnit(slot);
+        if (u)
+            Text_InsertDrawString(&i->text, X_NAME, TEXT_COLOR_SYSTEM_GRAY, GetStringFromIndex(UNIT_NAME_ID(u)));
+        Put(m, i);
+    }
+    return 0;
+}
+static u8 Who_Pick(struct MenuProc *m, struct MenuItemProc *i)
+{
+    if (i->availability == MENU_DISABLED)
+        return MENU_ACT_SND6B;
+    gColRosterUi.target = (u8)(i->itemNumber - 1);
+    gColRosterUi.state = REWARD_PICKED;
+    return END_MENU;
+}
+static int Who_BackDraw(struct MenuProc *m, struct MenuItemProc *i) { DrawLabel(m, i, TEXT_COLOR_SYSTEM_WHITE, "Back"); return 0; }
+static u8 Who_Back(struct MenuProc *m, struct MenuItemProc *i)
+{
+    gColRosterUi.state = REWARD_PICK_BACK;
+    return END_MENU;
+}
+
+static const struct MenuItemDef kWhoItems[] = {
+    ROW(MenuAlwaysEnabled, Who_Title, NotAnOption),
+    ROW(Who_Avail, Who_Row, Who_Pick),
+    ROW(Who_Avail, Who_Row, Who_Pick),
+    ROW(Who_Avail, Who_Row, Who_Pick),
+    ROW(Who_Avail, Who_Row, Who_Pick),
+    ROW(Who_Avail, Who_Row, Who_Pick),
+    ROW(MenuAlwaysEnabled, Who_BackDraw, Who_Back),
+    { 0 },
+};
+static const struct MenuDef kWhoMenu = { .rect = { MENU_X, MENU_Y, MENU_W, 0 }, .menuItems = kWhoItems };
 
 /* ---- 3. deployment ---- */
 
@@ -278,14 +412,76 @@ static void Flow_Team(struct Proc *proc)
     Open(&kTeamMenu, proc, 7);                  /* on Begin */
 }
 
+void Col_OpenSkillMenu(struct Proc *parent, struct Unit *unit, int skill);   /* skill_ui.c */
+
+/* The 3-win reward (label 1): rolled once, then chosen. */
+static void Flow_Reward(struct Proc *proc)
+{
+    if (!gColRun.rewardDue) {
+        Proc_Goto(proc, 4);
+        return;
+    }
+    Col_RollReward();
+    if (!Col_RewardCount()) {                   /* cannot happen (Gold is always valid) */
+        Col_TakeReward();
+        Proc_Goto(proc, 4);
+        return;
+    }
+    gColRosterUi.state = RECRUIT_IDLE;
+    Open(&kRewardMenu, proc, 1);
+}
+
+static void Flow_RewardChosen(struct Proc *proc)
+{
+    switch (gColRosterUi.state) {
+    case RECRUIT_START:
+        Proc_Goto(proc, 2);
+        return;
+    case REWARD_PICK:
+        Open(&kWhoMenu, proc, 1);
+        return;
+    }
+    Proc_Goto(proc, 4);                         /* Heal / Gold: done */
+}
+
+static void Flow_RewardPicked(struct Proc *proc)
+{
+    struct Unit *u;
+    char line[32];
+    const char *s;
+    int k = 0;
+
+    if (gColRosterUi.state == REWARD_PICK_BACK) {
+        Proc_Goto(proc, 1);
+        return;
+    }
+    if (gColRosterUi.state != REWARD_PICKED)
+        return;
+    u = Col_RosterUnit(gColRosterUi.target);
+    if (gColRosterUi.reward == COL_REWARD_SKILL) {
+        int skill = gColRun.rewardSkill;
+        Col_TakeReward();
+        Col_OpenSkillMenu(proc, u, skill);      /* learn / replace / don't learn */
+        return;
+    }
+    if (Col_GivePromotionSeal(u)) {
+        for (s = GetStringFromIndex(UNIT_NAME_ID(u)); *s && k < 16; s++)
+            line[k++] = *s;
+        for (s = " got a seal."; *s && k < 31; s++)
+            line[k++] = *s;
+        line[k] = 0;
+        Col_ShowNotice(proc, "Promotion", line, "Use it from Items.");
+    }
+}
+
 static void Flow_Recruit(struct Proc *proc)
 {
     if (gColRosterUi.state != RECRUIT_BACK) {
-        if (!gColRun.rewardDue)
+        if (gColRosterUi.state != RECRUIT_START)
             return;
         gColRosterUi.count = (u8)Col_RollRecruits(gColRosterUi.candidates);
-        if (!gColRosterUi.count) {              /* everyone already recruited this run */
-            Col_TakeReward();
+        if (!gColRosterUi.count) {              /* everyone already recruited (checked before) */
+            Proc_Goto(proc, 1);
             return;
         }
     }
@@ -302,7 +498,9 @@ static void Flow_Replace(struct Proc *proc)
 static void Flow_RecruitAgain(struct Proc *proc)
 {
     if (gColRosterUi.state == RECRUIT_BACK)
-        Proc_Goto(proc, 1);
+        Proc_Goto(proc, 2);
+    else if (gColRosterUi.state == RECRUIT_DECLINED)
+        Proc_Goto(proc, 1);                     /* back to the reward choice */
 }
 
 /* "Replace whom?" for recruiting `pool` into a full roster from another flow (shop).
@@ -351,11 +549,20 @@ static const struct ProcCmd kProcScr_BattleStart[] = {
     PROC_CALL(Flow_Team),
     PROC_YIELD,
     PROC_LABEL(1),
+    PROC_CALL(Flow_Reward),
+    PROC_YIELD,
+    PROC_CALL(Flow_RewardChosen),
+    PROC_YIELD,
+    PROC_CALL(Flow_RewardPicked),
+    PROC_YIELD,
+    PROC_GOTO(4),
+    PROC_LABEL(2),
     PROC_CALL(Flow_Recruit),
     PROC_YIELD,
     PROC_CALL(Flow_Replace),
     PROC_YIELD,
     PROC_CALL(Flow_RecruitAgain),
+    PROC_LABEL(4),
     PROC_CALL(Flow_Announce),
     PROC_YIELD,
     PROC_CALL(Flow_Arena),

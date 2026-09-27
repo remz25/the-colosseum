@@ -75,7 +75,13 @@ void Col_OnVictory(int encounter)
 
 void Col_TakeReward(void)
 {
+    int i;
+
     gColRun.rewardDue = 0;
+    for (i = 0; i < 3; i++)                      /* the next 3-win reward rolls anew */
+        gColRun.rewardKinds[i] = 0;
+    gColRun.rewardSkill = 0;
+    gColRun.rewardGold = 0;
 }
 
 int Col_AddGold(int amount)
@@ -190,6 +196,10 @@ void Col_UpgradeRunState(void)
     gColRun.arena = 0;
     gColRun.weather = 0;
     gColRun.pad6B = 0;
+    for (i = 0; i < 3; i++)
+        gColRun.rewardKinds[i] = 0;
+    gColRun.rewardSkill = 0;
+    gColRun.rewardGold = 0;
     for (i = 0; i < COL_MAX_DROPS; i++) {
         gColRun.drops[i].unit = o[0x84 + 4 * i];
         gColRun.drops[i].kind = o[0x85 + 4 * i];

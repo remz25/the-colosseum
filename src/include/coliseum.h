@@ -111,7 +111,10 @@ struct ColRunState {
     /* 6B */ u8  pad6B;
     /* 6C */ struct ColDrop drops[COL_MAX_DROPS];  /* this battle's enemy drops (encounters.c) */
     /* 7C */ u8  relics[COL_POOL_MAX][COL_RELIC_SLOTS];  /* relic IDs worn, per pool character; 0 empty */
-    /* BC */ u8  reserved[COL_RUN_SIZE - 0xBC];
+    /* BC */ u8  rewardKinds[3];    /* the 3-win reward on offer (enum ColRewardKind), rolled once; 0 = not rolled */
+    /* BF */ u8  rewardSkill;       /* its skill, when Skill is offered */
+    /* C0 */ u16 rewardGold;        /* its gold (100-500, spec 52), when Gold is offered */
+    /* C2 */ u8  reserved[COL_RUN_SIZE - 0xC2];
 };
 
 /* The playable pool (pool.c). */
@@ -295,6 +298,28 @@ int  Col_IsFirstElite(void);                     /* floor 1's first Elite: toned
 void Col_RollDrops(int encounter, struct Unit **enemies, int count);
 int  Col_PendingDrop(void);                              /* a drop whose enemy has died, or -1 */
 
+/* core/reward.c: the 3-win reward (spec 51-53), Recover (spec 54), promotion (spec 26) */
+enum ColRewardKind {
+    COL_REWARD_NONE, COL_REWARD_RECRUIT, COL_REWARD_SKILL, COL_REWARD_PROMOTION, COL_REWARD_HEAL,
+    COL_REWARD_GOLD, COL_REWARD_KIND_COUNT,
+};
+#define COL_PROMOTION_LEVEL  10      /* developer: FE8's rule, every promotion source */
+#define COL_MASTER_SEAL      0x88
+void Col_RollReward(void);                      /* rolls the offer once (valid kinds only) */
+int  Col_RewardCount(void);                     /* kinds on offer (1-3) */
+int  Col_RewardValid(int kind);
+int  Col_RecruitsLeft(void);                    /* pool characters never recruited this run */
+int  Col_CanPromote(struct Unit *unit);         /* level 10+, unpromoted, has a promotion, room for a seal */
+int  Col_CanLearnRewardSkill(struct Unit *unit);
+int  Col_TeamHurt(void);                        /* a living roster member below max HP */
+void Col_TakeGoldReward(void);
+void Col_TakeHealReward(void);
+int  Col_GivePromotionSeal(struct Unit *unit);  /* 1 if given (the reward is then taken) */
+int  Col_RecoverCost(void);
+int  Col_CanUseRecover(void);                   /* a charge left, enough gold, someone hurt */
+int  Col_Recover(void);                         /* pays, spends a charge, heals everyone fully */
+void Col_AutoSave(void);                        /* game control: replaces FE8's save menu between battles */
+
 /* arenas/arenas.c: arenas, weather, hazard and sacred tiles (docs/ARENAS.md) */
 #define COL_BATTLE_CHAPTER 0
 enum ColWeather {
@@ -338,7 +363,8 @@ struct Proc;
 int  Col_ArenaDebugAvailable(void);                  /* arena_debug.c: debug/test builds only */
 int  Col_ArenaDebugPending(void);
 void Col_StartArenaDebug(struct Proc *parent);
-void Col_AnnounceArena(struct Proc *parent);                   /* notice_ui.c: arena, weather, tiles */
+void Col_AnnounceArena(struct Proc *parent);
+void Col_ShowNotice(struct Proc *parent, const char *title, const char *line1, const char *line2);                   /* notice_ui.c: arena, weather, tiles */
 
 /* save chunk functions (Expanded Modular Save): (sram address, size) */
 void Col_SaveRunChunk(void *sram, unsigned size);

@@ -83,6 +83,11 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
   skill +0x20, Prepare/Shop +0x30, relics +0x50, notices +0x80), 0x300-0x393 the battle
   chapter's data for the current arena (rebuilt on every read, never saved), 0x3A0-0x3A3 arena
   debug menu state.
+- **Progression** (Phase 10, `src/core/reward.c`): the 3-win reward menu runs in the battle-start
+  flow (roster_ui.c, labels 1-2) before the Elite and arena notices. Promotion keeps level/EXP:
+  nops at 0x0802BD20 and 0x0802BE70 (`strb` of level 1 / EXP 0). FE8's post-chapter save menu
+  (game control entry 0x08591924) is replaced by `Col_AutoSave` (WriteGameSave to
+  gPlaySt.gameSaveSlot); seen in SRAM after a win.
 - **Arenas** (docs/ARENAS.md): `GetROMChapterStruct` (0x08034618) returns the arena's copy of
   chapter 0's data, so FE8 loads the arena's map, tileset, fog and weather by itself. Cut maps
   live in asset table slots of vanilla story maps. Hazards use the replaced poison step

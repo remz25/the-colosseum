@@ -1,7 +1,10 @@
-/* "Prepare" menu before each battle (after the team screen / recruitment):
+/* "Prepare" menu before each battle: the post-battle choices of spec 6 (Next Fight / Shop /
+ * Recover) plus the team tools. It opens with the next battle's arena already on screen.
  *
- *   Prepare  1234G   Fight!     start the battle
+ *   Prepare  1234G   Next fight start the battle
  *                    Shop       buy from this battle's stock (spec 38; B leaves the shop)
+ *                    Recover    full heal for everyone, 3 per floor, costs gold (spec 54;
+ *                               shows "2/3 400G"; gray when no charge, gold or need)
  *                    Deploy     choose the 3 fighters (only with more than 3 alive, spec 8)
  *                    Transfer   give an item to another unit that can use it (spec 40)
  *                    Fuse       combine two weapons in one unit's inventory (spec 42)
@@ -27,7 +30,7 @@
 #include "icon.h"
 
 enum { NEXT_NONE, NEXT_FIGHT, NEXT_DEPLOY, NEXT_TRANSFER, NEXT_FUSE, NEXT_BACK, NEXT_OK, NEXT_SHOP, NEXT_RELICS,
-       NEXT_ARENA_DEBUG };
+       NEXT_ARENA_DEBUG, NEXT_RECOVER };
 enum { MODE_GIVER, MODE_RECEIVER, MODE_FUSER, MODE_SKILL_TARGET, MODE_ITEM_TARGET };
 
 #define MAX_FUSIONS 5
@@ -94,7 +97,27 @@ static void GoldTitle(struct MenuProc *m, struct MenuItemProc *i, const char *ti
 static int P_Title(struct MenuProc *m, struct MenuItemProc *i) { GoldTitle(m, i, "Prepare", 72); return 0; }
 static int P_ShopDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Shop"); return 0; }
 static u8 P_Shop(struct MenuProc *m, struct MenuItemProc *i) { gColPrepUi.next = NEXT_SHOP; return END_MENU; }
-static int P_FightDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Fight!"); return 0; }
+static int P_FightDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Next fight"); return 0; }
+static int P_RecoverDraw(struct MenuProc *m, struct MenuItemProc *i)
+{
+    int color = Col_CanUseRecover() ? TEXT_COLOR_SYSTEM_WHITE : TEXT_COLOR_SYSTEM_GRAY;
+
+    ClearText(&i->text);
+    Text_InsertDrawString(&i->text, 0, color, "Recover");
+    Text_InsertDrawNumberOrBlank(&i->text, 44, TEXT_COLOR_SYSTEM_BLUE, gColRun.recoverCharges);
+    Text_InsertDrawString(&i->text, 52, color, "/3");
+    Text_InsertDrawNumberOrBlank(&i->text, 80, TEXT_COLOR_SYSTEM_BLUE, Col_RecoverCost());
+    Text_InsertDrawString(&i->text, 88, TEXT_COLOR_SYSTEM_GOLD, "G");
+    PutText(&i->text, Tile(m, i, 0));
+    return 0;
+}
+static u8 P_Recover(struct MenuProc *m, struct MenuItemProc *i)
+{
+    if (!Col_CanUseRecover())
+        return MENU_ACT_SND6B;
+    gColPrepUi.next = NEXT_RECOVER;
+    return END_MENU;
+}
 static int P_DeployDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Deploy"); return 0; }
 static int P_TransferDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Transfer"); return 0; }
 static int P_FuseDraw(struct MenuProc *m, struct MenuItemProc *i) { Label(m, i, TEXT_COLOR_SYSTEM_WHITE, "Fuse"); return 0; }
@@ -119,6 +142,7 @@ static const struct MenuItemDef kPrepItems[] = {
     ROW(MenuAlwaysEnabled, P_Title, NotAnOption),
     ROW(MenuAlwaysEnabled, P_FightDraw, P_Fight),
     ROW(MenuAlwaysEnabled, P_ShopDraw, P_Shop),
+    ROW(MenuAlwaysEnabled, P_RecoverDraw, P_Recover),
     ROW(P_DeployAvail, P_DeployDraw, P_Deploy),
     ROW(MenuAlwaysEnabled, P_TransferDraw, P_Transfer),
     ROW(MenuAlwaysEnabled, P_FuseDraw, P_Fuse),
@@ -126,7 +150,7 @@ static const struct MenuItemDef kPrepItems[] = {
     ROW(P_ArenaDebugAvail, P_ArenaDebugDraw, P_ArenaDebug),
     { 0 },
 };
-static const struct MenuDef kPrepMenu = { .rect = { 9, 3, 12, 0 }, .menuItems = kPrepItems };
+static const struct MenuDef kPrepMenu = { .rect = { 8, 3, 14, 0 }, .menuItems = kPrepItems };
 
 /* ---- unit list (giver / receiver / fuser) ---- */
 
@@ -433,6 +457,10 @@ static void Prep_Dispatch(struct Proc *proc)
         break;
     case NEXT_ARENA_DEBUG:
         Col_StartArenaDebug(proc);              /* back to Prepare when it closes */
+        break;
+    case NEXT_RECOVER:
+        if (Col_Recover())
+            Col_ShowNotice(proc, "Recover", "Everyone is fully healed.", NULL);
         break;
     }
 }

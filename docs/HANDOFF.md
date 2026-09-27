@@ -53,6 +53,9 @@ Dagny's and Oriane's Great Knight).
 Arena system milestone 1 (docs/ARENAS.md): 8 arenas, weather, hot rock, sacred seal,
 hazard-aware AI, Arena debug menu (test/debug builds). Next after that: Phase 10.
 
+Phase 10 done (2026-09-27): 3-win reward menu, promotion (keeps level, Lv 10+), Recover,
+post-battle Prepare menu, autosave. Next: developer play-test, then Phase 11 (Elite AI).
+
 ## Next (in order)
 
 0. **Developer play-test of Elites, drops and the random shop** (2026-09-26 additions, checked by

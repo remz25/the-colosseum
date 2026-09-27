@@ -103,5 +103,8 @@ mGBA, not only compiled.
 | Arenas: every map 15x10, spawns walkable for 6 classes in every rolled weather, not on hazards, foot + armour paths between the sides | PASS | tests/check_arenas.py (run by run_tests.py) | 2026-09-27 |
 | In game: all 8 arenas load with their tileset, weather animation (rain, sandstorm, embers), fog vision 3, spawns; arena notice after a real win (next arena rolled); hot rock 4 -> 1 HP and 15 -> 10 at the phase start; seal 3 -> 4 HP; enemies stop short of hot rock; Arena debug menu restarts in Volcanic/Ashfall | PASS (in game) | player and test ROM, scripted with screenshots | 2026-09-27 |
 | Resuming a suspended battle in a rolled arena | NOT VERIFIED in game | run state round trip is tested | |
+| Phase 10: reward roll (valid kinds only, distinct, rolled once, gold 100-500), taking Gold/Heal, promotion (level 10+, seal accepted by FE8, level and EXP kept in both promotion functions, full inventory), Recover (cost, charges, gold, reset after boss) | PASS | map tests 69-72 | 2026-09-27 |
+| In game: no FE8 save menu between fights; autosave (run state with 1 win appears in the game-save SRAM); Prepare menu Next fight / Shop / Recover 3/3 300G (grey when nobody hurt); after 3 wins "3 wins! Choose a reward" (Skill: Duelist's Blow / Recruit / Gold 332G) -> Who learns it? -> learn menu -> ELITE BATTLE! | PASS (in game) | test ROM, scripted with screenshots | 2026-09-27 |
+| Using the promotion seal in battle (FE8's branching screen) and a real Recover in game | NOT VERIFIED in game | unit tests cover the logic | |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

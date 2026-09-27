@@ -1,7 +1,8 @@
 /* Roster menus, run at the start of each battle by the battle chapter's beginning event
  * (Col_BattleStartFlow, ASMC; the event waits for them):
  *
- *   1. New run (spec 7): "Your team" shows the 3 random characters; Begin accepts (no reroll).
+ *   1. New run (spec 7): "Your team" shows the 3 random characters and the 3 starting relics
+ *      (rare in gold); Begin accepts (no reroll).
  *   2. Recruitment (spec 9), when a 3-win reward is due. Until the reward menu exists (Phase 10)
  *      the 3-win reward is always a recruitment offer: up to 3 candidates or Decline; with a full
  *      roster, "Replace whom?" picks who leaves (Back returns to the candidates).
@@ -88,6 +89,19 @@ static int Team_Row(struct MenuProc *m, struct MenuItemProc *i)
     DrawRow(m, i, gColRun.roster[i->itemNumber - 1], COL_START_LEVEL, 0);
     return 0;
 }
+static int Team_Relic(struct MenuProc *m, struct MenuItemProc *i)   /* the starting relics (bag 0-2) */
+{
+    const struct ColRelicDef *def = Col_RelicDef(gColRun.relicBag[i->itemNumber - 4]);
+    char line[32] = "Relic: ";
+    char *p = line + 7;
+    const char *s = def ? def->name : "-";
+
+    while (*s && p < line + sizeof(line) - 1)
+        *p++ = *s++;
+    *p = 0;
+    DrawLabel(m, i, def && def->rarity >= COL_RELIC_RARE ? TEXT_COLOR_SYSTEM_GOLD : TEXT_COLOR_SYSTEM_BLUE, line);
+    return 0;
+}
 static int Team_BeginDraw(struct MenuProc *m, struct MenuItemProc *i) { DrawLabel(m, i, TEXT_COLOR_SYSTEM_WHITE, "Begin"); return 0; }
 static u8 Team_Begin(struct MenuProc *m, struct MenuItemProc *i) { return END_MENU; }
 
@@ -96,6 +110,9 @@ static const struct MenuItemDef kTeamItems[] = {
     ROW(MenuAlwaysEnabled, Team_Row, NotAnOption),
     ROW(MenuAlwaysEnabled, Team_Row, NotAnOption),
     ROW(MenuAlwaysEnabled, Team_Row, NotAnOption),
+    ROW(MenuAlwaysEnabled, Team_Relic, NotAnOption),
+    ROW(MenuAlwaysEnabled, Team_Relic, NotAnOption),
+    ROW(MenuAlwaysEnabled, Team_Relic, NotAnOption),
     ROW(MenuAlwaysEnabled, Team_BeginDraw, Team_Begin),
     { 0 },
 };
@@ -258,7 +275,7 @@ static void Flow_Team(struct Proc *proc)
     if (Col_RunIsValid() && gColRun.active)
         return;
     Col_StartRun();
-    Open(&kTeamMenu, proc, 4);                  /* on Begin */
+    Open(&kTeamMenu, proc, 7);                  /* on Begin */
 }
 
 static void Flow_Recruit(struct Proc *proc)

@@ -154,5 +154,9 @@ built, working in game, tested, documented.
 ## Shop (developer request, 2026-09-26)
 - [x] Fully random stock every round (categories and order), Heal 30/50/100%
 
+## Balance after the play-test (developer request, 2026-09-27)
+- [x] First Elite gentler; 2 Common + 1 Rare starting relics (team screen); EXP x1.5
+- [ ] Developer play-test of the new values
+
 ## Phase 10, 12-17
 Not started. See `docs/COLISEUM_SPEC.md` §86 for the list.

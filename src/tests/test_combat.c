@@ -327,6 +327,37 @@ int Test_NormalEnemiesAndFirstRelic(struct Unit *, struct Unit *);
 int Test_DropOdds(struct Unit *, struct Unit *);
 int Test_DropKiller(struct Unit *, struct Unit *);
 int Test_DeployedAlive(struct Unit *, struct Unit *);
+/* EXP x1.5 for player units (developer, 2026-09-27): Col_ExpBoost directly, then a real kill
+ * goes through the EXP loop. Enemies' EXP is unchanged. */
+int Test_ExpBoost(struct Unit *sA, struct Unit *sT)
+{
+    struct TestStats killer = kPlain, weak = kPlain;
+    int vanilla;
+
+    Prep(sA, CLASS_MERCENARY, &kPlain, ITEM_IRON_SWORD, AX, AY, TERRAIN_PLAINS);
+    Prep(sT, CLASS_MERCENARY, &kPlain, ITEM_IRON_SWORD, TX, TY, TERRAIN_PLAINS);
+    InitBattleUnit(&gBattleActor, sA);
+    InitBattleUnit(&gBattleTarget, sT);
+    CHECK(UNIT_FACTION(sA) == FACTION_BLUE && UNIT_FACTION(sT) != FACTION_BLUE);
+    CHECK(Col_ExpBoost(20, &gBattleActor, &gBattleTarget) == 30);
+    CHECK(Col_ExpBoost(7, &gBattleActor, &gBattleTarget) == 11);                 /* rounded up */
+    CHECK(Col_ExpBoost(1, &gBattleActor, &gBattleTarget) == 2);
+    CHECK(Col_ExpBoost(0, &gBattleActor, &gBattleTarget) == 0);
+    CHECK(Col_ExpBoost(20, &gBattleTarget, &gBattleActor) == 20);                /* enemy */
+
+    killer.skl = 99;                                                             /* certain hit */
+    killer.pow = 30;
+    weak.hp = 5;
+    Prep(sA, CLASS_MERCENARY, &killer, ITEM_IRON_SWORD, AX, AY, TERRAIN_PLAINS);
+    Prep(sT, CLASS_MERCENARY, &weak, ITEM_IRON_SWORD, TX, TY, TERRAIN_PLAINS);
+    BattleGenerateReal(sA, sT);
+    CHECK(gBattleTarget.unit.curHP == 0);
+    vanilla = GetBattleUnitExpGain(&gBattleActor, &gBattleTarget);
+    CHECK(vanilla > 0);
+    CHECK(gBattleActor.expGain == ((vanilla * 150 + 99) / 100 > 100 ? 100 : (vanilla * 150 + 99) / 100));
+    return 0;
+}
+
 /* test_relics.c */
 int Test_RelicPool(struct Unit *, struct Unit *);
 int Test_RelicTexts(struct Unit *, struct Unit *);
@@ -342,6 +373,9 @@ int Test_RelicDamage(struct Unit *, struct Unit *);
 int Test_RelicBloodPact(struct Unit *, struct Unit *);
 int Test_RelicGold(struct Unit *, struct Unit *);
 int Test_RelicShop(struct Unit *, struct Unit *);
+int Test_FirstEliteGentler(struct Unit *, struct Unit *);
+int Test_StartingRelics(struct Unit *, struct Unit *);
+int Test_ExpBoost(struct Unit *, struct Unit *);
 
 typedef int (*ColMapTestFn)(struct Unit *actor, struct Unit *target);
 static const ColMapTestFn kMapTests[] = {
@@ -359,6 +393,7 @@ static const ColMapTestFn kMapTests[] = {
     Test_RelicGuardian, Test_RelicDamage, Test_RelicBloodPact, Test_RelicGold, Test_RelicShop,
     Test_EliteSetups, Test_EliteChampion, Test_EliteSquad, Test_NormalEnemiesAndFirstRelic,
     Test_DropOdds, Test_DropKiller, Test_DeployedAlive, Test_OriginalCharacters,
+    Test_FirstEliteGentler, Test_StartingRelics, Test_ExpBoost,
 };
 
 int ColTest_MapCount(void)

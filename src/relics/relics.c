@@ -339,6 +339,34 @@ int Col_RelicRoll(void)
     return 0;
 }
 
+/* A random relic of `rarity`, other than `exclude` when another one exists; 0 if none. */
+int Col_RelicRollRarity(int rarity, int exclude)
+{
+    int id, count = 0, pick;
+
+    for (id = 1; id <= Col_RelicCount(); id++)
+        if (gColRelics[id].rarity == rarity && id != exclude)
+            count++;
+    if (!count)
+        return exclude > 0 && gColRelics[exclude].rarity == rarity ? exclude : 0;
+    pick = NextRN_N(count);
+    for (id = 1; id <= Col_RelicCount(); id++)
+        if (gColRelics[id].rarity == rarity && id != exclude && pick-- == 0)
+            return id;
+    return 0;
+}
+
+/* Developer, 2026-09-27: every run starts with 2 different Common relics and 1 Rare in the bag
+ * (bag places 0-2, shown on the "Your team" screen). */
+void Col_GiveStartingRelics(void)
+{
+    int first = Col_RelicRollRarity(COL_RELIC_COMMON, 0);
+
+    Col_RelicBagAdd(first);
+    Col_RelicBagAdd(Col_RelicRollRarity(COL_RELIC_COMMON, first));
+    Col_RelicBagAdd(Col_RelicRollRarity(COL_RELIC_RARE, 0));
+}
+
 /* ---- text ---- */
 
 static char *AppendStr(char *out, const char *s)

@@ -36,6 +36,13 @@ MagCharEditor.csv. Personal values below; the class bases are added in game.
 | Artur (2) | 3 | 0 | 7 | 7 | 7 | 1 | 3 | 3 | 55/10/50/50/40/15/55/25 |
 | L'Arachel (3) | 4 | 0 | 6 | 6 | 8 | 3 | 4 | 13 | 45/10/50/45/45/15/50/65 |
 
+## Developer play-test (2026-09-27)
+
+The developer found the first Elite a little too hard. Changes: the first Elite is gentler
+(Champion -2 levels, +6 HP / +1 stats; squads -1 level), the run starts with 2 Common + 1 Rare
+relic, and player EXP is x1.5. For a floor-1 Champion after 3 wins, that makes it Lv 6 instead
+of Lv 8. Nothing has been measured yet: re-check after the next play-test.
+
 Skill catalog (src/skills/Skills.event, Phase 6): rarities and prerequisites are first guesses;
 offer weights C 40 / U 30 / R 18 / E 9 / L 3; enemy floor skills at levels 10/16/22.
 

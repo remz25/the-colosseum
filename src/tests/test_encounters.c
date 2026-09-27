@@ -84,7 +84,8 @@ int Test_EliteChampion(struct Unit *sA, struct Unit *sT)
 
     Col_RunNew(2);
     gColRun.eliteDue = 1;
-    gColRun.battlesWon = 3;
+    gColRun.battlesWon = 6;
+    gColRun.normalWins = 6;                                 /* the floor's second Elite: full strength */
     n = SpawnTest(COL_ENC_ELITE, 1, u);                     /* setup 1: Champion: Blademaster */
     if (n != 1) { result = __LINE__; goto out; }
     cls = u[0]->pClassData;
@@ -107,7 +108,8 @@ int Test_EliteSquad(struct Unit *sA, struct Unit *sT)
 
     Col_RunNew(3);
     gColRun.eliteDue = 1;
-    gColRun.battlesWon = 3;
+    gColRun.battlesWon = 6;
+    gColRun.normalWins = 6;                                 /* the floor's second Elite: full strength */
     n = SpawnTest(COL_ENC_ELITE, 5, u);                     /* setup 5: Elite Squad: Vanguard */
     if (n != 3) { result = __LINE__; goto out; }
     for (i = 0; i < n; i++) {
@@ -119,6 +121,59 @@ int Test_EliteSquad(struct Unit *sA, struct Unit *sT)
 out:
     Despawn(u, n);
     return result;
+}
+
+/* The run's first Elite (floor 1 after 3 wins) is gentler: Champion 2 levels lower with +6 HP /
+ * +1 stats, squads 1 level lower (developer, 2026-09-27). Normal level after 3 wins: 5. */
+int Test_FirstEliteGentler(struct Unit *sA, struct Unit *sT)
+{
+    struct Unit *u[3];
+    int n, i, hpFirst, result = 0;
+
+    Col_RunNew(5);
+    gColRun.eliteDue = 1;
+    gColRun.battlesWon = 3;
+    gColRun.normalWins = 3;
+    if (!Col_IsFirstElite()) return __LINE__;
+    n = SpawnTest(COL_ENC_ELITE, 1, u);                     /* Champion: Blademaster */
+    if (n != 1 || u[0]->level != 6) { result = __LINE__; Despawn(u, n); return result; }
+    hpFirst = u[0]->maxHP;
+    Despawn(u, n);
+    gColRun.floor = 2;                                      /* same level, not the first Elite */
+    gColRun.normalWins = 0;
+    if (Col_IsFirstElite()) return __LINE__;
+    n = SpawnTest(COL_ENC_ELITE, 1, u);                     /* level 4 + 5 + 3 = 12 */
+    if (n != 1 || u[0]->level != 12) { result = __LINE__; Despawn(u, n); return result; }
+    Despawn(u, n);
+    gColRun.floor = 1;
+    gColRun.normalWins = 3;
+    n = SpawnTest(COL_ENC_ELITE, 5, u);                     /* Elite Squad: Vanguard at 5 - 3 */
+    if (n != 3) { result = __LINE__; goto out; }
+    for (i = 0; i < n; i++)
+        if (u[i]->level != 2) { result = __LINE__; goto out; }
+    if (hpFirst < 20) result = __LINE__;                     /* still a real Champion */
+out:
+    Despawn(u, n);
+    return result;
+}
+
+/* Every run starts with 2 different Common relics and 1 Rare in the bag (developer, 2026-09-27). */
+int Test_StartingRelics(struct Unit *sA, struct Unit *sT)
+{
+    int k;
+
+    for (k = 0; k < 20; k++) {
+        const struct ColRelicDef *a, *b, *c;
+        Col_RunNew(10 + k);
+        Col_GiveStartingRelics();
+        a = Col_RelicDef(gColRun.relicBag[0]);
+        b = Col_RelicDef(gColRun.relicBag[1]);
+        c = Col_RelicDef(gColRun.relicBag[2]);
+        CHECK(a && b && c && Col_RelicBagCount() == 3);
+        CHECK(a->rarity == COL_RELIC_COMMON && b->rarity == COL_RELIC_COMMON && c->rarity == COL_RELIC_RARE);
+        CHECK(gColRun.relicBag[0] != gColRun.relicBag[1]);
+    }
+    return 0;
 }
 
 /* Normal battles: 3 generic enemies; the run's first battle always has a relic drop. */

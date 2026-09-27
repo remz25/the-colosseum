@@ -37,6 +37,9 @@
 #define COL_RELIC_SLOTS         2    /* spec 33: relics per character */
 #define COL_RELIC_BAG           16   /* unequipped relics kept for the run */
 #define COL_RELIC_RARITY_COUNT  6    /* spec 34: Common .. Legendary, Mythic */
+#define COL_RELIC_COMMON        1
+#define COL_RELIC_RARE          3
+#define COL_EXP_PERCENT         150  /* developer, 2026-09-27: player units gain 1.5x battle EXP */
 
 enum ColEncounter {
     COL_ENC_NORMAL = 0,
@@ -260,6 +263,10 @@ int  Col_RelicUnequip(int pool, int slot);      /* into the bag; 0 if the bag is
 void Col_RelicsReturnToBag(int pool);           /* the character left the run */
 int  Col_RelicApplyGold(int gold);              /* battle gold with the roster's gold relics */
 int  Col_RelicRoll(void);                       /* rarity-weighted random relic ID */
+int  Col_RelicRollRarity(int rarity, int exclude);   /* random relic of that rarity, not `exclude` */
+struct BattleUnit;
+int  Col_ExpBoost(int exp, struct BattleUnit *self, struct BattleUnit *other);   /* stats.c: EXP loop */
+void Col_GiveStartingRelics(void);              /* new run: 2 Common + 1 Rare into the bag */
 int  Col_RelicModText(const struct ColRelicMod *mod, char *out);   /* "+5 Def"; 1 if good for the wearer */
 int  Col_RelicPercent(int value, int percent);  /* value changed by percent, rounded to nearest */
 
@@ -279,6 +286,7 @@ extern const struct ColEliteSetup gColEliteSetups[];
 int  Col_EliteSetupCount(void);
 const struct ColEliteSetup *Col_CurrentElite(void);     /* rolls it if needed; NULL unless an Elite is next */
 void Col_CreateEnemies(int encounter);
+int  Col_IsFirstElite(void);                     /* floor 1's first Elite: toned down */
 void Col_RollDrops(int encounter, struct Unit **enemies, int count);
 int  Col_PendingDrop(void);                              /* a drop whose enemy has died, or -1 */
 

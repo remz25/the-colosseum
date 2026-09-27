@@ -42,6 +42,14 @@ fights (their content is Phases 11-12).
 - Weapons AND staves have unlimited uses; consumables are still used up.
 - New separate project in `C:\Users\RdotS\Downloads\Coliseum`, built on the FE8 Skill System.
 
+## Latest (2026-09-27)
+
+After the developer's play-test: the first Elite is gentler, runs start with 2 Common + 1 Rare
+relics (listed on the team screen), and player EXP is x1.5 (CHANGELOG.md). All tests pass.
+Still open from 2026-09-26: view Selene's recoloured dance screenshot; screenshot the promoted
+palettes not yet seen (Morrow's Berserker, Silas's Mage Knight, Idris's Sage, Hale's Ranger,
+Dagny's and Oriane's Great Knight).
+
 ## Next (in order)
 
 0. **Developer play-test of Elites, drops and the random shop** (2026-09-26 additions, checked by

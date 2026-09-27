@@ -7,6 +7,7 @@
  *               Def, a Mender that heals, a Reaper that finishes): promoted classes 2 levels
  *               below the normal level, role skills; iron weapons on floor 1, steel from floor 2
  *               (a floor-1 squad with steel weapons nearly one-shot Lv 6 units in testing).
+ *   The run's first Elite is gentler: Champion -2 levels, +6 HP / +1 stats; squads -1 level.
  * The setup is rolled once when the Elite is next (Col_CurrentElite) so the announcement before
  * the battle and the enemies agree; it is saved in the run state. Skills come from each
  * role's generic character (Tables: PersonalSkillEditor / CharacterLevelUpSkillEditor, lists in
@@ -165,12 +166,24 @@ static int SquadItem(int item)
     return item;
 }
 
+/* The run's first Elite (floor 1, after 3 wins) is gentler (developer, 2026-09-27: too hard):
+ * Champion 2 levels lower with half the boost, squads 1 level lower. Phase 16 levers. */
+int Col_IsFirstElite(void)
+{
+    return gColRun.floor == 1 && gColRun.normalWins <= COL_WINS_PER_REWARD;
+}
+
 static void Boost(struct Unit *u)               /* a Champion fights 3 alone */
 {
-    u->maxHP += 12;
+    int hp = 12, stat = 2;
+    if (Col_IsFirstElite()) {
+        hp = 6;
+        stat = 1;
+    }
+    u->maxHP += hp;
     u->curHP = u->maxHP;
-    u->pow += 2; u->skl += 2; u->spd += 2; u->def += 2; u->res += 2; u->lck += 2;
-    ((s8 *)u)[0x3A] += 2;                       /* Mag (Str/Mag split) */
+    u->pow += stat; u->skl += stat; u->spd += stat; u->def += stat; u->res += stat; u->lck += stat;
+    ((s8 *)u)[0x3A] += stat;                    /* Mag (Str/Mag split) */
 }
 
 void Col_CreateEnemies(int encounter)
@@ -181,6 +194,8 @@ void Col_CreateEnemies(int encounter)
 
     if (elite) {
         int level = elite->count == 1 ? EnemyLevel(COL_ENC_ELITE) : EnemyLevel(COL_ENC_NORMAL) - 2;
+        if (Col_IsFirstElite())
+            level -= elite->count == 1 ? 2 : 1;
         if (level < 1)
             level = 1;
         for (i = 0; i < elite->count; i++) {

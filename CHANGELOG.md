@@ -1,5 +1,18 @@
 # COLISEUM: Changelog
 
+## 2026-09-27 (balance after the developer's play-test)
+- The run's first Elite (floor 1, after 3 wins) is gentler: the Champion is 2 levels lower with
+  +6 HP / +1 stats (instead of +12 / +2); Elite Squads are 1 level lower (`Col_IsFirstElite`,
+  `src/core/encounters.c`). Later Elites are unchanged.
+- Every run starts with 2 different Common relics and 1 Rare in the relic bag
+  (`Col_GiveStartingRelics`); the "Your team" screen lists them (the Rare one in gold).
+- Player units gain 1.5x battle EXP, rounded up, still at most 100 per battle (`Col_ExpBoost`,
+  `src/units/stats.c`, `COL_EXP_PERCENT`). Staff EXP is unchanged.
+- **Upstream Skill System file changed**: `EXPCalcLoop.event` (+`Col_ExpBoost` after the EXP
+  skills, one line marked COLISEUM).
+- Tests: Test_FirstEliteGentler, Test_StartingRelics, Test_ExpBoost (a real kill through the EXP
+  loop); the Champion and Squad tests now spawn a floor's second Elite (full strength).
+
 ## 2026-09-26 (second batch of original characters; battle palettes)
 - Dagny, Oriane, Ysolde, Celestine, Aurel (pool 25) in the slots of Amelia, Tana, Myrrh, Syrene
   and Forde: FE-Repo portraits (credited), stats, skills, death quotes; Syrene's and Tana's

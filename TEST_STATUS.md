@@ -96,5 +96,8 @@ mGBA, not only compiled.
 | v4 and v5 saves upgrade to v6 with every field kept (byte-built images) | PASS | map test 42 | 2026-09-26 |
 | In game: Morrow / Hale / Selene deployed - unit window portrait, stat screens (portrait, name, class, skill icons), map sprites; Selene's Dance refreshed Morrow (with animation, EXP); Selene's new death quote with her portrait | PASS (in game) | player ROM, scripted with screenshots | 2026-09-26 |
 | Silas and Idris seen in game; Morrow's Pickup; Hale's Deadeye sleep | NOT VERIFIED in game | data checked by tests | |
+| First Elite gentler (levels, boost), starting relics (2 Common + 1 Rare, distinct Commons), EXP x1.5 for player units through the real EXP loop | PASS | map tests 60-62; full suite 8 run-state + 63 map tests all pass | 2026-09-27 |
+| "Your team" screen shows the 3 starting relics (Rare in gold), faded in, cursor on Begin | PASS (in game) | player ROM, scripted screenshot | 2026-09-27 |
+| First Elite difficulty and EXP pace feel right | NOT VERIFIED | needs the developer's play-test | |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

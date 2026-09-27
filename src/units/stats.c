@@ -122,3 +122,15 @@ void Col_TakeStatChoice(int slot, int stat)
     Col_AddStat(unit, stat, 1);
     gColRun.choiceLevel[slot]++;
 }
+
+/* ---- EXP ---- */
+
+/* EXPCalcLoop entry (EngineHacks/Necessary/CalcLoops/EXPCalcLoop, after the EXP skills; the loop
+ * caps the result at 100): player units gain COL_EXP_PERCENT of FE8's battle EXP, rounded up
+ * (developer, 2026-09-27: level faster). Staff EXP is not changed. */
+int Col_ExpBoost(int exp, struct BattleUnit *self, struct BattleUnit *other)
+{
+    if (exp <= 0 || UNIT_FACTION(&self->unit) != FACTION_BLUE)
+        return exp;
+    return (exp * COL_EXP_PERCENT + 99) / 100;
+}

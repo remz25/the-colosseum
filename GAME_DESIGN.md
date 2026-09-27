@@ -50,6 +50,9 @@ without the developer's approval.
 | 2026-09-26 | Pickup and Stunning Smile were disabled in the Skill System (no free skill ID): they take the IDs of the unused joke skills Thighdeology (187) and Thotslayer (188). | Claude (implementation) | |
 | 2026-09-26 | **Second batch approved** (pool 20 -> 25): Dagny (Knight F, Barricade), Oriane (Cavalier F, Charge), Ysolde (Manakete F, Tantivy; never promotes), Celestine (Eirika's lord class, Rapier, Charisma), Aurel (Ephraim's lord class, Inspiration). Slots: Amelia, Tana, Myrrh, Syrene, Forde. The lords are ordinary fighters: losing one doesn't end the run. | Developer | Built. |
 | 2026-09-26 | **Battle sprites take the portraits' colours** (developer request): per-character battle palettes for the 10 original characters in their base classes and promotions (scripts/charpal.py). | Developer (request), Claude (colours) | Colours chosen from the portraits; adjustable in src/graphics/battle_palettes.txt. |
+| 2026-09-27 | **The run's first Elite is gentler** (floor 1 after 3 wins): Champion 2 levels lower, +6 HP / +1 other stats instead of +12 / +2; Elite Squads 1 level lower. | Developer ("a little too hard"), Claude (amounts) | Balance levers (Phase 16). |
+| 2026-09-27 | **Every run starts with 3 relics in the bag: 2 different Commons and 1 Rare**, shown on the "Your team" screen; the player equips them from Prepare > Relics. The first battle's guaranteed relic drop stays. | Developer | |
+| 2026-09-27 | **Player units gain 1.5x battle EXP** (rounded up, max 100 per battle, after EXP skills like Paragon). Enemies and staff EXP unchanged. | Developer ("level faster"), Claude (1.5x) | Balance lever `COL_EXP_PERCENT`. |
 
 ## Open questions (not decided yet)
 

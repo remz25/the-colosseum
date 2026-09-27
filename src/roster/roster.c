@@ -1,7 +1,7 @@
 /* Roster (spec 7-9, 12, 45, 77): starting a run, recruitment and replacement, deployment, and
  * the end of a run.
  *
- *   Start (spec 7): 3 random pool characters, all deployed.
+ *   Start (spec 7): 3 random pool characters, all deployed; 2 Common + 1 Rare relic in the bag.
  *   Recruitment (spec 9): up to 3 random characters never recruited in this run (alive, dead or
  *     replaced); pick one or decline. A full roster (5) means replacing someone, who leaves the
  *     run for good. Recruits join at the roster's average level with a fixed build (spec 45):
@@ -46,6 +46,7 @@ void Col_StartRun(void)
         picked++;
     }
     gColRun.rosterCount = 3;
+    Col_GiveStartingRelics();
     Col_ShopGenerate();                                  /* the first battle's shop */
     Col_SyncPartyGold();
 }

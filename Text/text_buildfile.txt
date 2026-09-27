@@ -14,8 +14,8 @@ Learned  [X]
 
 #include "statscreen_text.txt"
 
-// COLISEUM text
-#include "../src/text/coliseum.txt"
+// COLOSSEUM text
+#include "../src/text/colosseum.txt"
 
 
 

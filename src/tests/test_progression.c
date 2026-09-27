@@ -1,7 +1,7 @@
 /* On-target tests: roguelike progression (Phase 10, src/core/reward.c): the 3-win reward,
  * Recover, promotion (level kept, level 10+). Map tests: ColTest_MapRun restores gColRun and the
  * two units. The first living blue unit (sA) is put in roster slot 0 as the only member. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "bmitemuse.h"

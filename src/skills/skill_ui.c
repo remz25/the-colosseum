@@ -11,7 +11,7 @@
  * The personal skill is not listed: it can never be replaced (spec 27). B does nothing.
  * Start it with Col_OfferSkill(unit, skill), which runs ColEvt_SkillOffer (the event waits for
  * the menu). Later phases call it from rewards, the shop, Elites and Bosses. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "proc.h"
 #include "fontgrp.h"

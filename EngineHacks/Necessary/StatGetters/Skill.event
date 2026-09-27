@@ -7,7 +7,7 @@ pSkillModifiers: // Skill
 	POIN prAddUnitSkill prHalveIfRescuing prHalveIfCapturing 
 	POIN prDebuffSkl PlusAura MinusAura
 	POIN prAddEquipSkill prItemPassiveSkl prRallySkl prResolve prDefiantSkl prPushSkl
-	POIN Col_RelicSklGetter // COLISEUM relics (src/relics/relics.c)
+	POIN Col_RelicSklGetter // COLOSSEUM relics (src/relics/relics.c)
 	#ifdef DEBUFFS_MIN_ZERO
 	POIN prMinZero
 	#endif

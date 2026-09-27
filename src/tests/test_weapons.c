@@ -1,7 +1,7 @@
 /* On-target tests for Phase 7 (spec 40-44): fusion recipes and fusing, transfer between
  * compatible characters, fast proficiency, the Elite variant and boss weapons.
  * Map tests (ColTest_MapRun restores the two units they change). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 

@@ -7,7 +7,7 @@
  * Level-up choice: after the growth rolls, the player picks one of 3 random +1 stat bonuses
  * (duplicates allowed). gColRun.choiceLevel[slot] records the level up to which a roster unit's
  * choices were made; stat_choice.c shows the menu for every level still owed. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmbattle.h"
 #include "rng.h"

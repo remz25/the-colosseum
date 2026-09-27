@@ -9,7 +9,7 @@ and each arena's map and tile config, and checks for every arena:
   - hazard and sacred tiles can be stood on (on foot) - otherwise they could never matter;
   - every player spawn can reach every enemy spawn on foot and in armour.
 
-    py -3 tests/check_arenas.py [ROM]       (default: Coliseum_test.gba; run_tests.py calls it)
+    py -3 tests/check_arenas.py [ROM]       (default: Colosseum_test.gba; run_tests.py calls it)
 """
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ CLASS_SIZE = 0x54
 CLASSES = {"Mercenary": 0x0F, "Knight": 0x09, "Cavalier": 0x05, "Archer": 0x19, "Mage": 0x25,
            "Fighter": 0x3F}
 PATH_CLASSES = ("Mercenary", "Knight")
-WEATHER_TABLE = {0: 0, 1: 1, 2: 2, 3: 0, 4: 0, 5: 0}   # COLISEUM weather -> movement table (0 normal, 1 rain, 2 snow)
+WEATHER_TABLE = {0: 0, 1: 1, 2: 2, 3: 0, 4: 0, 5: 0}   # COLOSSEUM weather -> movement table (0 normal, 1 rain, 2 snow)
 TILE_NAMES = {1: "burning", 2: "poison", 3: "void", 4: "sacred"}
 ARENA_SIZE = 36
 
@@ -136,7 +136,7 @@ def check(rom_path: Path) -> list[str]:
 
 
 def main() -> int:
-    rom = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "Coliseum_test.gba"
+    rom = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / "Colosseum_test.gba"
     problems = check(rom)
     for p in problems:
         print(f"  [FAIL] {p}")

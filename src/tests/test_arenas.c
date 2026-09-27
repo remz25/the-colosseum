@@ -1,7 +1,7 @@
 /* On-target tests: arenas (src/arenas/arenas.c, docs/ARENAS.md). Map tests (ColTest_MapRun
  * restores gColRun and the two units). The static map checks (spawn tiles walkable, not on
  * hazards, a foot path between the sides) run offline in tests/check_arenas.py. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmmap.h"
 #include "chapterdata.h"

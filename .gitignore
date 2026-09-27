@@ -69,14 +69,14 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-# COLISEUM build output
-Coliseum.gba
-Coliseum.tmp.gba
-Coliseum.sym
+# COLOSSEUM build output
+Colosseum.gba
+Colosseum.tmp.gba
+Colosseum.sym
 __pycache__/
-Coliseum_debug.gba
-Coliseum_debug.sym
-Coliseum_test.gba
-Coliseum_test.sym
+Colosseum_debug.gba
+Colosseum_debug.sym
+Colosseum_test.gba
+Colosseum_test.sym
 /build/
 *.sav.bak*

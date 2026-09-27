@@ -1,6 +1,6 @@
 /* On-target tests for Phase 8 (spec 37-39): battle gold, shop stock, price scaling, buying,
  * healing. Map tests (ColTest_MapRun restores gColRun and the two units). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "variables.h"

@@ -13,7 +13,7 @@
  *   - at the start of each player phase (level-ups on the enemy phase) and at the end of a
  *     battle: the battle chapter's events call Col_StartStatChoices (ASMC).
  * Every owed level gets its own menu; B does nothing (a choice must be made). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "proc.h"
 #include "fontgrp.h"

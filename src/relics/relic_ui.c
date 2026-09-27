@@ -10,8 +10,8 @@
  *   <relic> <rarity>      info: every effect, good ones in green, drawbacks in gold, conditions
  *                         as a header ("Below 50% HP:"); then Equip / Unequip / Buy, and Back.
  *
- * Every list has Back (B does nothing, as in the other COLISEUM menus). */
-#include "coliseum.h"
+ * Every list has Back (B does nothing, as in the other COLOSSEUM menus). */
+#include "colosseum.h"
 #include "bmunit.h"
 #include "proc.h"
 #include "fontgrp.h"

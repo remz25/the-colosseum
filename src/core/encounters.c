@@ -20,7 +20,7 @@
  * A skill drop is chosen when claimed, among the skills the killer can learn, and offered to the
  * killer (learn / replace / decline). The killer is recorded in the battle proc loop
  * (Col_DropKillProc). Claiming: drops_ui.c. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "bmbattle.h"

@@ -1,10 +1,10 @@
-/* COLISEUM run state: floor progression, encounters, gold, Recover charges (spec 5, 51, 54, 76).
+/* COLOSSEUM run state: floor progression, encounters, gold, Recover charges (spec 5, 51, 54, 76).
  * Pure logic on gColRun (no UI), so it can be unit-tested on the target (src/tests). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "agb_sram.h"
 
 _Static_assert(sizeof(struct ColRunState) == COL_RUN_SIZE, "ColRunState must stay COL_RUN_SIZE bytes");
-_Static_assert(COL_RUN_SIZE <= COL_RAM_SIZE, "run state must fit the COLISEUM RAM block");
+_Static_assert(COL_RUN_SIZE <= COL_RAM_SIZE, "run state must fit the COLOSSEUM RAM block");
 
 void Col_RunClear(void)
 {
@@ -213,7 +213,7 @@ void Col_UpgradeRunState(void)
     gColRun.version = COL_RUN_VERSION;
 }
 
-/* Loading a save without COLISEUM data (or an older layout) leaves no active run. A v4 run
+/* Loading a save without COLOSSEUM data (or an older layout) leaves no active run. A v4 run
  * (before relics) is upgraded: its relic fields were reserved bytes, always zero. */
 void Col_LoadRunChunk(void *sram, unsigned size)
 {

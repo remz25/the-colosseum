@@ -2,7 +2,7 @@
  * no duplicates, prerequisites, the catalog, rarity-weighted offers, skills reset per run.
  * Map tests, run through ColTest_MapRun. Skills live per character (BWL), so the tests use pool
  * characters that are not on the map and put their skill bytes back afterwards. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 
 #define CHECK(cond) do { if (!(cond)) return __LINE__; } while (0)

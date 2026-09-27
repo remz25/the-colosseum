@@ -1,10 +1,10 @@
-# COLISEUM: Architecture
+# COLOSSEUM: Architecture
 
-Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for COLISEUM.
+Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for COLOSSEUM.
 
 ## Build
 
-- `py -3 scripts/build.py` (full) / `--quick` (assemble only) -> `Coliseum.gba` + `.sym`.
+- `py -3 scripts/build.py` (full) / `--quick` (assemble only) -> `Colosseum.gba` + `.sym`.
   Base ROM `FE8_clean.gba` (FE8U, CRC32 `A47246AE`, git-ignored). Takes about 25 s.
 - Steps: `Tables/` CSVs -> c2ea; `Text/` -> text-process-classic + ParseFileUTF8; `Maps/` (Tiled)
   -> tmx2ea; `ROMBuildfile.event` -> ColorzCore. Every tool is named with its `.exe` (the repo also
@@ -15,7 +15,7 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 
 ## What the Skill System provides (reused)
 
-| Area | Where | Use in COLISEUM |
+| Area | Where | Use in COLOSSEUM |
 |---|---|---|
 | Skills (~250) | `EngineHacks/SkillSystem/` (`skill_definitions.event`, `Skills/`, `skill_lists.event`) | Skill effects, personal/class skills, learned skills (per character), scrolls, skill popups, debug skill editor. |
 | Personal / class skills | `Tables/NightmareModules/Skills/*.csv` | Personal skill per character; class skills. |
@@ -27,9 +27,9 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 | Danger Zone, HP bars, battle stats (anims off) | `EngineHacks/QualityOfLife` | Enemy ranges/info (spec §65). |
 | Modular EXP | `EngineHacks/ExternalHacks/ModularEXP` | EXP by class/boss (spec §22). |
 | Item Effect Revamp | `EngineHacks/Necessary/ItemEffectRevamp` | Consumables, promotion items. |
-| Debug startup menu | `__DEBUG__` in `CustomDefinitions.event` | Debug mode (spec §81), extended with COLISEUM commands. |
+| Debug startup menu | `__DEBUG__` in `CustomDefinitions.event` | Debug mode (spec §81), extended with COLOSSEUM commands. |
 
-## What COLISEUM builds (new code, `src/`, C via the Arm GNU Toolchain + lyn)
+## What COLOSSEUM builds (new code, `src/`, C via the Arm GNU Toolchain + lyn)
 
 | System | Approach |
 |---|---|
@@ -59,7 +59,7 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 - **Skill System battle hits**: the hit buffer is at `0x0203AAC0`, 8 bytes per hit, 31 max
   (`EngineHacks/SkillSystem/Internals/repointbuffer.event`), not vanilla's `gBattleHitArray`.
 - **Skill System clobbers r11**: `BattleGenerate` (the battle calc loop) returns with r11 = 0
-  instead of preserving it. All COLISEUM C is compiled with `-ffixed-r11` (scripts/build.py), so
+  instead of preserving it. All COLOSSEUM C is compiled with `-ffixed-r11` (scripts/build.py), so
   our code never keeps a value in r11. Found by the combat tests (a held pointer became garbage).
 - **No stat caps**: `src/units/Units.event` redirects CheckBattleUnitStatCaps (0x0802BF24) and
   UnitCheckStatCaps (0x080181C8) to `src/units/stats.c`; class caps are 127 in the tables.
@@ -134,7 +134,7 @@ Phase 1 analysis (2026-09-25) of the FE8 Skill System buildfile and the plan for
 - CPU 16.78 MHz: AI search must be budgeted (heuristic scoring + limited look-ahead).
 - Stats are `s8` in the unit struct -> ceiling 127.
 - SRAM 32 KiB total (Expanded Modular Save layout: meta `0x00-0xD4`, suspend, 3 game saves,
-  link arena, `0x7400` block). COLISEUM needs: 1 run save + suspend + Legacy block.
+  link arena, `0x7400` block). COLOSSEUM needs: 1 run save + suspend + Legacy block.
 - EWRAM 256 KiB / IWRAM 32 KiB: new RAM must be placed in documented free areas (to be mapped in
   Phase 2 before any allocation).
 

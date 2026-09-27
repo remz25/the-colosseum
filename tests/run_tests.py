@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Run COLISEUM's on-target unit tests (src/tests/*.c) in mGBA.
+"""Run COLOSSEUM's on-target unit tests (src/tests/*.c) in mGBA.
 
     py -3 scripts/build.py --test && py -3 tests/run_tests.py
 
-Starts a separate mGBA with its debugger on a temporary copy of Coliseum_test.gba (fresh save
-file), boots the game, starts a New Game into the COLISEUM battle chapter, then calls the
+Starts a separate mGBA with its debugger on a temporary copy of Colosseum_test.gba (fresh save
+file), boots the game, starts a New Game into the COLOSSEUM battle chapter, then calls the
 on-target tests through the debugger: ColTest_Run(i) (run state) and ColTest_MapRun(i)
 (combat, needs the battle map). A test returns 0 on success or the source line of its failed
 check. Exit code 0 only if every test passed."""
@@ -18,8 +18,8 @@ sys.path.insert(0, str(Path(__file__).parent / "emu"))
 from gdb import Gdb, read_sym, start_mgba   # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
-ROM = ROOT / "Coliseum_test.gba"
-SYM = ROOT / "Coliseum_test.sym"
+ROM = ROOT / "Colosseum_test.gba"
+SYM = ROOT / "Colosseum_test.sym"
 BOOT_FRAMES = 120
 # Title -> New Game -> the battle chapter on a fresh save: START past the intro and title, then
 # A through the menus (the boot menu, New Game, ...) until the beginning event starts the run.
@@ -27,12 +27,12 @@ TITLE_KEYS = [(180, "START", 5), (120, "START", 5)]
 MENU_A_PRESSES = 20
 WRITE_GAME_SAVE = 0x080A5011     # vanilla WriteGameSave(slot), hooked by the Expanded Modular Save
 READ_GAME_SAVE = 0x080A5129      # vanilla ReadGameSave(slot)
-COL_RAM = 0x0203F600             # gColRun (src/include/coliseum.h)
-SLOT3_RUN_CHUNK = 0x0E000000 + 0x55D4 + 0x11F0   # SRAM: save slot 3 + COLISEUM game-save chunk
+COL_RAM = 0x0203F600             # gColRun (src/include/colosseum.h)
+SLOT3_RUN_CHUNK = 0x0E000000 + 0x55D4 + 0x11F0   # SRAM: save slot 3 + COLOSSEUM game-save chunk
 WRITE_SUSPEND = 0x080A5A49       # vanilla WriteSuspendSave(id), hooked by the Expanded Modular Save
 READ_SUSPEND = 0x080A5C15        # vanilla ReadSuspendSave(id)
 SAVE_ID_SUSPEND = 3
-SUSPEND_RUN_CHUNK = 0x0E000000 + 0x00D4 + 0x290E  # SRAM: suspend block + COLISEUM suspend chunk
+SUSPEND_RUN_CHUNK = 0x0E000000 + 0x00D4 + 0x290E  # SRAM: suspend block + COLOSSEUM suspend chunk
 
 
 def save_integration(g, syms) -> list[str]:
@@ -154,7 +154,7 @@ def main() -> int:
     if not arena_problems:
         print("  [PASS] arenas: maps, spawn tiles, hazard/sacred tiles and paths (every tested class and weather)")
 
-    tmp = Path(tempfile.mkdtemp(prefix="coliseum_test_"))
+    tmp = Path(tempfile.mkdtemp(prefix="colosseum_test_"))
     rom = tmp / "t.gba"
     shutil.copyfile(ROM, rom)
     proc = start_mgba(str(rom))
@@ -167,7 +167,7 @@ def main() -> int:
         # (the title screen does); everything else must still be zero.
         if any(block[:0x300]) or any(block[0x394:]):
             failures += 1
-            print("  [FAIL] RAM block 0x0203F600-0x0203FDFF was written by the game before COLISEUM code ran")
+            print("  [FAIL] RAM block 0x0203F600-0x0203FDFF was written by the game before COLOSSEUM code ran")
         else:
             print("  [PASS] RAM block untouched after boot (all zero outside the arena chapter data)")
 

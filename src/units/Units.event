@@ -1,6 +1,6 @@
-// COLISEUM units (Phase 4): no stat caps, level-up stat choice. See src/units/stats.c.
+// COLOSSEUM units (Phase 4): no stat caps, level-up stat choice. See src/units/stats.c.
 
-// No stat caps (spec 21): the two vanilla cap functions jump to COLISEUM's versions.
+// No stat caps (spec 21): the two vanilla cap functions jump to COLOSSEUM's versions.
 PUSH
 ORG 0x02BF24                    // CheckBattleUnitStatCaps(unit, battleUnit)
 jumpToHack(Col_CheckBattleUnitStatCaps)

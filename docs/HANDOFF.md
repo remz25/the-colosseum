@@ -1,4 +1,4 @@
-# COLISEUM: Handoff (where we stopped, what comes next)
+# COLOSSEUM: Handoff (where we stopped, what comes next)
 
 Last session: 2026-09-26 (Phase 9, relics). Last commit: see `git log -1`. Everything below is
 committed. The developer play-tested Phases 1-8 (New Game -> team -> Prepare -> battles ->
@@ -40,7 +40,7 @@ fights (their content is Phases 11-12).
 - Class skills count toward the 4 skill slots; "no stat caps" = ceiling 127; Str/Mag split on.
 - All deployed units dead = the run is over (even with reserves alive).
 - Weapons AND staves have unlimited uses; consumables are still used up.
-- New separate project in `C:\Users\RdotS\Downloads\Coliseum`, built on the FE8 Skill System.
+- New separate project in `C:\Users\RdotS\Downloads\Colosseum`, built on the FE8 Skill System.
 
 ## Latest (2026-09-27)
 
@@ -83,20 +83,20 @@ post-battle Prepare menu, autosave. Next: developer play-test, then Phase 11 (El
   never played through (TEST_STATUS.md says NOT VERIFIED).
 - Balance numbers are first guesses (gold, prices, recruit level, skill weights, enemy skills):
   Phase 16 measures them (`BALANCE_NOTES.md`).
-- The developer's old save is `Coliseum.sav.bak-2026-09-25` (git-ignored) if ever needed.
+- The developer's old save is `Colosseum.sav.bak-2026-09-25` (git-ignored) if ever needed.
 
 ## Gotchas learned the hard way (details in ARCHITECTURE.md)
 
-- The Skill System's battle calc loop zeroes r11 -> all COLISEUM C is built with `-ffixed-r11`.
+- The Skill System's battle calc loop zeroes r11 -> all COLOSSEUM C is built with `-ffixed-r11`.
 - FE-CLib mapped `%` (modulo) to FE8 routines with another calling convention -> fixed with
   `src/core/divmod.c` + a stripped reference; lyn runs with `-nohook`.
 - Skill System battle hits are at 0x0203AAC0 (8 bytes each), not vanilla gBattleHitArray.
 - The Skill System caches unit skills: call `InitSkillBuffers()` after changing skills.
-- Call `ResetTextFont()` before every COLISEUM menu, or text tiles run out after a few menus.
+- Call `ResetTextFont()` before every COLOSSEUM menu, or text tiles run out after a few menus.
 - A chapter starts faded to black; menus in the beginning event need `FADU` first. The scripted
   screenshots read VRAM and ignore fades - check brightness via gLCDControlBuffer (the runner does).
-- Close mGBA before building the player ROM (`Coliseum.gba` is locked while it is open); the test
-  ROM (`Coliseum_test.gba`) is a debug build with a boot menu.
+- Close mGBA before building the player ROM (`Colosseum.gba` is locked while it is open); the test
+  ROM (`Colosseum_test.gba`) is a debug build with a boot menu.
 - Bash heredocs choke on apostrophes in this environment: write multi-line patch scripts with the
   Write tool and run them with `py -3 <file>`.
 

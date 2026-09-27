@@ -19,7 +19,7 @@
  * unit that receives them; a recruit joins at once (or "Replace whom?" when the roster is full);
  * healing applies at once; a relic shows its info screen (effects, rarity) with Buy / Back and
  * goes into the relic bag. Gold is only paid once the purchase went through. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "proc.h"

@@ -147,7 +147,7 @@ gGameSaveChunks:
 	
 	// $11F0
 
-	// COLISEUM run state (src/core/run_state.c, 64 bytes)
+	// COLOSSEUM run state (src/core/run_state.c, 64 bytes)
 	DeclSaveChunk($11F0, $0100, Col_SaveRunChunk, Col_LoadRunChunk)
 
 	// $1230
@@ -209,7 +209,7 @@ gSuspendSaveChunks:
 	
 	// ends at $290E
 
-	// COLISEUM run state (src/core/run_state.c, 64 bytes)
+	// COLOSSEUM run state (src/core/run_state.c, 64 bytes)
 	DeclSaveChunk($290E, $0100, Col_SaveRunChunk, Col_LoadRunChunk)
 
 	// ends at $294E

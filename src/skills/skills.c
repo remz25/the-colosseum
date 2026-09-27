@@ -6,7 +6,7 @@
  *   Catalog (Skills.event): every skill a player can be offered, with rarity and prerequisites;
  *     enemy-only skills are marked and never offered to players.
  *   A new run clears every pool character's slots (Col_StartRun). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "functions.h"
 #include "rng.h"

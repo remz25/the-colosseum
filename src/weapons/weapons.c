@@ -7,13 +7,13 @@
  *     pairs such as Killing Edge + Keen Edge (an Elite variant, spec 43) -> Lethal Edge.
  *   Transfer (spec 40): an item moves to another roster member who uses its weapon type (other
  *     items go to anyone) and has room (5 items). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 
 struct ColFusion { u8 a, b, result; };
 
-/* item IDs: vanilla FE8 + COLISEUM's (0xC0-0xC9, ItemTable.csv) */
+/* item IDs: vanilla FE8 + COLOSSEUM's (0xC0-0xC9, ItemTable.csv) */
 static const struct ColFusion kFusions[] = {
     { 0x01, 0x01, 0x03 }, { 0x03, 0x03, 0x04 },                        /* Iron/Steel/Silver Sword */
     { 0x05, 0x05, 0x06 }, { 0x06, 0x06, 0x07 },                        /* Iron/Steel/Silver Blade */

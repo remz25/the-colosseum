@@ -1,15 +1,15 @@
-# COLISEUM
+# COLOSSEUM
 ## Claude Code Master Development Prompt
 ### Version 1.0
 
-> Saved verbatim from the developer's master specification (2026-09-25). This is the design
+> Saved verbatim from the developer's master specification (2026-09-25) (the name "Coliseum" was later changed to "Colosseum" throughout, at the developer's request). This is the design
 > source of truth. Clarifications and decisions made since are recorded in `GAME_DESIGN.md`.
 
 ---
 
 # 1. ROLE
 
-You are Claude Code acting as the lead technical developer for an original Fire Emblem-inspired roguelike Coliseum game built on the **Fire Emblem 8 / Sacred Stones GBA buildfile ecosystem**.
+You are Claude Code acting as the lead technical developer for an original Fire Emblem-inspired roguelike Colosseum game built on the **Fire Emblem 8 / Sacred Stones GBA buildfile ecosystem**.
 
 You are responsible for:
 
@@ -48,7 +48,7 @@ For minor implementation decisions, choose the simplest robust solution, documen
 
 # 2. CORE GAME VISION
 
-The game is a Fire Emblem-style tactical roguelike set inside a mysterious supernatural Coliseum.
+The game is a Fire Emblem-style tactical roguelike set inside a mysterious supernatural Colosseum.
 
 The primary gameplay inspiration is:
 
@@ -59,7 +59,7 @@ The primary gameplay inspiration is:
 
 Fire Emblem is the dominant influence.
 
-The player controls a commander attempting to survive multiple Coliseum floors.
+The player controls a commander attempting to survive multiple Colosseum floors.
 
 Each run creates a unique team and history.
 
@@ -117,7 +117,7 @@ Never move to a dependent system while the underlying system is fundamentally br
 
 # 5. CORE RUN STRUCTURE
 
-A run consists of multiple Coliseum Floors.
+A run consists of multiple Colosseum Floors.
 
 Each floor contains approximately:
 
@@ -127,7 +127,7 @@ Each floor contains approximately:
 
 A typical floor is:
 
-Battle 1 → Battle 2 → Battle 3 → Elite → Battle 4 → Battle 5 → Battle 6 → Elite → Battle 7 → Battle 8 → Battle 9 → Boss / Fight 10 → Next Coliseum Floor
+Battle 1 → Battle 2 → Battle 3 → Elite → Battle 4 → Battle 5 → Battle 6 → Elite → Battle 7 → Battle 8 → Battle 9 → Boss / Fight 10 → Next Colosseum Floor
 
 The boss replaces the Elite that would otherwise occur around Fight 10.
 
@@ -247,7 +247,7 @@ Use:
 - Recruitment dialogue
 - Character dialogue
 - Boss dialogue
-- Coliseum atmosphere
+- Colosseum atmosphere
 - Short narrative moments
 
 Do NOT implement a full support system.
@@ -686,7 +686,7 @@ They should be relatively straightforward compared with Elite encounters.
 
 Enemies still use appropriate tactical AI.
 
-Normal enemies should scale according to Coliseum floor and run progression.
+Normal enemies should scale according to Colosseum floor and run progression.
 
 ---
 
@@ -789,7 +789,7 @@ Recover:
 - Fully restores all living units
 - Does not resurrect dead units
 
-Each Coliseum floor provides: **3 Recover uses**
+Each Colosseum floor provides: **3 Recover uses**
 
 After defeating the floor boss: Recover charges reset to **3**
 
@@ -799,7 +799,7 @@ The exact Gold cost should be tuned during balancing.
 
 # 55. BOSS BATTLES
 
-A Boss occurs on Fight 10 of each Coliseum floor.
+A Boss occurs on Fight 10 of each Colosseum floor.
 
 Bosses are unique characters.
 
@@ -856,7 +856,7 @@ Boss weapons can become available in future runs.
 
 The game should have an ultimate final boss beyond the initial five-boss pool.
 
-Claude may design an original final boss concept that fits the supernatural Coliseum premise.
+Claude may design an original final boss concept that fits the supernatural Colosseum premise.
 
 The final boss should be mechanically and narratively significant.
 
@@ -864,9 +864,9 @@ Do not simply make it a stronger normal boss.
 
 ---
 
-# 61. COLISEUM THEMES
+# 61. COLOSSEUM THEMES
 
-Each Coliseum floor can have a distinct theme. Examples: Grand Arena, Frozen Arena, Ruined Cathedral, Dragon Domain, Abyss.
+Each Colosseum floor can have a distinct theme. Examples: Grand Arena, Frozen Arena, Ruined Cathedral, Dragon Domain, Abyss.
 
 Themes can influence: Terrain, Enemy factions, Music, Weapons, Bosses, Dialogue, Visual presentation.
 
@@ -1157,9 +1157,9 @@ Implement in this order.
 - **Phase 9 — Relics.** 2 relic slots, Rarity, Positive effects, Negative effects, Transfer, Duplicate relics, Build-changing effects, Reward modifiers.
 - **Phase 10 — Roguelike Progression.** 3-win cycle, Random rewards, Recruit, Skill, Promotion, Heal, Gold, Recover, Recover charges.
 - **Phase 11 — Elite Encounters.** Champion fights, Elite squads, Unique skills, Synergy, Elite AI, Elite rewards, Elite recruitment.
-- **Phase 12 — Bosses.** 5 initial bosses, Boss pools, Boss dialogue, Boss weapons, Phase 2, Boss AI, Boss rewards, Multiple Coliseum floors.
+- **Phase 12 — Bosses.** 5 initial bosses, Boss pools, Boss dialogue, Boss weapons, Phase 2, Boss AI, Boss rewards, Multiple Colosseum floors.
 - **Phase 13 — Legacy.** Statistics, Legacy eligibility, Legacy tiers, Legacy generation, Legacy weapons, Death Legacy, Hall of Champions, Persistent Legacy pool.
-- **Phase 14 — Story.** Coliseum premise, Commander, Short introductions, Character dialogue, Boss dialogue, Floor themes, Final narrative.
+- **Phase 14 — Story.** Colosseum premise, Commander, Short introductions, Character dialogue, Boss dialogue, Floor themes, Final narrative.
 - **Phase 15 — Presentation.** GBA+ presentation, UI, Menus, Battle UI, Roster UI, Shop UI, Relic UI, Legacy UI, Hall of Champions, Music, Effects.
 - **Phase 16 — Balance.** Economy, EXP, Level progression, Skills, Relics, Weapon fusion, Elite difficulty, Boss difficulty, AI, 20-turn limit, Recover economy, Legacy strength. Do not balance by guesswork alone. Use repeatable test runs and documented results.
 - **Phase 17 — Full QA.** Perform full run simulations. Test: Successful runs, Failed runs, 1-unit survival, 2-unit survival, Full roster death, Replacements, Promotion, Skill replacement, Elite recruitment, Boss Phase 2, Legacy generation, Save/load, Multiple floors, Final boss.
@@ -1168,7 +1168,7 @@ Implement in this order.
 
 # 87. FUTURE FEATURES — DO NOT IMPLEMENT YET
 
-Keep the architecture extensible for: Ascension system, More Coliseums, More characters, More bosses, More classes, More relics, More Legacy systems, More difficulty, Daily challenges, Other future modes.
+Keep the architecture extensible for: Ascension system, More Colosseums, More characters, More bosses, More classes, More relics, More Legacy systems, More difficulty, Daily challenges, Other future modes.
 
 Do NOT implement Ascension in V1.
 
@@ -1186,7 +1186,7 @@ Do NOT implement Support conversations.
 
 The following are core design decisions and must not be changed without developer approval:
 
-3 deployed units; 5 maximum roster; Permanent death; 2v3 continuation; 20-turn battle limit; Level 5 starting point; Level 30 maximum; No stat caps; Personal growth rates; Player stat choices; 4 skills total; Personal skill cannot be removed; 2 relics per character; No weapon durability; 3-win reward; Elite every 3 wins; Boss around Fight 10; Multiple Coliseum floors; 3 Recover uses per floor; Recover resets after boss; No retreat; No random events; No Support system; Legacy persistence; FE8/buildfile foundation.
+3 deployed units; 5 maximum roster; Permanent death; 2v3 continuation; 20-turn battle limit; Level 5 starting point; Level 30 maximum; No stat caps; Personal growth rates; Player stat choices; 4 skills total; Personal skill cannot be removed; 2 relics per character; No weapon durability; 3-win reward; Elite every 3 wins; Boss around Fight 10; Multiple Colosseum floors; 3 Recover uses per floor; Recover resets after boss; No retreat; No random events; No Support system; Legacy persistence; FE8/buildfile foundation.
 
 ---
 
@@ -1254,7 +1254,7 @@ And when a character dies: > "I can't get them back."
 
 And when a Legacy appears in a future run: > "That's the weapon my old character left behind."
 
-That is the emotional and mechanical identity of COLISEUM.
+That is the emotional and mechanical identity of COLOSSEUM.
 
 ---
 

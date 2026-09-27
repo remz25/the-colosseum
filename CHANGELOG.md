@@ -1,11 +1,11 @@
-# COLISEUM: Changelog
+# COLOSSEUM: Changelog
 
 ## 2026-09-27 (in-game name: The Colosseum)
 - Player-visible text renamed (developer): chapter title card "The Colosseum", arena "Grand
   Colosseum", Elite weapon descriptions "A Colosseum champion's ...". Code, files and docs keep
-  the COLISEUM project name for now.
+  the COLOSSEUM project name for now.
 
-## 2026-09-27 (R-button help in every COLISEUM menu)
+## 2026-09-27 (R-button help in every COLOSSEUM menu)
 - Pressing R on a menu row shows FE8's help box for it without choosing it; moving the cursor
   updates it; R or B closes it (`src/core/help.c`). Skills: their description. Relics: name,
   rarity and every effect. Weapons and items: FE8's stat / description box. Characters: their
@@ -66,7 +66,7 @@
 - Player units gain 1.5x battle EXP, rounded up, still at most 100 per battle (`Col_ExpBoost`,
   `src/units/stats.c`, `COL_EXP_PERCENT`). Staff EXP is unchanged.
 - **Upstream Skill System file changed**: `EXPCalcLoop.event` (+`Col_ExpBoost` after the EXP
-  skills, one line marked COLISEUM).
+  skills, one line marked COLOSSEUM).
 - Tests: Test_FirstEliteGentler, Test_StartingRelics, Test_ExpBoost (a real kill through the EXP
   loop); the Champion and Squad tests now spawn a floor's second Elite (full strength).
 
@@ -132,7 +132,7 @@
 - Relics return to the bag when their wearer dies or is replaced.
 - Run state v5 (relics + bag); v4 saves are upgraded on load.
 - Tests: 14 relic map tests; Test_ShopStock expects the Relic category.
-- **Upstream Skill System files changed** (one line each, marked "COLISEUM relics"):
+- **Upstream Skill System files changed** (one line each, marked "COLOSSEUM relics"):
   `EngineHacks/Necessary/StatGetters/{Power,Magic,Skill,Speed,Luck,Defense,Resistance,Movement}.event`
   (relic getter before prMinZero / the Freeze and Guard-AI nullifiers),
   `EngineHacks/Necessary/CalcLoops/PreBattleCalcLoop/PreBattleCalcLoop.event` (Col_RelicPreBattle),
@@ -157,10 +157,10 @@
 
 ## 2026-09-25 (Phase 7)
 - Weapons (`src/weapons/`): fusion recipes and Fuse; Transfer to compatible units; weapon EXP x3.
-- 10 new items (0xC0-0xC9): 4 Elite variants, Lethal Edge, 5 boss weapons (names in coliseum.txt).
+- 10 new items (0xC0-0xC9): 4 Elite variants, Lethal Edge, 5 boss weapons (names in colosseum.txt).
 - "Prepare" menu before each battle: Fight! / Deploy / Transfer / Fuse; roster units now exist
   (hidden) before it opens.
-- Fixed `%` (modulo) for all COLISEUM C: correct __aeabi_idivmod/uidivmod (src/core/divmod.c),
+- Fixed `%` (modulo) for all COLOSSEUM C: correct __aeabi_idivmod/uidivmod (src/core/divmod.c),
   linked against a reference copy without FE8's mismatched ones; lyn runs with -nohook.
 - Tests: 5 weapon map tests + modulo test; runner waits for placed units.
 
@@ -201,12 +201,12 @@
 - Combat tests (`src/tests/test_combat.c`) run on the battle map; `tests/run_tests.py` now boots
   New Game into the arena first.
 - Found and worked around: the Skill System's battle calc loop zeroes r11 -> `-ffixed-r11` for all
-  COLISEUM C. The Skill System's battle hit buffer lives at `0x0203AAC0` (8 bytes per hit).
+  COLOSSEUM C. The Skill System's battle hit buffer lives at `0x0203AAC0` (8 bytes per hit).
 
 ## 2026-09-25 (later)
 - Str/Mag split on. `build.py --debug` (debug menu, separate ROM) and `--test` (on-target tests).
-- C pipeline: `src/**/*.c` -> arm-none-eabi-gcc -> lyn -> `build/Coliseum.lyn.event`, installed by
-  `src/Coliseum.event` (one include line added to `ROMBuildfile.event`).
+- C pipeline: `src/**/*.c` -> arm-none-eabi-gcc -> lyn -> `build/Colosseum.lyn.event`, installed by
+  `src/Colosseum.event` (one include line added to `ROMBuildfile.event`).
 - Run state (`src/core/run_state.c`): encounter schedule (3 normal wins -> reward + Elite; 9 ->
   Boss), gold, Recover charges; saved in the game save and suspend (two chunks added to upstream
   `ExModularSave.event`: game `$11F0`, suspend `$290E`, 0x40 bytes each).
@@ -216,5 +216,5 @@
 - Project created from the FE8 Skill System (upstream `65b959d`), own git history on `main`.
 - `scripts/build.py`: checked build (clean-ROM CRC, each tool from its folder, assembler must say
   "No errors", output header/size validated). `MAKE_HACK_full.cmd` fixed to call `ColorzCore.exe`.
-- Master spec saved as `docs/COLISEUM_SPEC.md`; Phase 1 analysis in `ARCHITECTURE.md`; decisions
+- Master spec saved as `docs/COLOSSEUM_SPEC.md`; Phase 1 analysis in `ARCHITECTURE.md`; decisions
   in `GAME_DESIGN.md`.

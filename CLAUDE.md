@@ -1,7 +1,7 @@
-# CLAUDE.md: COLISEUM (FE8 roguelike on the FE8 Skill System)
+# CLAUDE.md: COLOSSEUM (FE8 roguelike on the FE8 Skill System)
 
 **Read first each session:** `docs/HANDOFF.md` (where we stopped, what is next), `TODO.md` (status), `GAME_DESIGN.md` (decisions),
-`docs/COLISEUM_SPEC.md` (the master spec, source of truth), `ARCHITECTURE.md`.
+`docs/COLOSSEUM_SPEC.md` (the master spec, source of truth), `ARCHITECTURE.md`.
 
 ## Rules
 - Follow the spec. Never change a core rule (spec §88) or anything in §89's "must ask" list without
@@ -15,7 +15,7 @@
   in `CHANGELOG.md`.
 
 ## Commands
-- Build: `py -3 scripts/build.py` (full) or `--quick`. Output `Coliseum.gba`. Close mGBA first.
+- Build: `py -3 scripts/build.py` (full) or `--quick`. Output `Colosseum.gba`. Close mGBA first.
 - Do not use `MAKE_HACK_full.cmd` for verification (it can fail silently); `scripts/build.py`
   checks every step.
 

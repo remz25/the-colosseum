@@ -1,4 +1,4 @@
-# COLISEUM: Future relic concepts (not implemented)
+# COLOSSEUM: Future relic concepts (not implemented)
 
 The prototype pool (15 relics, [`RELICS.md`](RELICS.md)) is deliberately small. This file keeps
 the relic ideas for later so they aren't lost. **Nothing here is in the game yet.**

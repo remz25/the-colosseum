@@ -1,4 +1,4 @@
-/* R-button help in COLISEUM's menus (developer request, 2026-09-27): pressing R on a menu row
+/* R-button help in COLOSSEUM's menus (developer request, 2026-09-27): pressing R on a menu row
  * shows FE8's help box with what the row is, without choosing it; moving the cursor updates it;
  * R or B closes it (FE8's own menu help mode: MenuDef.onRPress = MenuAutoHelpBoxSelect, and
  * onHelpBox = the menu's function, which calls one of these).
@@ -11,9 +11,9 @@
  *
  * Relic and other built text: the anti-Huffman patch lets a text ID point at a plain string
  * (0x80000000 | address), so text ID ColText_Help points at a RAM buffer
- * (COL_RAM_BASE + 0x400, Coliseum.event) that is filled before the help box opens. FE8 caches the
+ * (COL_RAM_BASE + 0x400, Colosseum.event) that is filled before the help box opens. FE8 caches the
  * last decoded text ID (0x0202A6AC), so the cache is cleared first. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "uimenu.h"
@@ -24,7 +24,7 @@
 #define HELP_NEWLINE  1                         /* FE8 text: new line */
 #define gLastMsgId    (*(u32 *)0x0202A6AC)      /* GetStringFromIndex's cache (anti-Huffman patch) */
 
-extern const u16 ColHelpTextId;                 /* Coliseum.event: the text ID of the RAM buffer */
+extern const u16 ColHelpTextId;                 /* Colosseum.event: the text ID of the RAM buffer */
 extern const u16 SkillDescTable[];
 extern const u8 PersonalSkillTable[];
 void StartHelpBox(int x, int y, int msgId);

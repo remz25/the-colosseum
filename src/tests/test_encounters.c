@@ -1,6 +1,6 @@
 /* On-target tests: Elite battles (spec 47-50) and enemy drops (encounters.c). Map tests
  * (ColTest_MapRun restores gColRun and the two units; units created here are removed). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "bmmap.h"

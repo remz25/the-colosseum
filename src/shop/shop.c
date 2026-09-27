@@ -11,7 +11,7 @@
  *     or relic. Relics are rarity-weighted (Col_RelicRoll).
  *   Prices (spec 39): each purchase makes every later purchase 10% dearer, compounding over the
  *     run: price = base x 1.1^purchases, at most 5x base and 9999 gold. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "variables.h"

@@ -5,7 +5,7 @@
  * Map tests (ColTest_MapRun restores gColRun and the two units). Relics are worn by pool
  * characters, so the actor is turned into one (Gilliam, or Lute for magic). Combat checks
  * compare the same battle with and without the relic, so the character's own skills cancel out. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "bmmap.h"

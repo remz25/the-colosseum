@@ -10,7 +10,7 @@ pMovModifiers: // Movement
 	#ifdef STAIRS_ASM
 	POIN StairsMoveDebuff
 	#endif
-	POIN Col_RelicMovGetter // COLISEUM relics (src/relics/relics.c)
+	POIN Col_RelicMovGetter // COLOSSEUM relics (src/relics/relics.c)
 	POIN prNullifyIfFreeze prNullifyIfGuardAI
 	#ifdef DEBUFFS_MIN_ZERO
 	POIN prMinZero

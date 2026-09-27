@@ -7,7 +7,7 @@
  * Tables/NightmareModules/CharactersClasses/CharacterTable.csv, MagCharEditor.csv and
  * Skills/PersonalSkillEditor.csv (values and how they were derived: BALANCE_NOTES.md).
  * Names and identities may still change with the story (Phase 14). */
-#include "coliseum.h"
+#include "colosseum.h"
 
 /* charId: FE8 character; class 0 = the character's default class; items: starting inventory. */
 const struct ColPoolEntry gColPool[COL_POOL_SIZE] = {
@@ -28,7 +28,7 @@ const struct ColPoolEntry gColPool[COL_POOL_SIZE] = {
     { 0x19, 0, { 0x4B, 0x6C } },  /* L'Arachel  Troubadour  Heal */
     /* Original characters (2026-09-26): FE-Repo portraits in the slots of FE8 characters who are
      * not in the pool; name, description, bases, growths, magic, personal skill and death quote
-     * replaced (CharacterTable.csv, MagCharEditor.csv, PersonalSkillEditor.csv, coliseum.txt). */
+     * replaced (CharacterTable.csv, MagCharEditor.csv, PersonalSkillEditor.csv, colosseum.txt). */
     { 0x07, 0x42, { 0x1F, 0x6C } },  /* Morrow   Pirate      Iron Axe   (Ross's slot)    */
     { 0x18, 0x25, { 0x38, 0x6C } },  /* Silas    Mage        Fire       (Ewan's slot)    */
     { 0x11, 0x19, { 0x2D, 0x6C } },  /* Hale     Archer      Iron Bow   (Kyle's slot)    */

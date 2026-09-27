@@ -12,7 +12,7 @@
  * to restart the chapter (Col_ArenaDebugRestart, BattleChapter.event), so the map, weather, fog,
  * spawns and enemies all load exactly as for a rolled arena. Hazard and sacred tiles are fixed
  * per arena (they are part of its design); set the arena to get them. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "proc.h"
 #include "fontgrp.h"
 #include "uimenu.h"

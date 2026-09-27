@@ -1,6 +1,6 @@
 /* On-target combat tests (Phase 3, spec 90): FE8's battle formulas as the Skill System builds
  * them, run through the game's own BattleGenerateSimulation / BattleGenerateReal on the battle
- * map. tests/run_tests.py runs these after booting into the COLISEUM battle chapter.
+ * map. tests/run_tests.py runs these after booting into the COLOSSEUM battle chapter.
  *
  * Two map units (the first living blue and red) are rebuilt as skill-less test units (generic
  * character 0x80, classes without class skills), placed side by side away from everyone else
@@ -13,7 +13,7 @@
  *   avoid   = AS*2 + terrain avoid + Lck      crit  = Skl/2 + weapon crit    dodge = Lck
  *   battle hit = clamp(hit - avoid), battle crit = clamp(crit - dodge); doubles at AS +4;
  *   damage = attack - defense (min 0), x3 on a crit; a kill ends the battle. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "bmmap.h"

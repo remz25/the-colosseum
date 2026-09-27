@@ -18,7 +18,7 @@
  * heals every living roster member, not a fight. Cost 300 + 100 per floor above 1 (Phase 16).
  *
  * Autosave (spec 76): FE8's save menu between battles is replaced by a save to the run's slot. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "bmitemuse.h"

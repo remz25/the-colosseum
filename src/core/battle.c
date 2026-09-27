@@ -5,7 +5,7 @@
  *   Col_OnBattleWon     (ending scene, ASMC): record the victory, deaths and HP in the run state.
  * HP persists between battles (spec 20: no healing outside battle except Recover), so FE8's
  * between-chapter healing is undone from the run state. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmmap.h"
 #include "rng.h"

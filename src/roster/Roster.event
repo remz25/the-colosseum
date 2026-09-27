@@ -1,4 +1,4 @@
-// COLISEUM roster (Phase 5). See src/roster/roster.c.
+// COLOSSEUM roster (Phase 5). See src/roster/roster.c.
 
 PUSH
 ORG 0x030CF4                    // InitPlayConfig: New Game starts a fresh run

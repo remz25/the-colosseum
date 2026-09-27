@@ -1,7 +1,7 @@
 /* On-target unit tests for Phase 4 (spec 10, 21-24): the pool, level 5 start, level cap 30,
  * no stat caps, level-up stat choices. Map tests (they create units): run by
  * tests/run_tests.py on the battle map through ColTest_MapRun (test_combat.c). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmbattle.h"
 #include "bmitem.h"

@@ -1,4 +1,4 @@
-# COLISEUM: Test status
+# COLOSSEUM: Test status
 
 Honest status of every test area in the spec (§82-84). "Verified in game" means seen working in
 mGBA, not only compiled.

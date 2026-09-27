@@ -2,33 +2,33 @@
 ALIGN 4 
 
 EphraimLordSkillList:
-BYTE 1 SupplyID // COLISEUM: class skill, learned into a slot
+BYTE 1 SupplyID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 EirikaLordSkillList:
-BYTE 1 SupplyID // COLISEUM: class skill, learned into a slot
+BYTE 1 SupplyID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 EphraimGreatLordSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 1 SupplyID
 BYTE 00 00
 ALIGN 4
 
 EirikaGreatLordSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 1 SupplyID
 BYTE 00 00
 ALIGN 4
 
 CavalierSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 
 PaladinSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
@@ -37,12 +37,12 @@ BYTE 00 00
 ALIGN 4
 
 GeneralSkillList:
-BYTE 1 GreatShieldID // COLISEUM: class skill, learned into a slot
+BYTE 1 GreatShieldID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 ThiefSkillList:
-BYTE 1 CunningID // COLISEUM: class skill, learned into a slot
+BYTE 1 CunningID // COLOSSEUM: class skill, learned into a slot
 BYTE 1 StealID
 BYTE 00 00
 ALIGN 4
@@ -60,12 +60,12 @@ BYTE 00 00
 ALIGN 4
 
 SwordmasterSkillList:
-BYTE 1 CritUpID // COLISEUM: class skill, learned into a slot
+BYTE 1 CritUpID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 AssassinSkillList:
-BYTE 1 CunningID // COLISEUM: class skill, learned into a slot
+BYTE 1 CunningID // COLOSSEUM: class skill, learned into a slot
 BYTE 255 StealID
 BYTE 1 LethalityID
 BYTE 00 00
@@ -76,7 +76,7 @@ BYTE 00 00
 ALIGN 4
 
 SniperSkillList:
-BYTE 1 SureShotID // COLISEUM: class skill, learned into a slot
+BYTE 1 SureShotID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
@@ -85,17 +85,17 @@ BYTE 00 00
 ALIGN 4
 
 WyvernRiderSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 WyvernLordSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 WyvernKnightSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 1 LunaID
 BYTE 00 00
 ALIGN 4
@@ -109,12 +109,12 @@ BYTE 00 00
 ALIGN 4
 
 MageKnightSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 BishopSkillList:
-BYTE 1 SlayerID // COLISEUM: class skill, learned into a slot
+BYTE 1 SlayerID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
@@ -127,19 +127,19 @@ BYTE 00 00
 ALIGN 4
 
 SummonerSkillList:
-BYTE 1 SummonID // COLISEUM: class skill, learned into a slot
+BYTE 1 SummonID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 RogueSkillList:
-BYTE 1 CunningID // COLISEUM: class skill, learned into a slot
+BYTE 1 CunningID // COLOSSEUM: class skill, learned into a slot
 BYTE 255 StealID
 BYTE 1 LocktouchID
 BYTE 00 00
 ALIGN 4
 
 GreatKnightSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
@@ -164,7 +164,7 @@ BYTE 00 00
 ALIGN 4
 
 BerserkerSkillList:
-BYTE 1 CritUpID // COLISEUM: class skill, learned into a slot
+BYTE 1 CritUpID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
@@ -177,12 +177,12 @@ BYTE 00 00
 ALIGN 4
 
 PegKnightSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 FalcoknightSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
@@ -191,17 +191,17 @@ BYTE 00 00
 ALIGN 4
 
 TroubadourSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 ValkyrieSkillList:
-BYTE 1 CantoID // COLISEUM: class skill, learned into a slot
+BYTE 1 CantoID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
 DancerSkillList:
-BYTE 1 DanceID // COLISEUM: class skill, learned into a slot
+BYTE 1 DanceID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 
@@ -210,7 +210,7 @@ BYTE 00 00
 ALIGN 4
 
 NecromancerSkillList:
-BYTE 1 SummonID // COLISEUM: class skill, learned into a slot
+BYTE 1 SummonID // COLOSSEUM: class skill, learned into a slot
 BYTE 00 00
 ALIGN 4
 

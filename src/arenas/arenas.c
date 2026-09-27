@@ -27,7 +27,7 @@
  * tile when it can and still attacks from a hazard when that is the only way. When it only
  * moves (towards a target, a heal point, an escape), it never ends that move on a hazard that
  * would hurt it (FE8's danger check); it may still walk across one. Fliers ignore burning ground. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmmap.h"
 #include "bmbattle.h"
@@ -97,7 +97,7 @@ static const u8 kFloorPools[POOL_FLOORS][5] = {
     { ABYSS, VOLCANIC, ROYAL, 0xFF },
 };
 
-/* FE8 weather and vision per COLISEUM weather; Hit penalty (Phase 16 levers) */
+/* FE8 weather and vision per COLOSSEUM weather; Hit penalty (Phase 16 levers) */
 static const u8 kFe8Weather[COL_WX_COUNT] = {
     WEATHER_FINE, WEATHER_RAIN, WEATHER_SNOW, WEATHER_FINE, WEATHER_SANDSTORM, WEATHER_FLAMES,
 };

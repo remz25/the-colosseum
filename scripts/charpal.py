@@ -12,7 +12,7 @@ For each character in the manifest, every listed class gets a new palette: the b
 colour families recoloured - each source colour takes the target's hue and saturation and keeps
 its own lightness, shifted so the family's average lightness matches the target. The character's
 class and palette rows are rewritten; the palettes are stored in palette-list entries of FE8
-characters who never appear in COLISEUM (their pointers are repointed to the new data).
+characters who never appear in COLOSSEUM (their pointers are repointed to the new data).
 """
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ ANIM_TABLE = 0xC00008           # battle animations (0x20 each, IDs from 1); pal
 ROW = 7
 PAL_COLOURS = 80                # 5 palettes of 16 colours, as FE8's character palettes
 
-# FE8 characters that never appear in COLISEUM (not in the pool, not bosses of our battles):
+# FE8 characters that never appear in COLOSSEUM (not in the pool, not bosses of our battles):
 # their palette-list entries may be reused. Slot characters are added from the manifest.
 UNUSED_CHARACTERS = [0x01, 0x02, 0x0B, 0x0F, 0x17, 0x1A, 0x1C, 0x1D]
 

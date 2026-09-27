@@ -12,7 +12,7 @@
  *      more than 3 are alive: toggle units, Fight with exactly 3.
  *
  * Rows: "Name     Class        Lv 12" (a '*' marks deployed units in the deployment menu). */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "proc.h"
 #include "fontgrp.h"

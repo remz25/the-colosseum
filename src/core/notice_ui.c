@@ -12,7 +12,7 @@
  * the battle. Gold and relics are given at once; a skill drop is a skill the killer can learn,
  * offered through the "learn a skill" menu (they may decline). A relic that doesn't fit in a
  * full bag, or a skill nobody can learn, becomes gold instead. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "proc.h"
 #include "fontgrp.h"

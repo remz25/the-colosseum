@@ -1,4 +1,4 @@
-# COLISEUM: Arenas, weather, hazard and sacred tiles
+# COLOSSEUM: Arenas, weather, hazard and sacred tiles
 
 The developer's prompt is saved verbatim in [`ARENA_SPEC.md`](ARENA_SPEC.md). This file describes
 what is built (milestone 1, 2026-09-27), how it works, and what is left.
@@ -32,7 +32,7 @@ tileset, palette, tile config and tile animations (`src/arenas/arena_maps.txt`,
 
 ## Weather
 
-| Weather | FE8 effect | COLISEUM rule |
+| Weather | FE8 effect | COLOSSEUM rule |
 |---|---|---|
 | Clear | - | - |
 | Rain | rain animation; FE8's rain movement costs | -5 Hit (both sides) |

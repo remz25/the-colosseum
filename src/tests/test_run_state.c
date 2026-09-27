@@ -2,7 +2,7 @@
  * Each test returns 0 on success or the line number of the first failed check.
  * tests/run_tests.py calls ColTest_Count() and ColTest_Run(i) through the emulator's
  * debugger and reports the results. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmsave.h"
 
 #define CHECK(cond) do { if (!(cond)) return __LINE__; } while (0)
@@ -87,14 +87,14 @@ static int Test_Gold(void)
 static int Test_InvalidLoadClears(void)
 {
     Col_RunNew(99);
-    gColRun.magic = 0xFFFFFFFF;          /* as a save from before COLISEUM data existed */
+    gColRun.magic = 0xFFFFFFFF;          /* as a save from before COLOSSEUM data existed */
     CHECK(!Col_RunIsValid());
     Col_RunClear();
     CHECK(Col_RunIsValid() && !gColRun.active);
     return 0;
 }
 
-/* The save chunk functions through real SRAM: save slot 3's COLISEUM chunk (COLISEUM uses one
+/* The save chunk functions through real SRAM: save slot 3's COLOSSEUM chunk (COLOSSEUM uses one
  * run slot, spec 77). */
 static int Test_SramRoundTrip(void)
 {

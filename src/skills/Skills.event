@@ -1,8 +1,8 @@
-// COLISEUM skills (Phase 6). See src/skills/skills.c.
+// COLOSSEUM skills (Phase 6). See src/skills/skills.c.
 
 // ---- 1 personal + 3 slots (spec 27) ----
 // Learned skills live in the BWL entry of each character (4 bytes; the Skill System's SkillAdder
-// fills them). COLISEUM uses 3: the adder's "last slot" check goes from index 3 to 2, so a 4th
+// fills them). COLOSSEUM uses 3: the adder's "last slot" check goes from index 3 to 2, so a 4th
 // skill goes through the replace-a-skill path instead. Class skills are no longer implicit
 // (ClassSkillEditor.csv is all 0): each class skill is learned at level 1 from its class list
 // (skill_lists.event), so it occupies one of the 3 slots and can be replaced.
@@ -17,7 +17,7 @@ POP
 //   weapons: the unit must be able to use one of these weapon types (0 = any):
 //     1 sword, 2 lance, 4 axe, 8 bow, 16 staff, 32 anima, 64 light, 128 dark
 //   flags: 1 promoted only, 2 mounted only, 4 enemies only (Elites/Bosses, never offered to players)
-//   stat (COLISEUM stat + 1: 1 HP 2 Str 3 Mag 4 Skl 5 Spd 6 Lck 7 Def 8 Res; 0 = none) >= statMin
+//   stat (COLOSSEUM stat + 1: 1 HP 2 Str 3 Mag 4 Skl 5 Spd 6 Lck 7 Def 8 Res; 0 = none) >= statMin
 #define ColSkill(id, rarity, weapons, flags, stat, statMin) "BYTE id rarity weapons flags stat statMin"
 #define W_PHYS 15
 #define W_MAGIC 224

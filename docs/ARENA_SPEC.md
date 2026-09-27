@@ -1,12 +1,12 @@
-# THE COLISEUM — ARENA & ENVIRONMENT SYSTEM
+# THE COLOSSEUM — ARENA & ENVIRONMENT SYSTEM
 ## Multiple Arenas, Weather, Terrain & Damage Tiles
 
-_Saved verbatim from the developer's prompt (2026-09-27). Decisions and interpretations since:
+_Saved verbatim from the developer's prompt (2026-09-27) (the name "Coliseum" was later changed to "Colosseum" throughout, at the developer's request). Decisions and interpretations since:
 `GAME_DESIGN.md`; implementation: `docs/ARENAS.md`._
 
-You are continuing development of my Fire Emblem-inspired roguelike Coliseum game built on the FE8 / Sacred Stones GBA buildfile ecosystem.
+You are continuing development of my Fire Emblem-inspired roguelike Colosseum game built on the FE8 / Sacred Stones GBA buildfile ecosystem.
 
-I want to implement a system that allows the Coliseum to use **many different battle arenas**, environmental conditions, weather effects, terrain effects, and damaging tiles.
+I want to implement a system that allows the Colosseum to use **many different battle arenas**, environmental conditions, weather effects, terrain effects, and damaging tiles.
 
 The purpose is to prevent the game from feeling like the player is fighting in the same arena repeatedly.
 
@@ -32,7 +32,7 @@ The system must remain compatible with the game's:
 - Enemy AI
 - Elite battles
 - Boss battles
-- Multiple Coliseum floors
+- Multiple Colosseum floors
 
 ---
 
@@ -71,7 +71,7 @@ The first implementation should contain enough variety to prevent repetition.
 
 Initial arena themes:
 
-### 1. Grand Coliseum
+### 1. Grand Colosseum
 
 Traditional stone arena.
 
@@ -617,7 +617,7 @@ For example:
 
 ### Floor 1
 
-Grand Coliseum
+Grand Colosseum
 Forest Arena
 Royal Arena
 
@@ -642,7 +642,7 @@ Swamp Arena
 ### Floor 5
 
 Royal Arena
-Grand Coliseum
+Grand Colosseum
 Mountain Arena
 
 ### Floor 6
@@ -653,7 +653,7 @@ Ruined Arena
 
 ### Floor 7
 
-Final Coliseum
+Final Colosseum
 Abyss Arena
 Special Boss Arenas
 
@@ -675,7 +675,7 @@ Frozen throne room.
 
 Ancient forest.
 
-### Coliseum King
+### Colosseum King
 
 Royal arena.
 

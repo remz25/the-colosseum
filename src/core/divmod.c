@@ -6,7 +6,7 @@
  * (found by the Phase 7 tests). These definitions take precedence over the reference: the
  * quotient comes from FE8's (correct) division routines, the remainder from it.
  * A 64-bit return value is passed in r0 (low word) and r1 (high word), as the EABI wants. */
-#include "coliseum.h"
+#include "colosseum.h"
 
 typedef unsigned long long u64_t;
 

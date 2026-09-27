@@ -10,7 +10,7 @@
  *   End (spec 12 + developer decision): losing a battle (every deployed unit dead or the turn
  *     limit) ends the run: it is cleared and its save slot and suspend are invalidated, so a lost
  *     run cannot be continued. New Game always starts a fresh run. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmsave.h"
 #include "rng.h"

@@ -5,7 +5,7 @@
  * move between characters and the bag outside battle, and go back to the bag when their wearer
  * leaves the run (death or replacement). Only player units (pool characters) wear relics.
  *
- * Effects are generic modifiers (coliseum.h, table in relics_data.c), applied by five hooks:
+ * Effects are generic modifiers (colosseum.h, table in relics_data.c), applied by five hooks:
  *   stat getters      Col_Relic*Getter        flat stat changes, then percentages (Skill System
  *                                             MSG lists, EngineHacks/Necessary/StatGetters)
  *   pre-battle loop   Col_RelicPreBattle      Hit / Avoid / Crit, adjacent-ally Def auras
@@ -20,7 +20,7 @@
  * Damage: dealt percentages (all + magic) apply first, then the target's taken percentage.
  * Conditions (e.g. below 50% HP) are checked every time a stat is read: on the stat screen,
  * the forecast, and at the start of every combat, so they switch on and off as HP changes. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmitem.h"
 #include "bmmap.h"

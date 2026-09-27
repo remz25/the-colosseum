@@ -1,26 +1,26 @@
-/* COLISEUM core definitions. See ARCHITECTURE.md.
+/* COLOSSEUM core definitions. See ARCHITECTURE.md.
  * Built with FE-CLib (Tools/FE-Clib/include) and linked into the ROM with lyn. */
-#ifndef COLISEUM_H
-#define COLISEUM_H
+#ifndef COLOSSEUM_H
+#define COLOSSEUM_H
 
 #include "global.h"
 
 /* ---- RAM ----------------------------------------------------------------
- * COLISEUM's EWRAM block: 0x0203F600-0x0203FDFF (2 KiB). Above everything vanilla FE8 keeps
+ * COLOSSEUM's EWRAM block: 0x0203F600-0x0203FDFF (2 KiB). Above everything vanilla FE8 keeps
  * in EWRAM (last symbol gLoadUnitBuffer 0x0203EFB8) and the Skill System's blocks (debuffs
  * 0x0203F100-0x0203F540, single bytes at 0x0203F080-84 and 0x0203FFDF+). A test checks the
  * game never writes here (TEST_STATUS.md). */
 #define COL_RAM_BASE        0x0203F600
 #define COL_RAM_SIZE        0x800
 /* Layout: 0x000-0x0FF run state (saved), 0x100-0x1FF reserved (Legacy, Phase 13),
- *         0x200-0x2FF UI scratch (not saved; only valid while a COLISEUM menu is open),
+ *         0x200-0x2FF UI scratch (not saved; only valid while a COLOSSEUM menu is open),
  *         0x300-0x393 the battle chapter's data for the current arena (arenas.c; rebuilt from
  *                     the run state whenever FE8 reads it, so never saved),
  *         0x3A0-0x3A3 arena debug menu, 0x400-0x4FF R-button help text (help.c). */
 #define COL_UI_SCRATCH      (COL_RAM_BASE + 0x200)
 #define COL_ARENA_CHAPTER   (COL_RAM_BASE + 0x300)
 
-/* ---- Rules fixed by the spec (docs/COLISEUM_SPEC.md; changing them needs developer approval) ---- */
+/* ---- Rules fixed by the spec (docs/COLOSSEUM_SPEC.md; changing them needs developer approval) ---- */
 #define COL_MAX_ROSTER          5    /* spec 8  */
 #define COL_MAX_DEPLOY          3    /* spec 8  */
 #define COL_POOL_SIZE           25   /* spec 10 (15) + 10 original characters (GAME_DESIGN.md) */
@@ -84,7 +84,7 @@ struct ColRunState {
     /* 00 */ u32 magic;
     /* 04 */ u16 version;
     /* 06 */ u8  active;            /* 1 while a run is in progress */
-    /* 07 */ u8  floor;             /* Coliseum floor, from 1 */
+    /* 07 */ u8  floor;             /* Colosseum floor, from 1 */
     /* 08 */ u8  normalWins;        /* normal victories on this floor, 0-9 */
     /* 09 */ u8  winsToReward;      /* normal victories since the last 3-win reward, 0-2 */
     /* 0A */ u8  eliteDue;          /* 1: the next encounter is an Elite */
@@ -107,7 +107,7 @@ struct ColRunState {
     /* 54 */ u32 recruitedMask;     /* bit = pool index: recruited this run (spec 9: never twice) */
     /* 58 */ u8  relicBag[COL_RELIC_BAG];  /* unequipped relics of this run (spec 33); 0 empty */
     /* 68 */ u8  elite;             /* the Elite setup of the coming/current Elite battle (index + 1), 0 none */
-    /* 69 */ u8  arena;             /* arena of the current/next battle (arenas.c); 0 = Grand Coliseum */
+    /* 69 */ u8  arena;             /* arena of the current/next battle (arenas.c); 0 = Grand Colosseum */
     /* 6A */ u8  weather;           /* its weather (enum ColWeather); 0 = clear */
     /* 6B */ u8  pad6B;
     /* 6C */ struct ColDrop drops[COL_MAX_DROPS];  /* this battle's enemy drops (encounters.c) */
@@ -346,7 +346,7 @@ struct ColArenaDef {
 };
 extern const struct ColArenaDef gColArenas[];
 int  Col_ArenaCount(void);
-const struct ColArenaDef *Col_CurrentArena(void);    /* the Grand Coliseum when no run is active */
+const struct ColArenaDef *Col_CurrentArena(void);    /* the Grand Colosseum when no run is active */
 int  Col_CurrentWeather(void);
 const char *Col_WeatherName(int weather);
 int  Col_WeatherHitPenalty(int weather);
@@ -367,7 +367,7 @@ void Col_StartArenaDebug(struct Proc *parent);
 void Col_AnnounceArena(struct Proc *parent);
 void Col_ShowNotice(struct Proc *parent, const char *title, const char *line1, const char *line2);                   /* notice_ui.c: arena, weather, tiles */
 
-/* core/help.c: R-button help boxes in COLISEUM menus */
+/* core/help.c: R-button help boxes in COLOSSEUM menus */
 struct MenuItemProc;
 void Col_HelpText(struct MenuItemProc *item, const char *text);
 void Col_HelpSkill(struct MenuItemProc *item, int skill);

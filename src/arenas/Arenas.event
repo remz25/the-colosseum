@@ -1,7 +1,7 @@
-// COLISEUM arenas (src/arenas/arenas.c, docs/ARENAS.md).
+// COLOSSEUM arenas (src/arenas/arenas.c, docs/ARENAS.md).
 
 // The battle chapter's data comes from the current arena: GetROMChapterStruct (0x08034618)
-// jumps to COLISEUM's version (vanilla behaviour for every other chapter).
+// jumps to COLOSSEUM's version (vanilla behaviour for every other chapter).
 PUSH
 ORG 0x034618
 jumpToHack(Col_GetROMChapterStruct)

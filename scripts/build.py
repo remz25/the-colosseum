@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""COLISEUM build: the Skill System buildfile steps (MAKE_HACK_full.cmd), run from the
+"""COLOSSEUM build: the Skill System buildfile steps (MAKE_HACK_full.cmd), run from the
 right folders with every tool named explicitly and every step checked.
 
     py -3 scripts/build.py           full build (tables, text, maps, portraits, assemble)
     py -3 scripts/build.py --quick   assemble only (no tables/text/maps)
     py -3 scripts/build.py --test    test build (links src/tests/: on-target unit tests, run by
-                                     tests/run_tests.py) -> Coliseum_test.gba
+                                     tests/run_tests.py) -> Colosseum_test.gba
     py -3 scripts/build.py --debug   debug build (defines __DEBUG__: Skill System debug menu and
-                                     COLISEUM debug commands) -> Coliseum_debug.gba. The player ROM
-                                     Coliseum.gba never contains debug tools (spec 81).
+                                     COLOSSEUM debug commands) -> Colosseum_debug.gba. The player ROM
+                                     Colosseum.gba never contains debug tools (spec 81).
 
 Why not MAKE_HACK_full.cmd: the repo ships extensionless Linux builds next to the Windows
 .exe files (EventAssembler/ColorzCore, ParseFile, Png2Dmp), and cmd.exe can pick the
@@ -16,7 +16,7 @@ extensionless file, so the batch file's "ColorzCore A FE8 ..." fails silently an
 unmodified ROM. This script also refuses to report success unless the assembler says
 "No errors" and the output ROM is valid.
 
-Output: Coliseum.gba (+ Coliseum.sym). The clean base ROM is FE8_clean.gba (git-ignored).
+Output: Colosseum.gba (+ Colosseum.sym). The clean base ROM is FE8_clean.gba (git-ignored).
 """
 from __future__ import annotations
 
@@ -36,11 +36,11 @@ import arenas     # noqa: E402  (scripts/arenas.py)
 ROOT = Path(__file__).resolve().parent.parent
 CLEAN = ROOT / "FE8_clean.gba"
 CLEAN_CRC = 0xA47246AE                      # FE8U (USA), 16 MiB
-OUT = ROOT / "Coliseum.gba"
-TMP = ROOT / "Coliseum.tmp.gba"
-SYM = ROOT / "Coliseum.sym"
-DEBUG_OUT = ROOT / "Coliseum_debug.gba"
-TEST_OUT = ROOT / "Coliseum_test.gba"
+OUT = ROOT / "Colosseum.gba"
+TMP = ROOT / "Colosseum.tmp.gba"
+SYM = ROOT / "Colosseum.sym"
+DEBUG_OUT = ROOT / "Colosseum_debug.gba"
+TEST_OUT = ROOT / "Colosseum_test.gba"
 EA = ROOT / "EventAssembler"
 TOOLS = ROOT / "Tools"
 SRC = ROOT / "src"
@@ -119,8 +119,8 @@ def build_maps() -> None:
 
 
 def build_c(test: bool) -> int:
-    """src/**/*.c -> objects -> lyn (linked against the FE-CLib reference) -> build/Coliseum.lyn.event.
-    Code must not need RAM variables (.data/.bss): state lives in the COLISEUM RAM block."""
+    """src/**/*.c -> objects -> lyn (linked against the FE-CLib reference) -> build/Colosseum.lyn.event.
+    Code must not need RAM variables (.data/.bss): state lives in the COLOSSEUM RAM block."""
     info("Compiling src/ (arm-none-eabi-gcc + lyn)" + (" [with tests]" if test else ""))
     gcc, objdump = ARM_TC / "arm-none-eabi-gcc.exe", ARM_TC / "arm-none-eabi-objdump.exe"
     objcopy = ARM_TC / "arm-none-eabi-objcopy.exe"
@@ -139,19 +139,19 @@ def build_c(test: bool) -> int:
     for c in sources:
         rel = c.relative_to(SRC)
         obj = obj_dir / (str(rel.with_suffix("")).replace("\\", "_").replace("/", "_") + ".o")
-        run([gcc, *CFLAGS, *(["-DCOLISEUM_TESTS"] if test else []),
+        run([gcc, *CFLAGS, *(["-DCOLOSSEUM_TESTS"] if test else []),
              "-I", SRC / "include", "-I", CLIB / "include", "-c", c, "-o", obj], ROOT, f"compiling {rel}")
         sections = run([objdump, "-h", obj], ROOT, "objdump")
         for line in sections.splitlines():
             f = line.split()
             if len(f) > 2 and f[1].startswith((".data", ".bss")) and int(f[2], 16):
                 raise BuildError(f"{rel}: has a {f[1]} section ({int(f[2], 16)} bytes); "
-                                 "keep state in the COLISEUM RAM block (coliseum.h)")
+                                 "keep state in the COLOSSEUM RAM block (colosseum.h)")
         # -nohook: a C function named like a vanilla one must not silently replace it in the
         # ROM (hooks are always explicit, in the .event files)
         lyn = run([LYN, "-nohook", obj, ref], ROOT, f"lyn {rel}", stdin="")
         parts.append(f"\n// ---- {rel} ----\n{lyn}")
-    (GEN / "Coliseum.lyn.event").write_text("".join(parts), encoding="utf-8")
+    (GEN / "Colosseum.lyn.event").write_text("".join(parts), encoding="utf-8")
     ok(f"Compiled {len(sources)} C file(s)")
     return len(sources)
 
@@ -230,8 +230,8 @@ def finish(data: bytes, out: Path) -> None:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--quick", action="store_true", help="assemble only (skip tables, text, maps)")
-    ap.add_argument("--debug", action="store_true", help="debug build -> Coliseum_debug.gba")
-    ap.add_argument("--test", action="store_true", help="test build with on-target unit tests -> Coliseum_test.gba")
+    ap.add_argument("--debug", action="store_true", help="debug build -> Colosseum_debug.gba")
+    ap.add_argument("--test", action="store_true", help="test build with on-target unit tests -> Colosseum_test.gba")
     args = ap.parse_args()
     try:
         clean = check_clean_rom()
@@ -256,7 +256,7 @@ def main() -> int:
                     if len(l.split()) == 2 and all(c in "0123456789ABCDEFabcdef" for c in l.split()[0])}
             flag = syms.get("ColDebugMenu")
             if flag is None or data[flag - 0x08000000] != 0:
-                raise BuildError("Coliseum.gba has the arena debug menu switched on (ColDebugMenu)")
+                raise BuildError("Colosseum.gba has the arena debug menu switched on (ColDebugMenu)")
     except BuildError as e:
         print(f"[FAIL ] {e}", file=sys.stderr)
         return 1

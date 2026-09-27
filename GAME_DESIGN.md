@@ -1,6 +1,6 @@
-# COLISEUM: Game Design
+# COLOSSEUM: Game Design
 
-The master specification is [`docs/COLISEUM_SPEC.md`](docs/COLISEUM_SPEC.md) (saved verbatim).
+The master specification is [`docs/COLOSSEUM_SPEC.md`](docs/COLOSSEUM_SPEC.md) (saved verbatim).
 It is the source of truth. This file records **clarifications and decisions made since**, and
 any interpretation of the spec that affects gameplay. Core rules (spec §88) never change here
 without the developer's approval.
@@ -9,9 +9,9 @@ without the developer's approval.
 
 | Date | Decision | By | Notes |
 |---|---|---|---|
-| 2026-09-25 | COLISEUM is a **new, separate project** (The Severed Star is untouched, `C:\Dev\TheSeveredStar`). | Developer | |
+| 2026-09-25 | COLOSSEUM is a **new, separate project** (The Severed Star is untouched, `C:\Dev\TheSeveredStar`). | Developer | |
 | 2026-09-25 | Foundation: the **community FE8 Skill System** buildfile (FireEmblemUniverse/SkillSystem_FE8, upstream `65b959d`). | Developer | Reuse its skills, save expansion, stat screen, debug tools (spec §3). |
-| 2026-09-25 | Project folder: `C:\Users\RdotS\Downloads\Coliseum`. | Developer | |
+| 2026-09-25 | Project folder: `C:\Users\RdotS\Downloads\Colosseum`. | Developer | |
 | 2026-09-25 | **Class skills count toward the 4 skill slots.** A unit has 1 personal skill + 3 slots shared by class skills and learned skills (spec §27, Phase 6). | Developer | |
 | 2026-09-25 | **"No stat caps" = a ceiling of 127 per stat** (displayed up to 99). The GBA unit struct stores stats as signed bytes; a higher ceiling needs a large engine rewrite. Saves must store full bytes (vanilla packs stats into 5 bits, max 31). | Developer | |
 | 2026-09-25 | **Str/Mag split on** (Skill System's `USE_STRMAG_SPLIT`): Magic is a separate stat (spec §15). | Developer | |
@@ -63,8 +63,8 @@ without the developer's approval.
 | 2026-09-27 | Recover costs 300 G + 100 per floor above 1; greyed when nobody is hurt (no wasted charge). The Prepare menu is the post-battle menu (Next fight / Shop / Recover + team tools) and opens with the next arena on screen. | Claude (implementation) | Cost is a Phase 16 lever. |
 | 2026-09-27 | Autosave after every win replaces FE8's save menu (spec 76); the run is saved to the slot chosen at New Game. | Claude (implementation) | |
 | 2026-09-27 | Declining the recruit offer, or Back from "who gets it?", returns to the reward choice: the 3-win reward cannot be skipped by accident (spec 51: choose exactly one). | Claude (implementation) | |
-| 2026-09-27 | **R shows help on any COLISEUM menu row** (skills, relics, items, characters, rewards) without selecting it, like FE8's own R help. | Developer (request) | |
-| 2026-09-27 | **The game is called "The Colosseum" in game** (was "The Coliseum"); arena "Grand Colosseum". | Developer | Project/code names unchanged. |
+| 2026-09-27 | **R shows help on any COLOSSEUM menu row** (skills, relics, items, characters, rewards) without selecting it, like FE8's own R help. | Developer (request) | |
+| 2026-09-27 | **The game is called "The Colosseum" in game** (was "The Colosseum"); arena "Grand Colosseum". | Developer | Project/code names unchanged. |
 
 ## Open questions (not decided yet)
 

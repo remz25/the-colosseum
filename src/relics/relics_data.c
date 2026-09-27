@@ -1,12 +1,12 @@
 /* The relic pool (Phase 9 prototype, 15 relics; docs/RELICS.md).
  *
  * A relic is a name, a rarity and up to COL_RELIC_MODS modifiers. Every effect is one of the
- * generic modifier kinds in coliseum.h (flat or percent stats, battle rates, damage percentages,
+ * generic modifier kinds in colosseum.h (flat or percent stats, battle rates, damage percentages,
  * gold, adjacent-ally auras, HP costs), each with an optional condition. Adding a relic that
  * only uses existing kinds is one line here; a new kind of effect is a new enum value plus the
  * one hook that applies it (relics.c). IDs are indices into this table and are saved in the run
  * state, so never reorder or remove entries: append new relics at the end. */
-#include "coliseum.h"
+#include "colosseum.h"
 
 #define M(kind, amount)        { COL_RM_##kind, amount, COL_RC_ALWAYS, 0 }
 #define MC(kind, amount, cond) { COL_RM_##kind, amount, COL_RC_##cond, 0 }

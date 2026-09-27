@@ -12,7 +12,7 @@ POP
 ALIGN 4
 HPRestorationLoop: //for each, r0 = unit and r1 = current heal %; return modified heal % in r0
 POIN Renewal Relief Imbue Forager Camaraderie Amaterasu Bond
-POIN Col_SacredTileHeal // COLISEUM arenas: sacred tiles heal 20% (src/arenas/arenas.c)
+POIN Col_SacredTileHeal // COLOSSEUM arenas: sacred tiles heal 20% (src/arenas/arenas.c)
 #ifdef HEAL_TILES
 POIN HealTiles
 #endif // HEAL_TILES

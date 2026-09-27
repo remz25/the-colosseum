@@ -7,7 +7,7 @@ pDefenseModifiers: // Defense
 	POIN prAddUnitDefense prHalveIfCapturing 
 	POIN prDebuffDef StrongCon PlusAura MinusAura
 	POIN prAddEquipDefense prItemPassiveDefense prRallyDef prLifeAndDeathMinus VigorDanceCheck prSkillFury prFortressDefenseDef prDefiantDef prPushDef
-	POIN Col_RelicDefGetter // COLISEUM relics (src/relics/relics.c)
+	POIN Col_RelicDefGetter // COLOSSEUM relics (src/relics/relics.c)
 	#ifdef DEBUFFS_MIN_ZERO
 	POIN prMinZero
 	#endif

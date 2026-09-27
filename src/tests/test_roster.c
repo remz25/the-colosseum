@@ -2,7 +2,7 @@
  * deployment (incl. 2v3), the end of a run and New Game. Map tests (they create units): run by
  * tests/run_tests.py through ColTest_MapRun (test_combat.c), which restores gColRun.
  * Test rosters use pool characters that are not on the map, so no real unit is touched. */
-#include "coliseum.h"
+#include "colosseum.h"
 #include "bmunit.h"
 #include "bmsave.h"
 #include "variables.h"

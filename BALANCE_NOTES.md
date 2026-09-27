@@ -1,4 +1,4 @@
-# COLISEUM: Balance notes
+# COLOSSEUM: Balance notes
 
 Balance is done with repeatable test runs and recorded results, not guesswork (spec Phase 16).
 Each entry: what was measured, how (seed / test script), the result, and the change made.

@@ -394,7 +394,7 @@
 
 //Pickup: Obtain the last item in the enemy's inventory after attacking and defeating them. (Luck % activation)
 //By Jester
-#define PickupID 187 // COLISEUM: enabled for Morrow (was Thighdeology's ID)
+#define PickupID 187 // COLOSSEUM: enabled for Morrow (was Thighdeology's ID)
 
 //Fury: +2 Atk/Spd/Def/Res. Unit takes 6 damage after combat.
 //By circleseverywhere
@@ -771,11 +771,11 @@
 
 //Thighdeology: If a unit within 3 tiles has Nice Thighs, gain +2 Attack and +20 Hit.
 //By Sme
-#define ThighdeologyID 255 // COLISEUM: ID 187 given to Pickup (Morrow)
+#define ThighdeologyID 255 // COLOSSEUM: ID 187 given to Pickup (Morrow)
 
 //Thotslayer: +15 crit against units with Nice Thighs or Personality.
 //By Sme
-#define ThotslayerID 255 // COLISEUM: ID 188 given to Stunning Smile (Selene)
+#define ThotslayerID 255 // COLOSSEUM: ID 188 given to Stunning Smile (Selene)
 
 //Heavy Blade: +4 Damage/-2 Attack Speed when unit’s Con. is bigger than the enemy.
 //By Mikey Seregon
@@ -822,7 +822,7 @@
 
 //Stunning Smile: If foe is male, inflicts Avo-20 on that foe during combat.
 //By Jopettajah
-#define StunningSmileID 188 // COLISEUM: enabled for Selene (was Thotslayer's ID)
+#define StunningSmileID 188 // COLOSSEUM: enabled for Selene (was Thotslayer's ID)
 
 // Keen Fighter: Unit takes 75% damage if the opponent can double. 
 // By Vesly 

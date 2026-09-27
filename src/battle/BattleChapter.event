@@ -1,4 +1,4 @@
-// COLISEUM battle chapter (Phase 3): one reusable chapter for every fight, in chapter slot 0
+// COLOSSEUM battle chapter (Phase 3): one reusable chapter for every fight, in chapter slot 0
 // (the Prologue's slot, which "New Game" starts; event ID 7). Replaces the Skill System test
 // map (USE_TEST_MAP is off in EngineHacks/Config.event).
 //

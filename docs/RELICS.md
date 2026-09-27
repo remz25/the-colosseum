@@ -1,4 +1,4 @@
-# COLISEUM: Relic system (Phase 9, prototype pool v1)
+# COLOSSEUM: Relic system (Phase 9, prototype pool v1)
 
 Spec §33-36 plus the developer's "Relic System Implementation Prompt, Prototype Relic Pool v1"
 (2026-09-26). Future relic ideas are kept separately in [`RELICS_FUTURE.md`](RELICS_FUTURE.md).
@@ -69,7 +69,7 @@ the end.
 ## How effects work
 
 A relic is a name, a rarity and up to 5 **modifiers**. Each modifier is a *kind*, an *amount* and
-an optional *condition* (`coliseum.h`: `enum ColRelicModKind`, `enum ColRelicCond`). No relic is
+an optional *condition* (`colosseum.h`: `enum ColRelicModKind`, `enum ColRelicCond`). No relic is
 hard-coded anywhere in the battle code: each hook asks "what is the total of kind X on this
 unit?" (`Col_RelicModTotal`).
 
@@ -145,7 +145,7 @@ the info screen's header text (`relic_ui.c`).
 
 ## Storage and saves
 
-Run state v5 (`coliseum.h`): `relics[15][2]` (per pool character, offset 0x54) and
+Run state v5 (`colosseum.h`): `relics[15][2]` (per pool character, offset 0x54) and
 `relicBag[16]` (offset 0x72). Both are saved with the game save and the suspend (the run-state
 chunk). v4 saves (before relics) are upgraded on load, because those bytes were reserved and
 always zero.

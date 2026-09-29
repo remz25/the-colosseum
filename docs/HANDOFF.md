@@ -71,6 +71,13 @@ and re-verified the patch from an extracted copy. No ROM or save is in the zip.
 - A floor is 12 battles (normal fights, 2 Elites, the boss slot); floor 2 starts after battle 12.
 - Not shipped: `release/FEUNIVERSE_POST.txt` is the forum draft for the developer to post.
 
+Published on GitHub (2026-09-29): https://github.com/remz25/the-colosseum (public, a fork of
+FireEmblemUniverse/SkillSystem_FE8, default branch main; remote `origin`, upstream stays
+`upstream`). Release v0.1.0 with the zip: https://github.com/remz25/the-colosseum/releases/tag/v0.1.0
+The local clone is shallow (starts at upstream 65b959d): a push to a NON-fork repo fails with
+"did not receive expected object"; pushing to the fork works because GitHub has the upstream
+history. An empty leftover repo remz25/the-colosseum-empty-delete-me can be deleted.
+
 Left for the developer: read the docs in the zip, post on FEUniverse (attach the zip and the
 screenshots). After that: the 3 new design docs in Downloads (THE_COLOSSEUM_Master_Design_
 Specification, _Fusion_Arsenal_V1, _Weapon_Stats_and_Fusion_Balance_V1 .docx): +/++ fusion,

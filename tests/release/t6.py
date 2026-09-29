@@ -9,7 +9,7 @@ def s(name):
 try:
     g.frames(rt.BOOT_FRAMES)
     print("enter:", rt.enter_battle(g, None))
-    for fight in range(14):
+    for fight in range(30):
         run = g.read(COL, 0x70)
         print("fight", fight, "floor", run[7], "wins", run[8], "battlesWon", int.from_bytes(run[0x24:0x28], "little"),
               "elite", run[0x68], "arena", run[0x69], "weather", run[0x6A], "gold", int.from_bytes(run[0x1C:0x20], "little"))
@@ -25,7 +25,11 @@ try:
             g.frames(60)
             if int.from_bytes(g.read(COL + 0x24, 4), "little") > won and k > 8:
                 break
+        wins = g.read(COL + 8, 1)[0]             # Elite wins don't count, so check that the counter moved
+        reward = wins != run[8] and wins % 3 == 0   # a 3-win reward: its unit list may start on a unit that can't
         for k in range(20):
+            if reward and k in (4, 8, 12):
+                press(g, "DOWN", 40)
             press(g, "A", 150)
             if k == 0:
                 s(f"fight{fight}_menu")

@@ -52,7 +52,8 @@ static void Put(struct MenuProc *menu, struct MenuItemProc *item)
     PutText(&item->text, BG_GetMapBuffer(menu->frontBg) + TILEMAP_INDEX(item->xTile, item->yTile));
 }
 
-static void DrawRow(struct MenuProc *menu, struct MenuItemProc *item, int pool, int level, int marked)
+static void DrawRowColor(struct MenuProc *menu, struct MenuItemProc *item, int pool, int level, int marked,
+                         int nameColor)
 {
     const struct CharacterData *c = GetCharacterData(gColPool[pool].charId);
     int classId = gColPool[pool].classId ? gColPool[pool].classId : c->defaultClass;
@@ -60,12 +61,17 @@ static void DrawRow(struct MenuProc *menu, struct MenuItemProc *item, int pool, 
     ClearText(&item->text);
     if (marked)
         Text_InsertDrawString(&item->text, 0, TEXT_COLOR_SYSTEM_GREEN, "*");
-    Text_InsertDrawString(&item->text, X_NAME, TEXT_COLOR_SYSTEM_WHITE, GetStringFromIndex(c->nameTextId));
+    Text_InsertDrawString(&item->text, X_NAME, nameColor, GetStringFromIndex(c->nameTextId));
     Text_InsertDrawString(&item->text, X_CLASS, TEXT_COLOR_SYSTEM_WHITE,
                           GetStringFromIndex(GetClassData(classId)->nameTextId));
     Text_InsertDrawString(&item->text, X_LV, TEXT_COLOR_SYSTEM_GOLD, "Lv");
     Text_InsertDrawNumberOrBlank(&item->text, X_LEVEL, TEXT_COLOR_SYSTEM_BLUE, level);
     Put(menu, item);
+}
+
+static void DrawRow(struct MenuProc *menu, struct MenuItemProc *item, int pool, int level, int marked)
+{
+    DrawRowColor(menu, item, pool, level, marked, TEXT_COLOR_SYSTEM_WHITE);
 }
 
 static void DrawLabel(struct MenuProc *menu, struct MenuItemProc *item, int color, const char *s)
@@ -348,13 +354,9 @@ static u8 Who_Avail(const struct MenuItemDef *d, int n)
 static int Who_Row(struct MenuProc *m, struct MenuItemProc *i)
 {
     int slot = i->itemNumber - 1;
-    DrawRow(m, i, gColRun.roster[slot], SlotLevel(slot), 0);
-    if (i->availability == MENU_DISABLED) {     /* gray the name of units that can't */
-        struct Unit *u = Col_RosterUnit(slot);
-        if (u)
-            Text_InsertDrawString(&i->text, X_NAME, TEXT_COLOR_SYSTEM_GRAY, GetStringFromIndex(UNIT_NAME_ID(u)));
-        Put(m, i);
-    }
+    /* gray the name of units that can't (drawn once: overdrawing it smeared the glyphs) */
+    DrawRowColor(m, i, gColRun.roster[slot], SlotLevel(slot), 0,
+                 i->availability == MENU_DISABLED ? TEXT_COLOR_SYSTEM_GRAY : TEXT_COLOR_SYSTEM_WHITE);
     return 0;
 }
 static u8 Who_Pick(struct MenuProc *m, struct MenuItemProc *i)

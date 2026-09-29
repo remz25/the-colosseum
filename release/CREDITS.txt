@@ -45,5 +45,5 @@ fireemblem8u), FEBuilderGBA's FE8 address map, and mGBA for testing.
 -----------------------------------------------------------------
 THE COLOSSEUM
 -----------------------------------------------------------------
-Design and direction: [YOUR NAME]
+Design and direction: Remz
 Implementation assisted by Claude (Anthropic).

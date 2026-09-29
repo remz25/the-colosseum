@@ -1,0 +1,43 @@
+[Title] The Colosseum - an FE8 arena roguelike (v0.1.0, early prototype)
+
+(FEUniverse uses Markdown. Drag the images from screenshots/ into the
+post where the [image] lines are.)
+
+---
+
+# The Colosseum (v0.1.0)
+
+**An FE8 roguelike: short 3v3 arena fights, permadeath, skills, relics and weapon fusion.**
+Built on the FE8 Skill System. **Early playable prototype**: the core loop works, and bosses, story and presentation are still to come.
+
+[image: 01_title / 02_team / 04_battle]
+
+## How a run works
+- Start with **3 random characters** from a pool of 25: 15 FE8 characters and 10 originals with FE-Repo portraits.
+- Fight **3v3 battles** with a **20-turn limit**. HP carries over between fights, and fallen characters are gone for good.
+- Every 3 wins, pick **1 of 3 rewards** (a recruit, a skill, a promotion, healing or gold), then face an **Elite battle**: a Champion or a coordinated Elite Squad.
+- Between fights, use the **Prepare** menu: a random 8-item shop (prices rise with every purchase), Recover, Deploy, Transfer, Fuse and Relics.
+
+## Features in v0.1.0
+- Level 5 start, level cap 30, **no stat caps**. **Pick 1 of 3 stats** on every level-up.
+- **1 personal skill + 3 slots**, with 48 skills in 5 rarities.
+- Weapons never break. **Fuse** two weapons into a better one, and win Elite weapons from Champions.
+- **15 relics** with stat, damage and gold effects. Every run starts with 3.
+- **8 arenas** with weather (rain, sandstorm, ashfall, fog of war), burning hot-rock tiles and healing seal tiles.
+- Promotion at level 10+ keeps your level.
+- Autosave after every win. Press **R for help** on any menu row.
+
+[image: 05_stats / 06_shop / 07_relic / 08_elite / 09_reward / 10_arena]
+
+## Not in yet
+Bosses (the 10th fight of a floor is a stronger normal fight for now), Elite-specific AI, Legacy / Hall of Champions, story, and a custom title screen and music. See KNOWN_ISSUES.txt in the download.
+
+## Download
+[link to The_Colosseum_v0.1.0.zip]
+The zip contains a **UPS patch** for **Fire Emblem - The Sacred Stones (USA)** (CRC32 A47246AE), the patching guide, known issues and credits. No ROM is included.
+
+## Feedback wanted
+Difficulty of the first floor, the gold/shop balance, relics or skills you never pick, and any bugs (with a screenshot, please).
+
+## Credits
+FE8 Skill System and its contributors; FE-Repo portrait artists Garytop, BoneManSeth, MeatOfJustice and Ghostblade; Event Assembler / ColorzCore, lyn, FE-CLib and the fireemblem8u decomp. Full list in CREDITS.txt.

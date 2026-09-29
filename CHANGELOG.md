@@ -1,5 +1,16 @@
 # COLOSSEUM: Changelog
 
+## 2026-09-28 (release package v0.1.0)
+- `release/`: README, PATCHING_GUIDE, RELEASE_NOTES, CHANGELOG, KNOWN_ISSUES, CREDITS (player
+  facing, describe only what is built), FEUNIVERSE_POST (forum draft, not zipped), 10 screenshots.
+- `scripts/make_release.py`: builds the player ROM into build/release/, checks the base ROM,
+  creates the UPS patch and verifies it (clean + patch = build; a wrong base is rejected), checks
+  the docs (version, patched size/CRC, no placeholders), writes build/The_Colosseum_v0.1.0.zip
+  and re-verifies it from an extracted copy.
+- `tests/emu/screen.py` (VRAM screenshot renderer) is now in the repo; the release drivers
+  needed it. Release drivers t4 (Resume Chapter), t5 (Elite battle), t6 (fights until a
+  Desert/Volcanic arena); t2 no longer moves the Prepare cursor after a submenu.
+
 ## 2026-09-28 (release preparation fixes)
 - B now works as Back in every menu with a Back row (relic menus, transfer, fuse, replace,
   "who gets it?"); before, only the Back row closed them.

@@ -1,0 +1,58 @@
+THE COLOSSEUM v0.1.0 - PATCHING GUIDE
+
+-----------------------------------------------------------------
+1. WHAT YOU NEED
+-----------------------------------------------------------------
+- Your own ROM of: Fire Emblem - The Sacred Stones (USA, Australia)
+  The patch only works on this exact, unmodified file:
+    Size   16,777,216 bytes (16 MB)
+    CRC32  A47246AE
+    MD5    005531fef9efbb642095fb8f64645236
+    SHA-1  c25b145e37456171ada4b0d440bf88a19f4d509f
+  European, Japanese or already-patched ROMs will not work.
+- A UPS patcher, for example:
+    Rom Patcher JS (in the browser): https://www.marcrobledo.com/RomPatcher.js/
+    Flips (Windows/Linux)
+    NUPS
+- A GBA emulator. The patch was tested in mGBA 0.10.
+
+-----------------------------------------------------------------
+2. APPLYING THE PATCH (Rom Patcher JS)
+-----------------------------------------------------------------
+1. Open Rom Patcher JS.
+2. "ROM file": choose your Sacred Stones ROM. The page shows its
+   CRC32; it must be A47246AE.
+3. "Patch file": choose The_Colosseum_v0.1.0.ups.
+4. Click "Apply patch" and save the result, for example as
+   The_Colosseum.gba.
+With Flips: "Apply Patch", pick the .ups, then your ROM, then where
+to save the result.
+
+UPS patches check the ROM's checksum. If the patcher says the source
+checksum is wrong, your ROM is not the clean USA ROM described above.
+
+Patched ROM (for checking):
+    Size   17,206,080 bytes
+    CRC32  4AA6A940
+
+-----------------------------------------------------------------
+3. PLAYING
+-----------------------------------------------------------------
+- Load the patched ROM in your emulator. Press START at the title,
+  then choose New Game and a save slot.
+- Keep the patched ROM and its .sav file in the same folder. The game
+  saves automatically after every win.
+- To continue a run, choose "Resume Chapter" at the title screen.
+- Do not use save states from an older version of the patch.
+
+-----------------------------------------------------------------
+4. TROUBLESHOOTING
+-----------------------------------------------------------------
+"Checksum mismatch" / "wrong source file"
+    Wrong or already-modified ROM. Use a clean USA ROM (CRC32 A47246AE).
+White or black screen on boot
+    The patch was applied to the wrong ROM, or the patcher saved only
+    16 MB. The patched ROM must be 17,206,080 bytes.
+New Game is missing from the title menu
+    All 3 save slots are in use (a vanilla FE8 rule for now). Erase a
+    slot with "Erase Data".

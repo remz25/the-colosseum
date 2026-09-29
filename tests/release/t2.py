@@ -5,8 +5,11 @@ def s(name, scale=1):
     shot(g, f"t2_{step[0]:02d}_{name}", scale); step[0] += 1
 try:
     g.frames(rt.BOOT_FRAMES)
-    for wait, key, hold in rt.TITLE_KEYS:
-        g.frames(wait); g.frames(hold, key)
+    for i, (wait, key, hold) in enumerate(rt.TITLE_KEYS):
+        g.frames(wait)
+        if i == 1:
+            s("title")
+        g.frames(hold, key)
     for _ in range(rt.MENU_A_PRESSES):
         g.frames(85)
         ram = g.read(COL, 0x40)
@@ -48,8 +51,7 @@ try:
     press(g, "B", 120)                # back to the unit list
     press(g, "B", 120)                # back to Prepare
     s("prepare3")
-    for _ in range(5):
-        press(g, "UP", 30)            # back to Next fight
+    # the Prepare cursor returns to the top (Next fight) after a submenu
     s("prepare_next")
     press(g, "A", 30)
     for k in range(60):

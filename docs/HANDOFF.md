@@ -56,6 +56,32 @@ hazard-aware AI, Arena debug menu (test/debug builds). Next after that: Phase 10
 Phase 10 done (2026-09-27): 3-win reward menu, promotion (keeps level, Lv 10+), Recover,
 post-battle Prepare menu, autosave. Next: developer play-test, then Phase 11 (Elite AI).
 
+## STOPPED HERE 2026-09-28 evening (developer asked to stop) - release v0.1.0, resume here
+
+Done this session (NOT committed yet - review `git status`, then commit):
+- Play-test on the patched ROM finished: Elite battle in the Royal Arena (real attack on the
+  Elite, win, next arena Forest, gold/HP kept), Resume Chapter from the title, 13 fights in a
+  row via the victory event. TEST_STATUS.md updated.
+- `tests/emu/screen.py` added (was never committed; release drivers need it); drivers t4/t5/t6
+  in tests/release/, t2 fixed (Prepare cursor returns to the top after a submenu).
+- release/: README, PATCHING_GUIDE, RELEASE_NOTES, CHANGELOG, KNOWN_ISSUES, CREDITS,
+  FEUNIVERSE_POST + screenshots/01-09. `scripts/make_release.py` written, NOT yet run.
+Still to do:
+1. Screenshot 10: an arena with terrain. The arena table's last column in docs/ARENAS.md is
+   FLOORS: Desert appears from floor 2, Volcanic from floor 6. t6.py wins fights until one
+   comes up (floor 2 starts after fight 10; ~80 s per fight; run it in the background).
+2. CREDITS.txt has "[YOUR NAME]": ask the developer; make_release.py refuses placeholders.
+3. `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (RELEASE_NOTES says they pass).
+4. `py -3 scripts/make_release.py`, check the zip, commit, report.
+The developer's own Colosseum.gba is older than HEAD (missing the B-as-Back / help fixes);
+rebuild it when mGBA is closed.
+The developer also shared 3 new design docs in Downloads (THE_COLOSSEUM_Master_Design_Specification,
+_Fusion_Arsenal_V1, _Weapon_Stats_and_Fusion_Balance_V1 .docx): a +/++ fusion, Shards, S-rank
+Champions, Codex/records. They conflict with the current fusion (Iron+Iron -> Steel) and have
+internal contradictions (Reaper Axe x3 recipes, Storm Javelin, Aegis Lance, Tempest Bow,
+Cinder Tome vs Flamebrand, Longreach range, Abyss Tome name clash) and need an item-ID budget
+check. Work on them after the release, with the developer's answers.
+
 ## IN PROGRESS: release package v0.1.0 (stopped 2026-09-28, resume here)
 
 The developer pasted a 27-section release prompt ("THE COLOSSEUM - RELEASE PATCH & SHOWCASE

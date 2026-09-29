@@ -1,0 +1,26 @@
+THE COLOSSEUM v0.1.0 - RELEASE NOTES
+Status: early playable prototype / development build
+
+This is the first public build. It shows the core loop of the game:
+3-vs-3 battles, permadeath, the shop, relics, skills, weapon fusion,
+3-win rewards, Elite battles and 8 arenas with weather and hazards.
+Bosses, the Legacy system, story and presentation are not in yet
+(see KNOWN_ISSUES.txt).
+
+What was checked for this release
+- The patch was made from the clean USA ROM and applied back to it;
+  the result is byte-identical to the built ROM. A wrong base ROM or
+  a damaged patch is rejected.
+- The patched ROM was played in mGBA 0.10.5: new run and team screen,
+  shop and R help, equipping a relic, player attacks with battle
+  animations, victory and autosave, the 3-win reward, an Elite battle
+  in a second arena (Royal Arena), Resume Chapter from the title
+  screen, and several fights in a row.
+- The build's automated tests (run state, combat, units, roster,
+  skills, weapons, shop, relics, arenas, progression) pass.
+
+Feedback that helps most
+- Is the first floor too easy or too hard?
+- Do you run out of gold, or have too much?
+- Which relics, skills or rewards do you never pick?
+- Any crash, freeze or wrong text, with a screenshot.

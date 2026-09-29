@@ -1,0 +1,37 @@
+THE COLOSSEUM v0.1.0 - KNOWN ISSUES AND MISSING FEATURES
+
+This is an early playable prototype. Please report anything not
+listed here, with a screenshot and what you did just before.
+
+-----------------------------------------------------------------
+MISSING (planned for later versions)
+-----------------------------------------------------------------
+- No bosses yet. The 10th fight of a floor is a stronger normal
+  fight; the floor still advances afterwards.
+- No final boss or ending: a run continues until it is lost.
+- Elites use FE8's normal enemy AI (no Elite-specific tactics yet).
+- No Legacy / Hall of Champions, run statistics or records.
+- No story, character dialogue or custom death quotes.
+- The title screen, music and animations are vanilla FE8.
+- The planned Shard and extended Fusion system is not in this
+  version. Fusion today upgrades along fixed lines (Iron > Steel >
+  Silver, tome lines, a few special pairs).
+- Arenas with new tilesets (Frozen, Swamp, Graveyard) are not in yet.
+
+-----------------------------------------------------------------
+KNOWN ISSUES
+-----------------------------------------------------------------
+- Characters say their vanilla FE8 death quotes when they fall.
+- The title menu keeps FE8's 3 save slots. "New Game" is hidden
+  when all 3 slots are used; erase one with "Erase Data".
+- Balance numbers (gold, shop prices, EXP, enemy strength, relic and
+  skill weights) are first guesses and will change.
+- Not yet tested by playing through (the underlying logic is covered
+  by automated tests):
+    - the level-up stat choice after an enemy-phase level-up
+    - using a promotion item during a battle
+    - some relic effects in real battles (Golden Thread, Guardian's
+      Crest, Fortress Heart, Mage's Ring, Sturdy Boots)
+    - a Champion Elite fought to the end, and its weapon drop
+- Save states made in an older build may not be compatible. Use the
+  in-game save.

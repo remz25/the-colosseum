@@ -1,0 +1,52 @@
+THE COLOSSEUM - CHANGELOG
+
+v0.1.0 (2026-09-28) - first public build, early playable prototype
+
+Everything below is new in this build, compared with vanilla FE8.
+
+Core loop
+- Run-based structure: New Game starts a run with 3 random
+  characters; one reusable arena chapter hosts every battle.
+- 3-vs-3 battles, 20-turn limit with warnings on turns 15, 18, 19.
+- Floors of 9 normal fights with an Elite after every 3 wins; the
+  10th fight is a stronger normal fight for now (no bosses yet).
+- Permadeath; the run ends when all deployed units fall. A lost run's
+  save is invalidated.
+- HP carries over between battles; Recover heals the team (3 per
+  floor, costs gold).
+- Autosave after every win replaces FE8's save screen.
+
+Characters and growth
+- Pool of 25: 15 FE8 characters + 10 original characters (FE-Repo
+  portraits, custom battle palettes).
+- Start at level 5, cap 30, no stat caps; pick 1 of 3 stats on every
+  level-up; player EXP x1.5.
+- Promotion at level 10+, keeping the level; FE8's branching choice.
+- Recruitment through rewards and the shop; deploy up to 3.
+
+Skills
+- 1 personal skill + 3 slots; 48 player skills in 5 rarities with
+  prerequisites; learn / replace menus.
+
+Weapons
+- No durability for weapons and staves; weapon EXP x3.
+- Transfer between characters; Fusion along weapon lines; Elite
+  weapons from Champions.
+
+Economy, rewards and relics
+- Gold per win; 8-entry fully random shop, +10% prices per purchase.
+- 3-win reward: 1 of 3 (Recruit / Skill / Promotion / Heal / Gold).
+- Enemy drops (gold, skills, relics).
+- 15 relics; each run starts with 2 Common + 1 Rare.
+
+Elites and arenas
+- Elite battles: Champions (one strong enemy) and Elite Squads
+  (Guardian / Mender / Reaper / Striker roles); the first Elite of a
+  run is gentler.
+- 8 arenas with weather (rain, sandstorm, ashfall, fog of war),
+  hot-rock hazards and sacred healing tiles; hazard-aware enemy AI.
+
+Interface
+- Prepare menu between fights: Next fight / Shop / Recover / Deploy /
+  Transfer / Fuse / Relics.
+- R-button help on every Colosseum menu row; B works as Back.

@@ -176,5 +176,14 @@ built, working in game, tested, documented.
 - Later: relics that change rewards (spec 36, "choose 2"), promoted recruits (spec 9, rare),
   boss promotion items (Phase 12).
 
+## Release v0.1.0 (developer request, 2026-09-28)
+- [x] UPS patch tool (`scripts/ups.py`), verified round trip; `build.py --output`
+- [x] Play-test on the patched ROM: team, shop, relics, attack, win, autosave, 3-win reward,
+      Elite in a second arena, Resume Chapter, several fights in a row (tests/release/)
+- [x] Screenshots (release/screenshots, 2x); docs in release/ (README, patching guide, notes,
+      changelog, known issues, credits, FEUniverse post)
+- [x] `scripts/make_release.py`: build -> patch -> verify -> zip (no ROMs) -> extract + re-verify
+- [ ] Developer: name for CREDITS.txt, read the docs, post on FEUniverse
+
 ## Phase 12-17
 Not started. See `docs/COLOSSEUM_SPEC.md` §86 for the list.

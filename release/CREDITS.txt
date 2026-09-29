@@ -1,0 +1,49 @@
+THE COLOSSEUM v0.1.0 - CREDITS
+
+Fire Emblem: The Sacred Stones (c) 2004-2005 Nintendo / Intelligent
+Systems. The Colosseum is a free, non-commercial fan project and is
+not affiliated with Nintendo or Intelligent Systems. It is released
+as a patch only; no ROM or copyrighted game data is included.
+
+-----------------------------------------------------------------
+FOUNDATION
+-----------------------------------------------------------------
+FE8 Skill System (FireEmblemUniverse/SkillSystem_FE8), released under
+CC0. Circleseverywhere created and released the original system.
+Crazycolorz5: debuffs, freeze and Dragon's Veins. Primefusion: the
+test map. Kirb: the Str/Mag split, based on Tequila's FE7 version.
+
+Skill contributors: circleseverywhere, Tequila, Colorz, Rossendale,
+StanH, Leonarth, 2WB, Teraspark, Darrman, SD9k, Kao, blademaster,
+Snakey1, Zeta, Kirb, Sme, Ganzap, Mikey Seregon, Vesly, Dragz,
+Jopettajah.
+Other: 7743 (various bugfixes); RobertFPY, Pikmin1211 and Snakey1
+(Str/Mag split finalisation).
+Skill System graphics: Monkeybard, Black Mage, Blaze (Stances), vlak
+(Drives), Pikmin1211, 2WB, Alice, VelvetKitsune, Zaim, Reds, Dragz,
+Feier, circleseverywhere (skill animations), and others (see the
+Skill System's CREDITS.md).
+
+-----------------------------------------------------------------
+PORTRAITS
+-----------------------------------------------------------------
+FE-Repo community art (https://github.com/Klokinator/FE-Repo),
+marked F2E: free to use and edit, with credit.
+- Garytop: "Aster" (Morrow), "Keith" (Silas), "Jacinth" (Selene),
+  "Saphyre" (Idris), "Beryl" (Celestine)
+- BoneManSeth and MeatOfJustice: "Sniperguy Hatman" (Hale)
+- Ghostblade: "Eirene" (Dagny), "Thalia Valkyrie" (Oriane),
+  "Female Manakete" (Ysolde), "Joyeuse" (Aurel)
+
+-----------------------------------------------------------------
+TOOLS AND REFERENCES
+-----------------------------------------------------------------
+Event Assembler and ColorzCore (FEUniverse), lyn and FE-CLib
+(StanH), the FE8 decompilation project (FireEmblemUniverse/
+fireemblem8u), FEBuilderGBA's FE8 address map, and mGBA for testing.
+
+-----------------------------------------------------------------
+THE COLOSSEUM
+-----------------------------------------------------------------
+Design and direction: [YOUR NAME]
+Implementation assisted by Claude (Anthropic).

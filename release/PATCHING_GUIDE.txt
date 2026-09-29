@@ -32,8 +32,8 @@ UPS patches check the ROM's checksum. If the patcher says the source
 checksum is wrong, your ROM is not the clean USA ROM described above.
 
 Patched ROM (for checking):
-    Size   17,206,080 bytes
-    CRC32  4AA6A940
+    Size   17,205,988 bytes
+    CRC32  D3CE8FC2
 
 -----------------------------------------------------------------
 3. PLAYING
@@ -52,7 +52,7 @@ Patched ROM (for checking):
     Wrong or already-modified ROM. Use a clean USA ROM (CRC32 A47246AE).
 White or black screen on boot
     The patch was applied to the wrong ROM, or the patcher saved only
-    16 MB. The patched ROM must be 17,206,080 bytes.
+    16 MB. The patched ROM must be 17,205,988 bytes.
 New Game is missing from the title menu
     All 3 save slots are in use (a vanilla FE8 rule for now). Erase a
     slot with "Erase Data".

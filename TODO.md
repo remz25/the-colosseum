@@ -183,7 +183,8 @@ built, working in game, tested, documented.
 - [x] Screenshots (release/screenshots, 2x); docs in release/ (README, patching guide, notes,
       changelog, known issues, credits, FEUniverse post)
 - [x] `scripts/make_release.py`: build -> patch -> verify -> zip (no ROMs) -> extract + re-verify
-- [ ] Developer: name for CREDITS.txt, read the docs, post on FEUniverse
+- [x] Screenshot 10 (Desert arena); credits name (Remz); tests pass; zip built and verified
+- [ ] Developer: read the docs, post on FEUniverse
 
 ## Phase 12-17
 Not started. See `docs/COLOSSEUM_SPEC.md` §86 for the list.

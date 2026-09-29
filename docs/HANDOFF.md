@@ -56,74 +56,29 @@ hazard-aware AI, Arena debug menu (test/debug builds). Next after that: Phase 10
 Phase 10 done (2026-09-27): 3-win reward menu, promotion (keeps level, Lv 10+), Recover,
 post-battle Prepare menu, autosave. Next: developer play-test, then Phase 11 (Elite AI).
 
-## STOPPED HERE 2026-09-28 evening (developer asked to stop) - release v0.1.0, resume here
+## DONE 2026-09-29: release package v0.1.0 is built (resume here)
 
-Done this session (NOT committed yet - review `git status`, then commit):
-- Play-test on the patched ROM finished: Elite battle in the Royal Arena (real attack on the
-  Elite, win, next arena Forest, gold/HP kept), Resume Chapter from the title, 13 fights in a
-  row via the victory event. TEST_STATUS.md updated.
-- `tests/emu/screen.py` added (was never committed; release drivers need it); drivers t4/t5/t6
-  in tests/release/, t2 fixed (Prepare cursor returns to the top after a submenu).
-- release/: README, PATCHING_GUIDE, RELEASE_NOTES, CHANGELOG, KNOWN_ISSUES, CREDITS,
-  FEUNIVERSE_POST + screenshots/01-09. `scripts/make_release.py` written, NOT yet run.
-Still to do:
-1. Screenshot 10: an arena with terrain. The arena table's last column in docs/ARENAS.md is
-   FLOORS: Desert appears from floor 2, Volcanic from floor 6. t6.py wins fights until one
-   comes up (floor 2 starts after fight 10; ~80 s per fight; run it in the background).
-2. CREDITS.txt has "[YOUR NAME]": ask the developer; make_release.py refuses placeholders.
-3. `py -3 scripts/build.py --test && py -3 tests/run_tests.py` (RELEASE_NOTES says they pass).
-4. `py -3 scripts/make_release.py`, check the zip, commit, report.
-The developer's own Colosseum.gba is older than HEAD (missing the B-as-Back / help fixes);
-rebuild it when mGBA is closed.
-The developer also shared 3 new design docs in Downloads (THE_COLOSSEUM_Master_Design_Specification,
-_Fusion_Arsenal_V1, _Weapon_Stats_and_Fusion_Balance_V1 .docx): a +/++ fusion, Shards, S-rank
-Champions, Codex/records. They conflict with the current fusion (Iron+Iron -> Steel) and have
-internal contradictions (Reaper Axe x3 recipes, Storm Javelin, Aegis Lance, Tempest Bow,
-Cinder Tome vs Flamebrand, Longreach range, Abyss Tome name clash) and need an item-ID budget
-check. Work on them after the release, with the developer's answers.
+`py -3 scripts/make_release.py` -> `build/The_Colosseum_v0.1.0.zip` (17 files, ~445 KB: UPS patch,
+README, PATCHING_GUIDE, RELEASE_NOTES, CHANGELOG, KNOWN_ISSUES, CREDITS, screenshots 01-10). The
+script built the ROM, checked the clean base (SHA-1), verified clean + patch = build, rejected a
+wrong base, checked the docs (version, patched size 17,205,988 / CRC32 D3CE8FC2, no placeholders),
+and re-verified the patch from an extracted copy. No ROM or save is in the zip.
+- Screenshot 10: Desert arena (floor 2), taken by tests/release/t6.py on the patched ROM.
+- Credits: "Design and direction: Remz" (developer, 2026-09-29).
+- Test suite: 8 run-state + 72 map tests + save checks, ALL PASSED (2026-09-29).
+- Fixed on the way: smeared gray names in the 3-win reward's "Who learns it?" list.
+- The developer's `Colosseum.gba` was rebuilt and equals the release ROM (CRC32 D3CE8FC2).
+- A floor is 12 battles (normal fights, 2 Elites, the boss slot); floor 2 starts after battle 12.
+- Not shipped: `release/FEUNIVERSE_POST.txt` is the forum draft for the developer to post.
 
-## IN PROGRESS: release package v0.1.0 (stopped 2026-09-28, resume here)
-
-The developer pasted a 27-section release prompt ("THE COLOSSEUM - RELEASE PATCH & SHOWCASE
-PACKAGE"): UPS patch, verified patch test, README, patching guide, credits, changelog, known
-issues, FEUniverse post, 6-10 screenshots, clean ZIP without ROMs, honest wording, final report.
-If more detail is needed, ask the developer to paste it again. Done so far:
-- Clean build verified (build/ deleted, rebuilt; identical ROM). `scripts/build.py --output PATH`
-  builds the player ROM elsewhere while Colosseum.gba is open in mGBA.
-- `scripts/ups.py create|apply`: UPS patches in byuu's format (varints, XOR hunks, 3 CRC32s);
-  checked: clean FE8 + patch = byte-identical ROM (SHA-1), wrong base / damaged patch rejected,
-  500 random round trips. Patch size ~500 KB.
-- Base ROM: Fire Emblem - The Sacred Stones (USA, Australia), 16,777,216 bytes,
-  SHA-1 c25b145e37456171ada4b0d440bf88a19f4d509f, MD5 005531fef9efbb642095fb8f64645236,
-  CRC32 A47246AE.
-- Play-tested on the PATCHED ROM (clean FE8 + UPS) in mGBA, scripted with screenshots: boots to
-  the (vanilla FE8) title, New Game, team screen with starting relics, Prepare, shop + R help,
-  equipping a relic (stat screen shows Wind Soul's Spd +1 / Def -1), a real player attack by
-  button presses (Silas's Fire 17 -> 11, counter 19 -> 17), battle animation, the victory event,
-  autosave (run copy with 1 win in SRAM), 3-win reward menu + help.
-- Fixed while testing: B works as Back in menus with a Back row; R help reopening showed a
-  garbled line (wrong cache address).
-- Licenses: only LICENSE (Skill System, CC0) in the repo; FE-Repo portraits are F2E with credit
-  (CREDITS.md). No custom music or animations. Build tools are not shipped.
-
-Still to do (in order):
-1. Finish the play-test on the patched ROM: Elite battle, a second arena (e.g. Volcanic),
-   save -> quit -> Continue (the run resumes). The scripted drivers are in tests/release/
-   (play.py / t2.py / t3.py; they expect patched.gba and built.sym next to them - copy them into
-   a scratch folder with those files first). Driver gotchas:
-   delete stale .sav files next to the ROM copy; wait until enemies are placed before input;
-   after the shop the Prepare cursor returns to the top.
-2. Screenshots (native 240x160, 2x integer scale): title, run start (team), 3v3 battle, stat
-   screen, relics, Elite, [no bosses yet -> 3-win reward], arena (Volcanic/Desert), shop,
-   [no Legacy -> battle animation].
-3. Docs in release/: README.txt, PATCHING_GUIDE.txt, CREDITS.txt, CHANGELOG.txt,
-   KNOWN_ISSUES.txt, FEUNIVERSE_POST.txt, RELEASE_NOTES.txt. Describe ONLY what is built:
-   no real bosses yet (fight 10 is a stronger normal fight, floors still advance), no Legacy, no
-   custom title screen, arenas = the 8 of docs/ARENAS.md, Elite AI is FE8's.
-   Status: "early playable prototype / development build", version v0.1.0 everywhere.
-4. scripts/make_release.py: build -> UPS -> apply to the clean ROM and compare -> assemble
-   release/ -> The_Colosseum_v0.1.0.zip (no ROMs) -> extract and check the contents.
-5. Final clean-room test on the patched ROM, commit, report to the developer.
+Left for the developer: read the docs in the zip, post on FEUniverse (attach the zip and the
+screenshots). After that: the 3 new design docs in Downloads (THE_COLOSSEUM_Master_Design_
+Specification, _Fusion_Arsenal_V1, _Weapon_Stats_and_Fusion_Balance_V1 .docx): +/++ fusion,
+Shards, S-rank Champions, Codex. They conflict with the current fusion (Iron+Iron -> Steel), have
+internal contradictions (Reaper Axe x3 recipes, Storm Javelin, Aegis Lance, Tempest Bow, Cinder
+Tome vs Flamebrand, Longreach range, Abyss Tome name clash) and need an item-ID budget check:
+list the questions for the developer before building anything from them. Then Phase 11
+(advanced Elite AI) and Phase 12 (bosses).
 
 ## Next (in order)
 
@@ -173,4 +128,4 @@ Still to do (in order):
 
 1. Read `CLAUDE.md`, then this file, then `TODO.md`.
 2. `py -3 scripts/build.py --test && py -3 tests/run_tests.py` to confirm everything still passes.
-3. Start Phase 9 (Relics) unless the developer asks for something else.
+3. Continue from "DONE 2026-09-29" above unless the developer asks for something else.

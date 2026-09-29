@@ -2,6 +2,8 @@
 from play import *
 from gdb import read_sym
 syms = read_sym(os.path.join(HERE, "built.sym"))
+ROSTER_UI_STATE = COL + 0x200 + 0x10 + 4     # gColRosterUi.state (src/roster/roster_ui.c)
+REWARD_PICK = 7
 proc, g = boot()
 step = [0]
 def s(name):
@@ -25,10 +27,10 @@ try:
             g.frames(60)
             if int.from_bytes(g.read(COL + 0x24, 4), "little") > won and k > 8:
                 break
-        wins = g.read(COL + 8, 1)[0]             # Elite wins don't count, so check that the counter moved
-        reward = wins != run[8] and wins % 3 == 0   # a 3-win reward: its unit list may start on a unit that can't
         for k in range(20):
-            if reward and k in (4, 8, 12):
+            # "Who learns it?" open (gColRosterUi.state == REWARD_PICK) and A did nothing: the
+            # cursor is on a unit that can't, so move down (never press DOWN in other menus)
+            if k > 0 and g.read(ROSTER_UI_STATE, 1)[0] == REWARD_PICK:
                 press(g, "DOWN", 40)
             press(g, "A", 150)
             if k == 0:

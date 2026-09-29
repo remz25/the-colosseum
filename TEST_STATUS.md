@@ -109,5 +109,7 @@ mGBA, not only compiled.
 | R help in game: team screen relic (Wind Soul (Rare) / +20% Spd / -15% Def) and character (Pickup description); shop consumable (Talisman), skill (Swordbreaker), weapon (Iron Bow stat box) | PASS (in game) | test ROM, scripted with screenshots | 2026-09-27 |
 | R help in the relic, reward, skill learn, deploy and transfer/fuse menus | NOT VERIFIED in game | same helper as the checked menus | |
 | Release v0.1.0 on the PATCHED ROM (clean FE8 + UPS, byte-identical to the build): New Game, team screen, shop + R help, relic equip, player attack with animation, victory + autosave, 3-win reward (Gold), Elite battle in a second arena (Royal) with a real attack on an Elite (Striker 32 -> 24 HP), win -> next arena (Forest) with gold and HP kept, Resume Chapter, 7+ fights in a row | PASS (in game) | tests/release drivers (play.py, t2-t6), scripted with screenshots | 2026-09-28 |
+| Release v0.1.0 zip: 12 fights in a row on the patched ROM through a 3-win Skill reward (unit list with gray names), an Elite and the floor-1 boss slot to floor 2 (Desert arena); `make_release.py` all checks | PASS (in game + script) | tests/release/t6.py, scripts/make_release.py | 2026-09-29 |
+| 3-win reward "Who learns it?": units that can't are gray and readable (were smeared) | PASS (in game) | t6 screenshot, patched ROM | 2026-09-29 |
 | Legacy | NOT STARTED | | |
 | Integration run (§83) | NOT STARTED | | |

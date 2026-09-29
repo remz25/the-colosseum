@@ -1,5 +1,13 @@
 # COLOSSEUM: Changelog
 
+## 2026-09-29 (release v0.1.0, finishing)
+- Fix: in the 3-win reward's "Who learns it?" / "Who promotes?" list, the names of units that
+  can't take the reward looked smeared (the name was drawn white, then gray on top). Rows now
+  take a name color (`DrawRowColor` in src/roster/roster_ui.c) and draw it once. Checked in mGBA.
+- Release driver t6: presses DOWN in that list only right after a real 3-win reward (Elite wins
+  don't move the 3-win counter); it used to stall on a unit that can't learn the skill.
+- CREDITS.txt: design and direction by Remz.
+
 ## 2026-09-28 (release package v0.1.0)
 - `release/`: README, PATCHING_GUIDE, RELEASE_NOTES, CHANGELOG, KNOWN_ISSUES, CREDITS (player
   facing, describe only what is built), FEUNIVERSE_POST (forum draft, not zipped), 10 screenshots.
